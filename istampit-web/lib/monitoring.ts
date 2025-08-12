@@ -142,6 +142,8 @@ export class ProductionMonitoring {
    * Store alert for dashboard display
    */
   private storeAlert(alertType: string, context: any): void {
+    if (typeof window === 'undefined') return; // Skip during SSR
+    
     try {
       const alerts = this.getStoredAlerts();
       alerts[alertType] = {
@@ -159,6 +161,8 @@ export class ProductionMonitoring {
    * Remove stored alert
    */
   private removeStoredAlert(alertType: string): void {
+    if (typeof window === 'undefined') return; // Skip during SSR
+    
     try {
       const alerts = this.getStoredAlerts();
       delete alerts[alertType];
@@ -172,6 +176,8 @@ export class ProductionMonitoring {
    * Get all stored alerts
    */
   getStoredAlerts(): Record<string, any> {
+    if (typeof window === 'undefined') return {}; // Skip during SSR
+    
     try {
       const alerts = localStorage.getItem('istampit_alerts');
       return alerts ? JSON.parse(alerts) : {};

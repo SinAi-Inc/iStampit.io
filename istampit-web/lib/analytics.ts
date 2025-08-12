@@ -21,6 +21,8 @@ class Analytics {
   }
 
   private loadStoredEvents() {
+    if (typeof window === 'undefined') return; // Skip during SSR
+    
     try {
       const stored = localStorage.getItem('istampit_analytics');
       if (stored) {
@@ -34,6 +36,8 @@ class Analytics {
   }
 
   private saveEvents() {
+    if (typeof window === 'undefined') return; // Skip during SSR
+    
     try {
       localStorage.setItem('istampit_analytics', JSON.stringify(this.events));
     } catch (e) {
@@ -42,12 +46,14 @@ class Analytics {
   }
 
   track(event: string, properties?: Record<string, string | number>) {
+    if (typeof window === 'undefined') return; // Skip during SSR
+    
     const analyticsEvent: AnalyticsEvent = {
       event,
       properties: {
         ...properties,
         sessionId: this.sessionId,
-        userAgent: navigator.userAgent.split(' ')[0], // Just browser name
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : 'unknown', // Just browser name
         referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
       },
       timestamp: new Date().toISOString(),

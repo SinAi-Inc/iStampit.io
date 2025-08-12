@@ -27,15 +27,30 @@ export class BackupSystem {
    * Create a complete backup of all local data
    */
   static async createBackup(): Promise<BackupData> {
+    if (typeof window === 'undefined') {
+      // Return empty backup during SSR
+      return {
+        analytics: {},
+        userState: {},
+        receipts: {},
+        alerts: {},
+        metadata: {
+          version: this.BACKUP_VERSION,
+          timestamp: Date.now(),
+          dataTypes: [],
+          size: 0,
+          checksum: ''
+        }
+      };
+    }
+    
     const timestamp = Date.now();
-
+    
     // Collect all local data
     const analytics = this.getLocalStorageData('istampit_analytics') || {};
     const userState = this.getLocalStorageData('istampit_user_state') || {};
     const receipts = this.getLocalStorageData('istampit_receipts') || {};
-    const alerts = this.getLocalStorageData('istampit_alerts') || {};
-
-    const data = {
+    const alerts = this.getLocalStorageData('istampit_alerts') || {};    const data = {
       analytics,
       userState,
       receipts,
@@ -244,6 +259,8 @@ export class BackupSystem {
    * Get data from localStorage safely
    */
   private static getLocalStorageData(key: string): any {
+    if (typeof window === 'undefined') return {}; // Skip during SSR
+    
     try {
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : {};
@@ -277,6 +294,14 @@ export class BackupSystem {
     lastBackupAge: number | null;
     recommendations: string[];
   } {
+    if (typeof window === 'undefined') {
+      return {
+        hasEmergencyBackup: false,
+        lastBackupAge: null,
+        recommendations: ['Cannot access backup status during server-side rendering']
+      };
+    }
+    
     const hasEmergencyBackup = !!localStorage.getItem('istampit_emergency_backup');
 
     let lastBackupAge = null;
