@@ -1,13 +1,14 @@
-import Image from "next/image";
-import React from "react";
-import clsx from "clsx";
+"use client";
+import React from 'react';
+import Image from 'next/image';
 
 type Props = {
-  className?: string;
-  title?: string;
-  priority?: boolean;
-  width?: number;
+  /** Height in pixels (default 32px) */
   height?: number;
+  /** Additional wrapper classes */
+  className?: string;
+  /** Accessible label / tooltip */
+  title?: string;
 };
 
 /**
@@ -18,47 +19,35 @@ type Props = {
  * Size is strictly controlled to prevent SVG from expanding to intrinsic dimensions.
  */
 export default function BrandLogo({
+  height = 32,
   className,
   title = "iStampit.io",
-  priority = true,
-  width = 128,
-  height = 32
 }: Props) {
+  const style: React.CSSProperties = { height, width: 'auto' };
+  const classes = [
+    'inline-flex items-center shrink-0 select-none pointer-events-none',
+    className
+  ].filter(Boolean).join(' ');
+
   return (
-    <span
-      className={clsx("inline-block align-middle max-w-full", className)}
-      aria-label={title}
-      style={{ maxWidth: `${width}px`, maxHeight: `${height}px` }}
-    >
+    <span className={classes} aria-label={title}>
       <Image
         src="/logo/logo-light.svg"
         alt={title}
-        width={width}
+        width={height * 4}
         height={height}
-        priority={priority}
-        className="block dark:hidden max-w-full max-h-full"
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          objectFit: 'contain',
-          maxWidth: '100%',
-          maxHeight: '100%'
-        }}
+        className="block dark:hidden align-middle w-auto h-auto"
+        style={style}
+        priority
       />
       <Image
         src="/logo/logo-dark.svg"
         alt={title}
-        width={width}
+        width={height * 4}
         height={height}
-        priority={priority}
-        className="hidden dark:block max-w-full max-h-full"
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          objectFit: 'contain',
-          maxWidth: '100%',
-          maxHeight: '100%'
-        }}
+        className="hidden dark:block align-middle w-auto h-auto"
+        style={style}
+        priority
       />
     </span>
   );

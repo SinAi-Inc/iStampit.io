@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import './globals.css';
 import type { ReactNode } from 'react';
+import { Suspense } from 'react';
 import MonitoringDashboard from '../components/MonitoringDashboard';
 import { ThemeProvider } from '../components/ThemeProvider';
 import Navigation from '../components/Navigation';
@@ -92,12 +93,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}>
         <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
+          <Suspense fallback={null}>
+            <GoogleTag />
+          </Suspense>
           <div className="min-h-screen flex flex-col">
             {/* Navigation */}
             <Navigation
               logo={
                 <div className="flex items-center space-x-2 sm:space-x-3 group">
-                  <BrandLogo width={28} height={28} className="sm:w-8 sm:h-8" />
+                  <BrandLogo height={28} className="sm:h-8" />
                   <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                     iStampit.io
                   </span>
