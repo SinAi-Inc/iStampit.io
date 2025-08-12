@@ -1,34 +1,60 @@
-// Simple in-memory ledger placeholder. In real deployment replace with durable storage.
 export interface LedgerEntry {
-  id: string; // uuid or hash-derived identifier
+  id: string;
+  title: string;
   sha256: string;
+  receiptUrl: string;
   status: 'pending' | 'confirmed';
-  firstSeen: number; // epoch seconds
-  confirmedAt?: number; // epoch seconds
-  blockHeight?: number;
-  blockTime?: number;
-  tags?: string[];
-  proofPath?: string; // relative path/URL to .ots
+  txid: string | null;
+  blockHeight: number | null;
+  blockTime: number | null;
+  stampedAt: string;
+  tags: string[];
 }
 
-const _entries: LedgerEntry[] = [];
+export interface LedgerData {
+  entries: LedgerEntry[];
+  metadata: {
+    lastUpdated: string;
+    totalEntries: number;
+    confirmedEntries: number;
+    pendingEntries: number;
+  };
+}
 
-export function addOrUpdate(entry: LedgerEntry) {
-  const idx = _entries.findIndex(e => e.id === entry.id);
-  if (idx >= 0) {
-    _entries[idx] = { ..._entries[idx], ...entry };
-  } else {
-    _entries.push(entry);
+export async function fetchLedger(): Promise<LedgerData> {
+  const response = await fetch('/ledger.json');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ledger: ${response.status}`);
   }
+  return response.json();
 }
 
-export function search(query: { hash?: string; status?: string; tag?: string }) {
-  return _entries.filter(e => {
-    if (query.hash && e.sha256 !== query.hash) return false;
-    if (query.status && e.status !== query.status) return false;
-    if (query.tag && !(e.tags || []).includes(query.tag)) return false;
-    return true;
+export function formatTimestamp(isoString: string): string {
+  return new Date(isoString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
   });
 }
 
-export function list(): LedgerEntry[] { return [..._entries]; }
+export function formatBlockTime(unixTimestamp: number): string {
+  return new Date(unixTimestamp * 1000).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  });
+}
+
+export function truncateHash(hash: string, length: number = 16): string {
+  return `${hash.slice(0, length)}...${hash.slice(-8)}`;
+}
+
+export function copyToClipboard(text: string): Promise<void> {
+  return navigator.clipboard.writeText(text);
+}

@@ -1,0 +1,168 @@
+name: stamp-ip
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force_upgrade:
+        description: 'Force upgrade all pending receipts'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  stamp-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install OpenTimestamps
+        run: |
+          pip install --upgrade pip
+          pip install opentimestamps-client
+
+      - name: Create artifacts directory
+        run: mkdir -p artifacts
+
+      - name: Generate sample artifacts (for demo)
+        run: |
+          # Create some sample artifacts to stamp
+          echo "Sample research document $(date)" > artifacts/research-doc-$(date +%Y%m%d).txt
+          echo "API specification v1.0 $(date)" > artifacts/api-spec-$(date +%Y%m%d).md
+          echo "Security audit report $(date)" > artifacts/security-audit-$(date +%Y%m%d).pdf
+
+      - name: Stamp artifacts
+        run: |
+          cd artifacts
+          for file in *; do
+            if [[ -f "$file" && ! -f "$file.ots" ]]; then
+              echo "Stamping $file"
+              ots stamp "$file" || echo "Failed to stamp $file"
+            fi
+          done
+
+      - name: Upgrade receipts (if requested or weekly)
+        if: ${{ github.event.inputs.force_upgrade == 'true' || github.event.schedule }}
+        run: |
+          cd artifacts
+          for receipt in *.ots; do
+            if [[ -f "$receipt" ]]; then
+              echo "Upgrading $receipt"
+              ots upgrade "$receipt" || echo "Upgrade failed for $receipt (might still be pending)"
+            fi
+          done
+
+      - name: Update ledger
+        run: |
+          python - <<'EOF'
+          import json
+          import hashlib
+          import os
+          import glob
+          import subprocess
+          from datetime import datetime, timezone
+          
+          # Load existing ledger
+          ledger_file = 'ledger.json'
+          if os.path.exists(ledger_file):
+              with open(ledger_file, 'r') as f:
+                  ledger = json.load(f)
+          else:
+              ledger = {"entries": [], "metadata": {}}
+          
+          # Process artifacts
+          artifacts_dir = 'artifacts'
+          for file_path in glob.glob(f'{artifacts_dir}/*'):
+              if file_path.endswith('.ots'):
+                  continue
+                  
+              # Calculate hash
+              with open(file_path, 'rb') as f:
+                  file_hash = hashlib.sha256(f.read()).hexdigest()
+              
+              # Check if already in ledger
+              existing = next((e for e in ledger['entries'] if e['sha256'] == file_hash), None)
+              if existing:
+                  continue
+              
+              # Get file info
+              filename = os.path.basename(file_path)
+              receipt_path = f'{file_path}.ots'
+              
+              if os.path.exists(receipt_path):
+                  # Try to determine if confirmed
+                  try:
+                      result = subprocess.run(['ots', 'verify', receipt_path], 
+                                            capture_output=True, text=True, check=True)
+                      status = 'confirmed' if 'Bitcoin' in result.stdout else 'pending'
+                  except:
+                      status = 'pending'
+                  
+                  # Create entry
+                  entry = {
+                      "id": f"auto-{datetime.now().strftime('%Y%m%d')}-{filename}",
+                      "title": f"Automated Artifact: {filename}",
+                      "sha256": file_hash,
+                      "receiptUrl": f"/artifacts/{filename}.ots",
+                      "status": status,
+                      "txid": None,
+                      "blockHeight": None,
+                      "blockTime": None,
+                      "stampedAt": datetime.now(timezone.utc).isoformat(),
+                      "tags": ["automated", "artifact"]
+                  }
+                  
+                  ledger['entries'].append(entry)
+          
+          # Update metadata
+          ledger['metadata'] = {
+              "lastUpdated": datetime.now(timezone.utc).isoformat(),
+              "totalEntries": len(ledger['entries']),
+              "confirmedEntries": len([e for e in ledger['entries'] if e['status'] == 'confirmed']),
+              "pendingEntries": len([e for e in ledger['entries'] if e['status'] == 'pending'])
+          }
+          
+          # Save ledger
+          with open(ledger_file, 'w') as f:
+              json.dump(ledger, f, indent=2)
+          
+          # Also copy to web public directory
+          with open('istampit-web/public/ledger.json', 'w') as f:
+              json.dump(ledger, f, indent=2)
+          
+          print(f"Updated ledger with {len(ledger['entries'])} total entries")
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: automated stamping and ledger update $(date)"
+            git push
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: stamped-artifacts-${{ github.run_number }}
+          path: |
+            artifacts/
+            !artifacts/*.txt
+            !artifacts/*.md
+            !artifacts/*.pdf
