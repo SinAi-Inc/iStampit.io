@@ -11,14 +11,14 @@ export default function Home() {
           Secure your intellectual property timeline without revealing sensitive content.
         </p>
         <div className="flex justify-center gap-4">
-          <a 
-            href="/verify" 
+          <a
+            href="/verify"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium"
           >
             Verify Timestamp
           </a>
-          <a 
-            href="/ledger" 
+          <a
+            href="/ledger"
             className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 font-medium"
           >
             Browse Ledger
@@ -34,7 +34,7 @@ export default function Home() {
           </div>
           <h3 className="text-lg font-semibold">Privacy First</h3>
           <p className="text-gray-600 text-sm">
-            Only cryptographic hashes are published — never your original files or content. 
+            Only cryptographic hashes are published — never your original files or content.
             Zero intellectual property leakage.
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function Home() {
           </div>
           <h3 className="text-lg font-semibold">Bitcoin Secured</h3>
           <p className="text-gray-600 text-sm">
-            Timestamps are anchored in Bitcoin's blockchain using OpenTimestamps — 
+            Timestamps are anchored in Bitcoin&apos;s blockchain using OpenTimestamps —
             immutable and independently verifiable.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function Home() {
           </div>
           <h3 className="text-lg font-semibold">Developer Ready</h3>
           <p className="text-gray-600 text-sm">
-            CLI tools, GitHub Actions, and embeddable widgets. 
+            CLI tools, GitHub Actions, and embeddable widgets.
             Integrate timestamping into your existing workflow.
           </p>
         </div>
@@ -102,14 +102,14 @@ export default function Home() {
           Try our verification tool with a sample file, or explore our public Innovation Ledger.
         </p>
         <div className="flex justify-center gap-4">
-          <a 
-            href="/verify" 
+          <a
+            href="/verify"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Try Verification
           </a>
-          <a 
-            href="/ledger" 
+          <a
+            href="/ledger"
             className="text-blue-600 hover:text-blue-800"
           >
             View Public Ledger →

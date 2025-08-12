@@ -73,7 +73,7 @@ jobs:
           import glob
           import subprocess
           from datetime import datetime, timezone
-          
+
           # Load existing ledger
           ledger_file = 'ledger.json'
           if os.path.exists(ledger_file):
@@ -81,35 +81,35 @@ jobs:
                   ledger = json.load(f)
           else:
               ledger = {"entries": [], "metadata": {}}
-          
+
           # Process artifacts
           artifacts_dir = 'artifacts'
           for file_path in glob.glob(f'{artifacts_dir}/*'):
               if file_path.endswith('.ots'):
                   continue
-                  
+
               # Calculate hash
               with open(file_path, 'rb') as f:
                   file_hash = hashlib.sha256(f.read()).hexdigest()
-              
+
               # Check if already in ledger
               existing = next((e for e in ledger['entries'] if e['sha256'] == file_hash), None)
               if existing:
                   continue
-              
+
               # Get file info
               filename = os.path.basename(file_path)
               receipt_path = f'{file_path}.ots'
-              
+
               if os.path.exists(receipt_path):
                   # Try to determine if confirmed
                   try:
-                      result = subprocess.run(['ots', 'verify', receipt_path], 
+                      result = subprocess.run(['ots', 'verify', receipt_path],
                                             capture_output=True, text=True, check=True)
                       status = 'confirmed' if 'Bitcoin' in result.stdout else 'pending'
                   except:
                       status = 'pending'
-                  
+
                   # Create entry
                   entry = {
                       "id": f"auto-{datetime.now().strftime('%Y%m%d')}-{filename}",
@@ -123,9 +123,9 @@ jobs:
                       "stampedAt": datetime.now(timezone.utc).isoformat(),
                       "tags": ["automated", "artifact"]
                   }
-                  
+
                   ledger['entries'].append(entry)
-          
+
           # Update metadata
           ledger['metadata'] = {
               "lastUpdated": datetime.now(timezone.utc).isoformat(),
@@ -133,15 +133,15 @@ jobs:
               "confirmedEntries": len([e for e in ledger['entries'] if e['status'] == 'confirmed']),
               "pendingEntries": len([e for e in ledger['entries'] if e['status'] == 'pending'])
           }
-          
+
           # Save ledger
           with open(ledger_file, 'w') as f:
               json.dump(ledger, f, indent=2)
-          
+
           # Also copy to web public directory
           with open('istampit-web/public/ledger.json', 'w') as f:
               json.dump(ledger, f, indent=2)
-          
+
           print(f"Updated ledger with {len(ledger['entries'])} total entries")
           EOF
 

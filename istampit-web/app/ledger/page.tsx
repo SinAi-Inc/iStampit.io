@@ -57,7 +57,7 @@ export default function LedgerPage() {
             Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin.
             Only cryptographic hashes are published — no intellectual property leakage.
           </p>
-          
+
           {/* Stats */}
           <div className="flex justify-center gap-8 text-sm">
             <div className="text-center">
@@ -88,7 +88,7 @@ export default function LedgerPage() {
             <div>
               <h3 className="font-medium mb-2">2. Bitcoin Proof</h3>
               <p className="text-gray-600">
-                Calendars aggregate hashes into Bitcoin transactions. Each entry becomes part of the blockchain's immutable record.
+                Calendars aggregate hashes into Bitcoin transactions. Each entry becomes part of the blockchain&apos;s immutable record.
               </p>
             </div>
             <div>
@@ -110,8 +110,8 @@ export default function LedgerPage() {
         <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
           <h3 className="font-medium text-blue-900 mb-2">🔒 Privacy & Security</h3>
           <p className="text-blue-800 text-sm">
-            This ledger publishes only cryptographic hashes (SHA-256) of artifacts — never the original files or content. 
-            Hashes cannot be reversed to reveal intellectual property. Each entry proves <em>existence</em> and <em>timestamp</em> 
+            This ledger publishes only cryptographic hashes (SHA-256) of artifacts — never the original files or content.
+            Hashes cannot be reversed to reveal intellectual property. Each entry proves <em>existence</em> and <em>timestamp</em>
             without exposing sensitive information.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function LedgerPage() {
         <div className="text-center text-sm text-gray-500 space-y-2">
           <p>Last updated: {new Date(ledgerData.metadata.lastUpdated).toLocaleString()}</p>
           <p>
-            Want to verify an artifact? Visit our <a href="/verify" className="text-blue-600 hover:text-blue-800">verification page</a> or 
+            Want to verify an artifact? Visit our <a href="/verify" className="text-blue-600 hover:text-blue-800">verification page</a> or
             use the <a href="https://github.com/SinAi-Inc/iStampit.io" className="text-blue-600 hover:text-blue-800">CLI tool</a>.
           </p>
         </div>

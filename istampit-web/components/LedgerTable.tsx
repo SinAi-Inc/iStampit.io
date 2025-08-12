@@ -46,8 +46,8 @@ export default function LedgerTable({ entries }: Props) {
               key={status}
               onClick={() => setFilter(status)}
               className={`px-3 py-1 rounded text-sm ${
-                filter === status 
-                  ? 'bg-blue-600 text-white' 
+                filter === status
+                  ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
@@ -98,8 +98,8 @@ export default function LedgerTable({ entries }: Props) {
                 </td>
                 <td className="p-3">
                   <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    entry.status === 'confirmed' 
-                      ? 'bg-green-100 text-green-800' 
+                    entry.status === 'confirmed'
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {entry.status}
@@ -129,7 +129,7 @@ export default function LedgerTable({ entries }: Props) {
                 <td className="p-3">
                   <div className="flex flex-wrap gap-1">
                     {entry.tags.map((tag: string) => (
-                      <span 
+                      <span
                         key={tag}
                         className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
                       >
@@ -142,7 +142,7 @@ export default function LedgerTable({ entries }: Props) {
                   {formatTimestamp(entry.stampedAt)}
                 </td>
                 <td className="p-3">
-                  <a 
+                  <a
                     href={entry.receiptUrl}
                     className="text-blue-600 hover:text-blue-800 text-xs"
                     target="_blank"
