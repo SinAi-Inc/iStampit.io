@@ -1,0 +1,22 @@
+# Robots.txt for iStampit.io - Digital Watermarking & Timestamp Verification Platform
+
+User-agent: *
+Allow: /
+
+# Allow access to all public pages
+Allow: /stamp
+Allow: /verify
+Allow: /ledger
+Allow: /widget/
+
+# Disallow admin or sensitive areas (if any in future)
+# Disallow: /admin
+
+# Sitemap location
+Sitemap: https://istampit.io/sitemap.xml
+
+# Crawl delay (optional, be respectful to crawlers)
+Crawl-delay: 1
+
+# Host directive (helps with canonicalization)
+Host: https://istampit.io

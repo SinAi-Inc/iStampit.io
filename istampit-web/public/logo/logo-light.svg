@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<metadata>Watermarked for SinAI Inc; theme=light; concept=B hex; knockout mask applied.</metadata>
+
+    <defs>
+      <mask id="icut" x="0" y="0" width="512" height="512">
+        <rect x="0" y="0" width="512" height="512" fill="white"/>
+        <!-- Knockout "i" in black to punch through the fill -->
+        <rect x="244.0" y="216.0" width="24" height="110" rx="12" fill="black"/>
+        <circle cx="256.0" cy="186.0" r="12" fill="black"/>
+      </mask>
+    </defs>
+    
+<polygon points="411.88457268119896,166.0 411.88457268119896,346.0 256.0,436.0 100.11542731880104,346.0 100.11542731880104,166.0 255.99999999999997,76.0" fill="#F5F7FA" stroke="none" mask="url(#icut)"/>
+<polygon points="411.88457268119896,166.0 411.88457268119896,346.0 256.0,436.0 100.11542731880104,346.0 100.11542731880104,166.0 255.99999999999997,76.0" fill="none" stroke="#0F2D56" stroke-width="14"/>
+<circle cx="356.0" cy="336.0" r="10" fill="#14C3A2"/>
+<text x="110" y="490" font-size="44" font-weight="700" font-family="Inter, Sora, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" fill="#0F2D56">iStampit.io</text>
+
+  <!-- Subtle visible watermark -->
+  <g opacity="0.1" pointer-events="none">
+    <text x="500" y="500" text-anchor="end" font-size="14" font-family="Inter, Sora, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" fill="#0F2D56" transform="rotate(-90 500 500)">
+      SinAI Inc
+    </text>
+  </g>
+  
+</svg>

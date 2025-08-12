@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<metadata>Watermarked for SinAI Inc; theme=dark; concept=B hex reverse; transparent background.</metadata>
+<polygon points="411.88457268119896,166.0 411.88457268119896,346.0 256.0,436.0 100.11542731880104,346.0 100.11542731880104,166.0 255.99999999999997,76.0" fill="none" stroke="#FFFFFF" stroke-width="14"/>
+<rect x="244.0" y="216.0" width="24" height="110" rx="12" fill="#FFFFFF"/>
+<circle cx="256.0" cy="186.0" r="12" fill="#FFFFFF"/>
+<circle cx="356.0" cy="336.0" r="10" fill="#FFFFFF"/>
+<text x="110" y="490" font-size="44" font-weight="700" font-family="Inter, Sora, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" fill="#FFFFFF">iStampit.io</text>
+
+  <!-- Subtle visible watermark -->
+  <g opacity="0.12" pointer-events="none">
+    <text x="500" y="500" text-anchor="end" font-size="14" font-family="Inter, Sora, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" fill="#FFFFFF" transform="rotate(-90 500 500)">
+      SinAI Inc
+    </text>
+  </g>
+  
+</svg>

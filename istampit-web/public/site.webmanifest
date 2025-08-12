@@ -1,0 +1,59 @@
+{
+  "name": "iStampit.io - Digital Watermarking & Timestamp Verification",
+  "short_name": "iStampit.io",
+  "description": "Secure your digital content with advanced watermarking technology and Bitcoin-secured timestamps",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["productivity", "security", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/favicon_64.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/appicon_180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "/icons/appicon_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/social/og-banner.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "iStampit.io Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Verify Timestamp",
+      "short_name": "Verify",
+      "description": "Verify a timestamp proof",
+      "url": "/verify",
+      "icons": [{ "src": "/icons/favicon_64.png", "sizes": "64x64" }]
+    },
+    {
+      "name": "Innovation Ledger",
+      "short_name": "Ledger",
+      "description": "Browse public timestamp records",
+      "url": "/ledger",
+      "icons": [{ "src": "/icons/favicon_64.png", "sizes": "64x64" }]
+    }
+  ]
+}

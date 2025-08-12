@@ -43,9 +43,9 @@ export class BackupSystem {
         }
       };
     }
-    
+
     const timestamp = Date.now();
-    
+
     // Collect all local data
     const analytics = this.getLocalStorageData('istampit_analytics') || {};
     const userState = this.getLocalStorageData('istampit_user_state') || {};
@@ -260,7 +260,7 @@ export class BackupSystem {
    */
   private static getLocalStorageData(key: string): any {
     if (typeof window === 'undefined') return {}; // Skip during SSR
-    
+
     try {
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : {};
@@ -301,7 +301,7 @@ export class BackupSystem {
         recommendations: ['Cannot access backup status during server-side rendering']
       };
     }
-    
+
     const hasEmergencyBackup = !!localStorage.getItem('istampit_emergency_backup');
 
     let lastBackupAge = null;

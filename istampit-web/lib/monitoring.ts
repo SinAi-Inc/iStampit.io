@@ -143,7 +143,7 @@ export class ProductionMonitoring {
    */
   private storeAlert(alertType: string, context: any): void {
     if (typeof window === 'undefined') return; // Skip during SSR
-    
+
     try {
       const alerts = this.getStoredAlerts();
       alerts[alertType] = {
@@ -162,7 +162,7 @@ export class ProductionMonitoring {
    */
   private removeStoredAlert(alertType: string): void {
     if (typeof window === 'undefined') return; // Skip during SSR
-    
+
     try {
       const alerts = this.getStoredAlerts();
       delete alerts[alertType];
@@ -177,7 +177,7 @@ export class ProductionMonitoring {
    */
   getStoredAlerts(): Record<string, any> {
     if (typeof window === 'undefined') return {}; // Skip during SSR
-    
+
     try {
       const alerts = localStorage.getItem('istampit_alerts');
       return alerts ? JSON.parse(alerts) : {};
