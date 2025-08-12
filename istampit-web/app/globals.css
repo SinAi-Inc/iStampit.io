@@ -2,4 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Embed mode styling */
+.embed-mode .embed-hide {
+  display: none !important;
+}
+
+.embed-mode main {
+  padding: 0 !important;
+}
+
+.embed-mode {
+  background: white !important;
+}
+
+.theme-dark {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
 body { font-feature-settings: "cv02","cv03","cv04","cv11"; }

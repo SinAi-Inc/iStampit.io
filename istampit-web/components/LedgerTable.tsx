@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { LedgerEntry, truncateHash, formatTimestamp, formatBlockTime, copyToClipboard } from '../lib/ledger';
+import { trackLedgerFilter } from '../lib/analytics';
 
 interface Props {
   entries: LedgerEntry[];
@@ -44,7 +45,10 @@ export default function LedgerTable({ entries }: Props) {
           {(['all', 'pending', 'confirmed'] as const).map(status => (
             <button
               key={status}
-              onClick={() => setFilter(status)}
+              onClick={() => {
+                setFilter(status);
+                trackLedgerFilter(status); // Track filter usage
+              }}
               className={`px-3 py-1 rounded text-sm ${
                 filter === status
                   ? 'bg-blue-600 text-white'

@@ -1,0 +1,5 @@
+# Don't lint the embed widget script
+public/widget/
+
+# Don't lint build scripts
+scripts/

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import LedgerTable from '../../components/LedgerTable';
 import { LedgerData, fetchLedger } from '../../lib/ledger';
+import { trackLedgerView } from '../../lib/analytics';
 
 export default function LedgerPage() {
   const [ledgerData, setLedgerData] = useState<LedgerData | null>(null);
@@ -9,6 +10,7 @@ export default function LedgerPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    trackLedgerView(); // Track page view
     fetchLedger()
       .then(setLedgerData)
       .catch((err) => setError(err.message))
