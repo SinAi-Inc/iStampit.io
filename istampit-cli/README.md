@@ -1,7 +1,7 @@
 # iStampit CLI — Proof-of-Existence helper (OpenTimestamps)
 
-![CodeQL](https://github.com/SinAi-Inc/istampit-io/actions/workflows/codeql.yml/badge.svg)
-![Scorecard](https://github.com/SinAi-Inc/istampit-io/actions/workflows/scorecard.yml/badge.svg)
+![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
+![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
 
 Thin CLI for hashing files, calling the OpenTimestamps client behind the scenes, and managing `.ots` receipts (stamp, verify, upgrade, info).
 

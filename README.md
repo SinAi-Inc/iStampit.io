@@ -1,9 +1,9 @@
 # iStampit (Web) — Innovation Timestamping & Public Ledger
 
-![CodeQL](https://github.com/SinAi-Inc/istampit-io/actions/workflows/codeql.yml/badge.svg)
-![Scorecard](https://github.com/SinAi-Inc/istampit-io/actions/workflows/scorecard.yml/badge.svg)
-![Release Sign](https://github.com/SinAi-Inc/istampit-io/actions/workflows/release-sign.yml/badge.svg)
-![Verify Security Artifacts](https://github.com/SinAi-Inc/istampit-io/actions/workflows/verify-security-artifacts.yml/badge.svg)
+![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
+![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
+![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
+![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
 
 **Mission:** Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, plus a public **Innovation Ledger** and an embeddable **Verify** widget for third-party sites.
 
@@ -39,7 +39,7 @@ Example: verify a sample file (replace path as needed):
 ```bash
 cosign verify-blob ./sample.txt \
   --bundle ./sample.txt.bundle \
-  --certificate-identity-regexp '^https://github.com/SinAi-Inc/istampit-io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$' \
+  --certificate-identity-regexp '^https://github.com/SinAi-Inc/iStampit.io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 

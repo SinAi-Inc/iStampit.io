@@ -1,7 +1,7 @@
 # iStampit GitHub Action — Stamp your releases & artifacts
 
-![Release Sign](https://github.com/SinAi-Inc/istampit-io/actions/workflows/release-sign.yml/badge.svg)
-![Verify Security Artifacts](https://github.com/SinAi-Inc/istampit-io/actions/workflows/verify-security-artifacts.yml/badge.svg)
+![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
+![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
 
 Composite Action that:
 

@@ -29,7 +29,7 @@ Release artifacts and OpenTimestamps receipts are signed using **Sigstore Cosign
 cosign verify-blob <artifact> \
   --bundle <artifact>.bundle \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-identity-regexp '^https://github.com/SinAi-Inc/istampit-io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$'
+  --certificate-identity-regexp '^https://github.com/SinAi-Inc/iStampit.io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$'
 ```
 
 ## Dependencies & Licenses
