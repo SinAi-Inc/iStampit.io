@@ -10,7 +10,11 @@
       "blockHeight": null,
       "blockTime": null,
       "stampedAt": "2025-08-12T06:00:00Z",
-      "tags": ["research", "whitepaper", "sample"]
+      "tags": [
+        "research",
+        "whitepaper",
+        "sample"
+      ]
     },
     {
       "id": "roadmap-q4-2024",
@@ -22,7 +26,11 @@
       "blockHeight": 850000,
       "blockTime": 1735689600,
       "stampedAt": "2024-12-31T12:00:00Z",
-      "tags": ["roadmap", "planning", "internal"]
+      "tags": [
+        "roadmap",
+        "planning",
+        "internal"
+      ]
     },
     {
       "id": "api-design-v1",
@@ -34,13 +42,62 @@
       "blockHeight": 849500,
       "blockTime": 1735603200,
       "stampedAt": "2024-12-30T12:00:00Z",
-      "tags": ["api", "design", "technical"]
+      "tags": [
+        "api",
+        "design",
+        "technical"
+      ]
+    },
+    {
+      "id": "auto-20250812-api-spec-20250812.md",
+      "title": "Automated Artifact: api-spec-20250812.md",
+      "sha256": "a793918e163f6c99e0e7c6f86788c2c9bf93ad6d62acbd914cf7046634d7b68b",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-12T20:05:33.296352+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250812-security-audit-20250812.pdf",
+      "title": "Automated Artifact: security-audit-20250812.pdf",
+      "sha256": "5b7e0b81f32fcdb181d6fc481fb179839fe11da237690dcbad04f48599ebaa77",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-12T20:05:34.015930+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250812-research-doc-20250812.txt",
+      "title": "Automated Artifact: research-doc-20250812.txt",
+      "sha256": "2636f06e768d6a18f7aabbfe9a959d6a3f0a8957585d346502b1d4fc5eecbc80",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-12T20:05:34.749959+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
     }
   ],
   "metadata": {
-    "lastUpdated": "2025-08-12T06:00:00Z",
-    "totalEntries": 3,
+    "lastUpdated": "2025-08-12T20:05:34.749975+00:00",
+    "totalEntries": 6,
     "confirmedEntries": 2,
-    "pendingEntries": 1
+    "pendingEntries": 4
   }
 }
