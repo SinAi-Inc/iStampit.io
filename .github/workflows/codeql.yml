@@ -13,6 +13,8 @@ permissions:
 jobs:
   analyze:
     name: Analyze (CodeQL)
+    # Skip while repository is private (enable when public or GHAS enabled)
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
