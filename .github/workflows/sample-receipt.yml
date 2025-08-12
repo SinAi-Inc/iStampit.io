@@ -1,0 +1,26 @@
+name: sample-receipt
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *"
+permissions:
+  contents: read
+jobs:
+  make-receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install --upgrade pip opentimestamps-client
+      - name: Generate sample + receipt
+        run: |
+          echo "iStampit canonical sample" > sample.txt
+          ots stamp sample.txt
+          ots upgrade sample.txt.ots || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ots-sample
+          path: |
+            sample.txt
+            sample.txt.ots

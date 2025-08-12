@@ -1,0 +1,76 @@
+name: verify-security-artifacts
+on:
+  pull_request:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download latest release artifacts (bundles, provenance, dists)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName') || exit 0
+          echo "Latest release tag: $TAG"
+          [ -n "$TAG" ] || { echo 'No release found; skipping'; exit 0; }
+          gh release download "$TAG" \
+            --pattern '*.bundle' \
+            --pattern '*.intoto.jsonl' \
+            --pattern '*.whl' \
+            --pattern '*.tar.gz' \
+            --clobber
+          ls -1 || true
+
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Verify cosign bundles (keyless, previous release)
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          bundles=(*.bundle)
+          if [ ${#bundles[@]} -eq 0 ]; then
+            echo "No bundles found (no prior release?) — skipping"
+            exit 0
+          fi
+          for b in "${bundles[@]}"; do
+            f="${b%.bundle}"
+            if [ ! -f "$f" ]; then echo "Missing signed file $f for bundle $b"; exit 1; fi
+            echo "Verifying $b"
+            cosign verify-blob "$f" \
+              --bundle "$b" \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+              --certificate-identity-regexp '^https://github.com/${{ github.repository }}/\.github/workflows/release-sign\.yml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
+              --certificate-github-workflow-name 'release-sign' \
+              --certificate-github-workflow-ref 'refs/tags/*' \
+              --certificate-github-workflow-trigger 'release'
+          done
+
+      - name: Verify SLSA provenance (if present)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PROV=$(ls *.intoto.jsonl 2>/dev/null | head -n1 || true)
+          if [ -z "$PROV" ]; then
+            echo "No provenance file found; skipping"
+            exit 0
+          fi
+          TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName') || true
+          if [ -z "$TAG" ]; then echo 'No tag for provenance verify'; exit 0; fi
+          echo "Using provenance: $PROV for tag $TAG"
+          go install github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@latest
+          artifacts=( *.whl *.tar.gz )
+          set +e
+          slsa-verifier verify-artifact \
+            --provenance-path "$PROV" \
+            --source-uri "github.com/${{ github.repository }}" \
+            --source-tag "$TAG" \
+            "${artifacts[@]}"
+          rc=$?
+          set -e
+          if [ $rc -ne 0 ]; then echo 'Provenance verification failed'; exit 1; fi

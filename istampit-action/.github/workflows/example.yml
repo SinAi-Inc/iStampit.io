@@ -1,0 +1,17 @@
+name: Stamp Release Assets
+on:
+  release:
+    types: [published]
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./ # local action reference
+        with:
+          paths: "dist/**/*"
+          upgrade: "true"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ots-receipts
+          path: "**/*.ots"

@@ -1,0 +1,19 @@
+# Node
+node_modules/
+*.log
+.next/
+.dist/
+
+# Python
+__pycache__/
+.pytest_cache/
+*.egg-info/
+build/
+
+# Env & tooling
+.env*
+.DS_Store
+
+# Coverage
+coverage*
+.coverage

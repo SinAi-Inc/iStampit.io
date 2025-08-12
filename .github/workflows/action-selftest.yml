@@ -1,0 +1,25 @@
+name: Action Self-Test
+on:
+  pull_request:
+  push:
+    paths:
+      - 'istampit-action/**'
+      - '.github/workflows/action-selftest.yml'
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create sample file
+        run: echo "hello timestamp" > sample.txt
+      - name: Use action to stamp (pending only)
+        uses: ./istampit-action
+        with:
+          paths: sample.txt
+      - name: List receipts
+        run: ls -l sample.txt.ots || stat sample.txt.ots
+      - name: Upload receipt artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-receipt
+          path: sample.txt.ots

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://istampit.io/schema/ledger-entry.json",
+  "title": "LedgerEntry",
+  "type": "object",
+  "required": ["artifactId", "title", "sha256", "otsUrl", "status", "tags", "createdAt"],
+  "properties": {
+    "artifactId": {"type": "string", "format": "uuid"},
+    "title": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "otsUrl": {"type": "string", "format": "uri"},
+    "status": {"enum": ["pending", "complete"]},
+    "bitcoin": {
+      "type": "object",
+      "required": ["block", "timestamp"],
+      "properties": {
+        "block": {"type": "integer", "minimum": 0},
+        "timestamp": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "createdAt": {"type": "string", "format": "date-time"}
+  }
+}

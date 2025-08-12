@@ -1,0 +1,106 @@
+name: release-sign
+on:
+  release: { types: [published] }
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  sign-blobs:
+    runs-on: ubuntu-latest
+    outputs:
+      slsa-subjects: ${{ steps.subjects.outputs.hashes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build CLI artifacts
+        working-directory: istampit-cli
+        run: |
+          pip install --upgrade pip build
+          pip install -e .
+          python -m build
+
+      - uses: sigstore/cosign-installer@v3
+        # with:
+        #   cosign-release: 'v2.5.3'
+
+      - name: Sign artifacts with cosign (keyless)
+        run: |
+          set -e
+          shopt -s globstar nullglob
+          FILES=()
+          FILES+=(istampit-cli/dist/*.whl)
+          FILES+=(istampit-cli/dist/*.tar.gz)
+          FILES+=(**/*.ots)
+          for f in "${FILES[@]}"; do
+            [ -f "$f" ] || continue
+            echo "Signing $f"
+            cosign sign-blob --yes --bundle "$f.bundle" "$f"
+          done
+      - name: Verify bundles (self-check)
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+          TAG="${GITHUB_REF##*/}"
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          fi
+          for b in $(find . -name "*.bundle"); do
+            f="${b%.bundle}"
+            [ -f "$f" ] || { echo "Missing file for bundle $b"; exit 1; }
+            echo "Verifying $b against $f (tag $TAG)"
+            cosign verify-blob "$f" \
+              --bundle "$b" \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+              --certificate-identity-regexp "^https://github.com/${{ github.repository }}/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$" \
+              --certificate-github-workflow-ref "refs/tags/$TAG"
+          done
+
+      - name: Compute SLSA subjects (sha256 -> base64 single line)
+        id: subjects
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+          TARGETS=(istampit-cli/dist/*.whl istampit-cli/dist/*.tar.gz **/*.ots)
+          tmpfile=$(mktemp)
+          for t in "${TARGETS[@]}"; do
+            [ -f "$t" ] || continue
+            sha256sum "$t" >> "$tmpfile"
+          done
+          b64=$(base64 -w0 < "$tmpfile")
+          echo "hashes=$b64" >> "$GITHUB_OUTPUT"
+
+  # Future: multi-platform wheels via cibuildwheel
+  # - name: Build wheels (multi-platform)
+  #   uses: pypa/cibuildwheel@v2.21.3
+  #   env:
+  #     CIBW_BUILD: "cp39-* cp310-* cp311-*"
+  #   with:
+  #     package-dir: istampit-cli
+  #     output-dir: istampit-cli/dist
+
+      - name: Upload bundles to release
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            **/*.bundle
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cosign-bundles
+          path: "**/*.bundle"
+
+  provenance:
+    needs: [sign-blobs]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
+    with:
+      base64-subjects: ${{ needs.sign-blobs.outputs.slsa-subjects }}
+      provenance-name: "${{ github.event.repository.name }}.intoto.jsonl"
+      upload-assets: true

@@ -1,0 +1,14 @@
+# from istampit-web/
+@"
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.env*
+.vercel/
+.vscode/
+.DS_Store
+"@ | Out-File -Encoding utf8 .gitignore

@@ -1,0 +1,12 @@
+[
+  {
+    "artifactId": "11111111-1111-1111-1111-111111111111",
+    "title": "Whitepaper v1",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "otsUrl": "/samples/sample.txt.ots",
+    "status": "pending",
+    "bitcoin": {"block": 0, "timestamp": null},
+    "tags": ["R&D", "prototype"],
+    "createdAt": "2025-08-11T00:00:00Z"
+  }
+]

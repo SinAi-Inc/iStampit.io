@@ -1,0 +1,15 @@
+name: Action CI
+on:
+  push:
+    paths: ["istampit-action/**", ".github/workflows/action.yml"]
+  pull_request:
+    paths: ["istampit-action/**", ".github/workflows/action.yml"]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint YAML
+        run: |
+          pip install yamllint
+          yamllint istampit-action/action.yml
