@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type Session = { authenticated: boolean; user?: { email?: string; name?: string; image?: string } };
 const AUTH_ORIGIN = process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://app.istampit.io';
@@ -41,7 +42,7 @@ export default function AuthBadge() {
   return (
     <div className="flex items-center gap-2 text-sm">
       {session.user?.image && (
-        <img src={session.user.image} alt="" width={28} height={28} className="rounded-full" />
+        <Image src={session.user.image} alt="" width={28} height={28} className="rounded-full" />
       )}
       <span className="max-w-[140px] truncate">{session.user?.email || session.user?.name || 'Signed in'}</span>
       <button
