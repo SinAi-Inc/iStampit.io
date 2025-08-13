@@ -2,12 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { verifyWithFallback } from '../lib/ots-lite';
 
-// Lazy import to avoid SSR issues
-async function loadOts() {
-	const mod = await import('opentimestamps');
-	return mod as any;
-}
-
 export interface VerificationResult {
 	status: 'idle' | 'mismatch' | 'pending' | 'complete' | 'error';
 	calendarUrls: string[];
@@ -31,66 +25,27 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult }: Props)
 
 	useEffect(() => {
 		if (!fileHash || !receiptBytes) return;
-		let abort = false;
+		let cancelled = false;
 		(async () => {
 			setBusy(true);
 			try {
-				// First perform lite verification (magic + structural sanity). This will
-				// internally attempt to use real 'opentimestamps' if present so behavior
-				// is preserved while we migrate off the heavy dependency chain.
-				await verifyWithFallback(receiptBytes);
-				const ots = await loadOts();
-				const { DetachedTimestampFile, OpSHA256 } = ots;
-				// Build a detached timestamp file for the provided artifact hash for potential future upgrade use.
-				const artifactBytes = new Uint8Array(fileHash.match(/.{2}/g)!.map((h: string) => parseInt(h, 16)));
-				const artifactDTF = new DetachedTimestampFile(new OpSHA256(), artifactBytes);
-				const receipt = DetachedTimestampFile.deserialize(receiptBytes);
-				const receiptRootHex = Array.from(receipt.fileHash() as Uint8Array).map((b) => (b as number).toString(16).padStart(2, '0')).join('');
-				if (receiptRootHex !== fileHash) {
-					setRes({ status: 'mismatch', calendarUrls: [], error: 'Artifact hash does not match receipt root hash.' });
+				const parsed = await verifyWithFallback(receiptBytes);
+				if (!parsed.ok) {
+					if (!cancelled) setRes({ status: 'error', calendarUrls: [], error: parsed.error || 'Parse failed' });
 					return;
 				}
-				// Attempt to merge receipt timestamp into constructed artifact for potential use later
-				try { artifactDTF.timestamp = receipt.timestamp; } catch { /* ignore */ }
-				// Collect calendar URLs (timestamps operations referencing calendars)
-				const calendars: string[] = [];
-				try {
-					const ts = receipt.timestamp; // underlying Timestamp
-					if (ts && ts.attestations) {
-						for (const att of ts.attestations) {
-							if (att.url && !calendars.includes(att.url)) calendars.push(att.url);
-						}
-					}
-				} catch (_) {
-					/* ignore */
+				if (parsed.fileHashHex && parsed.fileHashHex !== fileHash) {
+					if (!cancelled) setRes({ status: 'mismatch', calendarUrls: [], error: 'Artifact hash does not match receipt root hash.' });
+					return;
 				}
-				// Attempt to find a bitcoin block attestation
-				let bitcoin: VerificationResult['bitcoin'];
-				let status: VerificationResult['status'] = 'pending';
-				try {
-					const ts = receipt.timestamp;
-					if (ts && ts.attestations) {
-						for (const att of ts.attestations) {
-							if (att.type && /bitcoin/i.test(att.type)) {
-								status = 'complete';
-								bitcoin = { blockHeight: att.height, blockTime: att.blockTime || att.time }; // heuristic
-								break;
-							}
-						}
-					}
-				} catch (_) {
-					/* swallow */
-				}
-				if (!abort) setRes({ status, calendarUrls: calendars, bitcoin });
+				if (!cancelled) setRes({ status: 'pending', calendarUrls: [] });
 			} catch (e: any) {
-				if (!abort) setRes({ status: 'error', calendarUrls: [], error: e?.message || String(e) });
+				if (!cancelled) setRes({ status: 'error', calendarUrls: [], error: e?.message || String(e) });
 			} finally {
-				if (!abort) setBusy(false);
+				if (!cancelled) setBusy(false);
 			}
 		})();
-		return () => {
-			abort = true;
-		};
+		return () => { cancelled = true; };
 	}, [fileHash, receiptBytes]);
 
 	return (
@@ -98,11 +53,9 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult }: Props)
 			<button
 				disabled={busy || !fileHash || !receiptBytes}
 				onClick={() => {
-					// retrigger effect by mutating state references
 					if (fileHash && receiptBytes) {
 						setRes({ status: 'idle', calendarUrls: [] });
-						// slight delay to allow effect to re-run
-						setTimeout(() => setRes((r) => ({ ...r })), 0);
+						setTimeout(() => setRes(r => ({ ...r })), 0);
 					}
 				}}
 				className="px-4 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-50"
