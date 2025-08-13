@@ -1,5 +1,7 @@
 # iStampit Auth
 
+[![Deploy - Vercel](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com/)
+
 Minimal Next.js app providing authentication (Google OAuth via NextAuth) for iStampit.
 
 ## Environment Variables
@@ -50,3 +52,15 @@ http://localhost:3002
 ```
 
 The session cookie is scoped to `.istampit.io` in production so subdomains share auth.
+
+## Rate Limiting
+
+Best-effort in-memory limit: 60 requests / minute / IP for `/api/*` (enforced in middleware). Returns 429 + `Retry-After: 60` when exceeded. Suitable for lightweight abuse mitigation; upgrade to durable store (KV/Upstash/Redis) for stronger guarantees.
+
+## Security Headers
+
+Middleware adds:
+* `Strict-Transport-Security: max-age=15552000; includeSubDomains; preload`
+* CORS headers only for allow‑listed origins (no wildcard with credentials).
+
+Add additional headers (CSP, Permissions-Policy) at the platform level as needed.
