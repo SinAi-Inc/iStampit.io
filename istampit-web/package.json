@@ -43,7 +43,7 @@
   "typescript": "5.4.2",
   "vitest": "^1.6.0",
   "@playwright/test": "^1.54.2",
-  "@lhci/cli": "^0.13.0",
+  "@lhci/cli": "^0.15.1",
   "@next/bundle-analyzer": "^14.2.5"
   },
   "browserslist": [
