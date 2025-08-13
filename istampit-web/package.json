@@ -43,11 +43,11 @@
   "typescript": "5.4.2",
   "vitest": "^3.2.4",
   "@playwright/test": "^1.54.2",
-  
+
   "@next/bundle-analyzer": "^14.2.5"
   },
   "overrides": {
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.25.0",
     "tmp": "^0.2.3"
   },
   "browserslist": [
