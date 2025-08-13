@@ -27,3 +27,26 @@ Deploy this `istampit-auth` directory to Vercel. Configure custom domain `app.is
 ## Notes
 
 This app intentionally has no static export and no marketing pages.
+
+## API
+
+| Route | Purpose |
+|-------|---------|
+| `/api/auth/[...nextauth]` | NextAuth handlers (sign-in, callback, session) |
+| `/api/session` | Lightweight JSON `{ authenticated: boolean, user? }` for cross-origin fetch |
+| `/api/health` | Liveness probe returning `{ status, ts }` |
+
+## CORS
+
+All `/api/*` routes send CORS headers for an allow‑list of origins with credentials enabled. Update `ALLOWED` in `middleware.ts` to change.
+
+Allowed (default):
+
+```text
+https://istampit.io
+https://www.istampit.io
+http://localhost:3000
+http://localhost:3002
+```
+
+The session cookie is scoped to `.istampit.io` in production so subdomains share auth.

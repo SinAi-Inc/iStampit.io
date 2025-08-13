@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useCallback, useEffect } from 'react';
-import { useSession, signIn } from 'next-auth/react';
+import { useRemoteSession } from '../../lib/remoteSession';
 import HashUploader from '../../components/HashUploader';
 import OtsVerifier, { VerificationResult } from '../../components/OtsVerifier';
 import { trackVerifyStarted, trackVerifyResult, trackVerifyError, trackWidgetLoad } from '../../lib/analytics';
@@ -8,7 +8,7 @@ import { ExplorerManager } from '../../lib/explorer';
 import { deriveAllowedOrigin } from '../../lib/embedSecurity';
 
 export default function VerifyClient() {
-  const { data: session, status } = useSession();
+  const { session, status, signIn } = useRemoteSession();
   const [fileHash, setFileHash] = useState<string | null>(null);
   const [receiptBytes, setReceiptBytes] = useState<Uint8Array | null>(null);
   const [result, setResult] = useState<VerificationResult | null>(null);
@@ -155,7 +155,7 @@ export default function VerifyClient() {
             </p>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <button onClick={() => signIn('google', { callbackUrl: '/verify' })} className="btn-primary w-full justify-center">
+            <button onClick={() => signIn('/verify')} className="btn-primary w-full justify-center">
               Continue with Google
             </button>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-sm text-center leading-relaxed">

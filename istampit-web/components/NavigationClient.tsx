@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
+import { useRemoteSession } from '../lib/remoteSession';
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
-function MobileMenu({ isOpen, onClose, logo, session }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any }) {
+function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: ()=>void; signOut: ()=>void }) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -43,12 +43,12 @@ function MobileMenu({ isOpen, onClose, logo, session }: { isOpen: boolean; onClo
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[140px]">{session.user?.email}</p>
                   </div>
                 </div>
-                   <button onClick={()=>{ signOut({ callbackUrl: '/signout' }); onClose(); }} className="btn-ghost w-full justify-center">Sign Out</button>
+                   <button onClick={()=>{ signOut(); onClose(); }} className="btn-ghost w-full justify-center">Sign Out</button>
               </>
             ) : (
               <>
-                <button onClick={()=>{ signIn('google'); onClose(); }} className="btn-ghost w-full justify-center">Sign In</button>
-                <button onClick={()=>{ signIn('google'); onClose(); }} className="btn-primary w-full justify-center">Get Started</button>
+                <button onClick={()=>{ signIn(); onClose(); }} className="btn-ghost w-full justify-center">Sign In</button>
+                <button onClick={()=>{ signIn(); onClose(); }} className="btn-primary w-full justify-center">Get Started</button>
               </>
             )}
           </div>
@@ -60,12 +60,12 @@ function MobileMenu({ isOpen, onClose, logo, session }: { isOpen: boolean; onClo
 
 export default function NavigationClient({ logo }: NavigationClientProps) {
   const [open, setOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { session, status, signIn, signOut } = useRemoteSession();
   return (
     <>
       <div className="hidden lg:flex items-center space-x-4">
         <ThemeToggle variant="dropdown" />
-        {session ? (
+  {status === 'authenticated' ? (
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-semibold">
@@ -78,10 +78,12 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
             </div>
             <button onClick={()=>signOut()} className="btn-ghost">Sign Out</button>
           </div>
+        ) : status === 'loading' ? (
+          <div className="text-xs text-gray-500 dark:text-gray-400 animate-pulse">Checking session…</div>
         ) : (
           <div className="flex items-center space-x-3">
-            <button onClick={()=>signIn('google')} className="btn-ghost">Sign In</button>
-            <button onClick={()=>signIn('google')} className="btn-primary">Get Started</button>
+            <button onClick={()=>signIn()} className="btn-ghost">Sign In</button>
+            <button onClick={()=>signIn()} className="btn-primary">Get Started</button>
           </div>
         )}
       </div>
@@ -91,7 +93,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
       </div>
-      <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} session={session} />
+  <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} session={status==='authenticated'?session:null} signIn={signIn} signOut={signOut} />
     </>
   );
 }

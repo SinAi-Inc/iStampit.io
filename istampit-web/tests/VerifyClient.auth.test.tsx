@@ -3,9 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import VerifyClient from '../app/verify/VerifyClient';
 
-vi.mock('next-auth/react', () => ({
-  useSession: () => ({ data: null, status: 'unauthenticated' }),
-  signIn: vi.fn(),
+vi.mock('../lib/remoteSession', () => ({
+  useRemoteSession: () => ({ status: 'unauthenticated', session: null, signIn: vi.fn() })
 }));
 
 describe('VerifyClient auth gate', () => {
