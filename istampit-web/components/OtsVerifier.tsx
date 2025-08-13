@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import { verifyWithFallback } from '../lib/ots-lite';
 
 // Lazy import to avoid SSR issues
 async function loadOts() {
@@ -34,6 +35,10 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult }: Props)
 		(async () => {
 			setBusy(true);
 			try {
+				// First perform lite verification (magic + structural sanity). This will
+				// internally attempt to use real 'opentimestamps' if present so behavior
+				// is preserved while we migrate off the heavy dependency chain.
+				await verifyWithFallback(receiptBytes);
 				const ots = await loadOts();
 				const { DetachedTimestampFile, OpSHA256 } = ots;
 				// Build a detached timestamp file for the provided artifact hash for potential future upgrade use.
