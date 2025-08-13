@@ -1,7 +1,4 @@
-"use client";
-import { SessionProvider } from 'next-auth/react';
-import React from 'react';
-
+// Deprecated: local NextAuth provider removed after migration to external auth service.
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <>{children}</>;
 }
