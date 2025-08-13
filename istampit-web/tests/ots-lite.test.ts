@@ -21,17 +21,69 @@ describe('ots-lite', () => {
     expect(res.receipt).toBeDefined();
   });
 
-  it('extracts heuristic file hash when marker present', () => {
-    // Construct bytes: magic + marker 0x0b + 32 bytes digest (all 0xaa)
+  it('extracts SHA256 digest with tag 0x03', () => {
     const magic = new TextEncoder().encode('OpenTimestamps');
-    const marker = new Uint8Array([0x0b]);
-    const digest = new Uint8Array(32).fill(0xaa);
+    const tagSha256 = new Uint8Array([0x03]);
+    const digest = new Uint8Array(32).fill(0xbb);
     const combined = new Uint8Array(magic.length + 1 + 32);
     combined.set(magic, 0);
-    combined.set(marker, magic.length);
+    combined.set(tagSha256, magic.length);
     combined.set(digest, magic.length + 1);
     const res = parseOts(combined);
     expect(res.ok).toBe(true);
-    expect(res.fileHashHex).toBe('aa'.repeat(32));
+    expect(res.fileHashHex).toBe('bb'.repeat(32));
+  });
+
+  it('parses calendar attestation (tag 0x00 with varint len + url)', () => {
+    const magic = new TextEncoder().encode('OpenTimestamps');
+    const tagCalendar = new Uint8Array([0x00]);
+    const url = 'https://calendar.example';
+    const urlBytes = new TextEncoder().encode(url);
+    // simple varint for length (fits in one byte)
+    const len = new Uint8Array([urlBytes.length]);
+    const tagSha256 = new Uint8Array([0x03]);
+    const digest = new Uint8Array(32).fill(0xcd);
+    // order: magic | sha256 tag | digest | calendar tag | len | url
+    const combined = new Uint8Array(magic.length + 1 + 32 + 1 + 1 + urlBytes.length);
+    let o = 0;
+    combined.set(magic, o); o += magic.length;
+    combined.set(tagSha256, o++);
+    combined.set(digest, o); o += 32;
+    combined.set(tagCalendar, o++);
+    combined.set(len, o++);
+    combined.set(urlBytes, o);
+    const res = parseOts(combined);
+    expect(res.ok).toBe(true);
+    expect(res.attestations?.some(a => a.type === 'calendar' && a.url === url)).toBe(true);
+  });
+
+  it('parses bitcoin attestation (tag 0x05 with varint height)', () => {
+    const magic = new TextEncoder().encode('OpenTimestamps');
+    const tagSha256 = new Uint8Array([0x03]);
+    const digest = new Uint8Array(32).fill(0xef);
+    const tagBitcoin = new Uint8Array([0x05]);
+    const height = 840000; // fits in 4 bytes varint (approx)
+    // encode varint height
+    function encodeVarInt(n: number) {
+      const out: number[] = [];
+      while (true) {
+        const b = n & 0x7f;
+        n >>= 7;
+        if (n === 0) { out.push(b); break; }
+        out.push(b | 0x80);
+      }
+      return Uint8Array.from(out);
+    }
+    const heightBytes = encodeVarInt(height);
+    const combined = new Uint8Array(magic.length + 1 + 32 + 1 + heightBytes.length);
+    let o = 0;
+    combined.set(magic, o); o += magic.length;
+    combined.set(tagSha256, o++);
+    combined.set(digest, o); o += 32;
+    combined.set(tagBitcoin, o++);
+    combined.set(heightBytes, o);
+    const res = parseOts(combined);
+    expect(res.ok).toBe(true);
+    expect(res.attestations?.some(a => a.type === 'bitcoin' && a.blockHeight === height)).toBe(true);
   });
 });

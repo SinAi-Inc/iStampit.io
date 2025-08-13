@@ -20,7 +20,7 @@ export default function HomeClient() {
                 <span className="gradient-text">Free for Everyone</span>
               </h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin.
+                Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin Blockchain.
                 Secure your intellectual property timeline without revealing sensitive content.
               </p>
             </div>
