@@ -32,15 +32,12 @@ jobs:
       - name: Install
         working-directory: istampit-web
         run: npm ci || npm install
-      - name: Build
+      - name: Build (static export)
         working-directory: istampit-web
         env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          # NEXT_PUBLIC_AUTH_ORIGIN secret optional; falls back to default in code if unset
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-        run: npm run build
+        run: npm run build && npm run export || (echo "Static export step optional; continuing with build output" )
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

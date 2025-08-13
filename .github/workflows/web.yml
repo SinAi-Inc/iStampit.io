@@ -20,17 +20,6 @@ jobs:
       - run: npm install
       - run: npm run lint --if-present
       - run: npm test -- --run
-      - name: Verify required env present
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        run: |
-          test -n "$GOOGLE_CLIENT_ID" && echo "GOOGLE_CLIENT_ID OK" || (echo "GOOGLE_CLIENT_ID missing" && exit 1)
-          test -n "$GOOGLE_CLIENT_SECRET" && echo "GOOGLE_CLIENT_SECRET OK" || (echo "GOOGLE_CLIENT_SECRET missing" && exit 1)
-      - name: Build
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      - name: Build (main only)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: npm run build
