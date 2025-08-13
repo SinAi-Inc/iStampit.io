@@ -6,8 +6,7 @@ const withBundleAnalyzer = process.env.ANALYZE === 'true'
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
-  // Removed static export: dynamic auth routes & APIs required
-  // Removed dynamic basePath to avoid export module resolution issues
+  // Using legacy `next export` via script for GitHub Pages; cannot set output:'export' due to dynamic routes.
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,

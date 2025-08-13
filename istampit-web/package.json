@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build",
+  "build": "next build",
+  "export": "next export",
     "build:widget": "node scripts/build-widget.cjs",
   "build:all": "npm run build:widget && npm run build",
   "build:csp": "node scripts/generate-csp.cjs",

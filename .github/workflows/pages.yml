@@ -37,7 +37,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_AUTH_ORIGIN: https://app.istampit.io
-        run: npm run build && npm run export || (echo "Static export step optional; continuing with build output" )
+        run: npm run build && npm run export || (echo "Export step warning (non-blocking)" )
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
