@@ -1,6 +1,6 @@
 # iStampit Web (Prototype)
 
-Browser-based OpenTimestamps verification demo.
+Browser-based OpenTimestamps verification demo. Authentication (Google OAuth via NextAuth) now lives exclusively in the separate `istampit-auth` service; this web app only consumes the remote session endpoint and no longer needs Google OAuth env vars.
 
 ## Features
 
