@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import { SITE, SITE_URL } from "./siteMetadata";
 
+let metadataBaseUrl: URL;
+try {
+  metadataBaseUrl = new URL(SITE_URL);
+} catch {
+  metadataBaseUrl = new URL('https://istampit.io');
+}
+
 export const baseMetadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: metadataBaseUrl,
   title: {
     default: SITE.title,
     template: "%s • iStampit.io",
