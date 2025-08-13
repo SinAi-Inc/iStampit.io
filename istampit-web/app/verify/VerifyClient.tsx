@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from 'react';
+import { useSession, signIn } from 'next-auth/react';
 import HashUploader from '../../components/HashUploader';
 import OtsVerifier, { VerificationResult } from '../../components/OtsVerifier';
 import { trackVerifyStarted, trackVerifyResult, trackVerifyError, trackWidgetLoad } from '../../lib/analytics';
@@ -7,6 +8,7 @@ import { ExplorerManager } from '../../lib/explorer';
 import { deriveAllowedOrigin } from '../../lib/embedSecurity';
 
 export default function VerifyClient() {
+  const { data: session, status } = useSession();
   const [fileHash, setFileHash] = useState<string | null>(null);
   const [receiptBytes, setReceiptBytes] = useState<Uint8Array | null>(null);
   const [result, setResult] = useState<VerificationResult | null>(null);
@@ -130,6 +132,48 @@ export default function VerifyClient() {
     ? "text-lg font-semibold"
     : "text-xl font-semibold";
 
+  // Loading state
+  if (status === 'loading') {
+    return (
+      <div className={containerClass}>
+        <div className="p-6 text-center text-sm text-gray-600 dark:text-gray-300 animate-pulse">
+          Checking authentication…
+        </div>
+      </div>
+    );
+  }
+
+  // Unauthenticated gate
+  if (status === 'unauthenticated') {
+    return (
+      <div className={containerClass}>
+        <div className={isEmbed ? 'p-4 space-y-4 border rounded bg-white shadow-sm' : 'mx-auto max-w-xl p-8 space-y-6 border rounded-lg bg-white shadow'}>
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl font-bold">Sign In Required</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              You need to sign in to use the verification feature. Browsing the site is open, but verifying hashes / receipts requires an account.
+            </p>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <button onClick={() => signIn('google', { callbackUrl: '/verify' })} className="btn-primary w-full justify-center">
+              Continue with Google
+            </button>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-sm text-center leading-relaxed">
+              We only use your email to link verifications and improve abuse prevention. Your files & receipts never leave your device.
+            </p>
+          </div>
+          {isEmbed && (
+            <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 p-2 rounded">
+              This verifier is embedded. If the sign-in popup is blocked, open <a href="/verify" target="_blank" className="underline">/verify</a> directly.
+            </p>
+          )}
+        </div>
+        <div className="text-center text-xs text-gray-400 pt-4">Verification tools hidden until sign-in.</div>
+      </div>
+    );
+  }
+
+  // Authenticated UI
   return (
     <div className={containerClass}>
       {!isEmbed && (
