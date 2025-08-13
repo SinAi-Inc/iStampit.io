@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  pre-release-gate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: istampit-web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: istampit-web/package-lock.json
+      - name: Install deps
+        run: npm ci
+      - name: Build widget
+        run: npm run build:widget
+      - name: Build app
+        run: npm run build
+      - name: Run unit tests
+        run: npm test
+      - name: Start server
+        run: npm run start &
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run E2E suite (gate)
+        run: npm run e2e:ci
+      - name: Lighthouse CI (performance gate)
+        run: |
+          npx @lhci/cli autorun --upload.target=temporary-public-storage || (
+            echo 'Lighthouse CI failed thresholds' && exit 1
+          )
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+      - name: Generate CSP (informational)
+        run: npm run build:csp
+      - name: Upload CSP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: csp-header
+          path: istampit-web/artifacts/csp-header.txt
+      - name: Verify E2E success gate
+        run: echo 'E2E passed. Proceeding to tag or finalize release.'
+  tag-on-dispatch:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: pre-release-gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create tag
+        run: |
+          git config user.name 'ci'
+          git config user.email 'ci@users.noreply.github.com'
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}

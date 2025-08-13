@@ -16,13 +16,13 @@
       "src": "/icons/favicon_64.png",
       "sizes": "64x64",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/appicon_180.png",
       "sizes": "180x180",
       "type": "image/png",
-      "purpose": "apple touch icon"
+      "purpose": "any"
     },
     {
       "src": "/icons/appicon_512.png",

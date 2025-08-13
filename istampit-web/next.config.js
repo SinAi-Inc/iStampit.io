@@ -1,9 +1,13 @@
-/** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
+// Bundle analyzer (enabled with ANALYZE=true)
+import analyzer from '@next/bundle-analyzer';
+const withBundleAnalyzer = process.env.ANALYZE === 'true'
+  ? analyzer({ enabled: true })
+  : (cfg) => cfg;
 
-const nextConfig = {
+/** @type {import('next').NextConfig} */
+const baseConfig = {
   output: 'export',
-  basePath: isProd ? '/istampit-web' : '',
+  // Removed dynamic basePath to avoid export module resolution issues
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,
@@ -25,4 +29,5 @@ const nextConfig = {
     return config;
   },
 };
+const nextConfig = withBundleAnalyzer(baseConfig);
 export default nextConfig;

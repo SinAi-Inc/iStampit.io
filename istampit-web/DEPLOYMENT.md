@@ -3,6 +3,7 @@
 ## ✅ Pre-Deployment Verification
 
 ### Security & Integrity
+
 - [x] PostMessage origin validation implemented with configurable allowlists
 - [x] Subresource Integrity (SRI) enabled for widget files with SHA-256 hashing
 - [x] Security headers configured (CSP, HSTS, X-Frame-Options, Permissions-Policy)
@@ -10,6 +11,7 @@
 - [x] Origin-based access control for embedded communications
 
 ### Analytics & Privacy
+
 - [x] Privacy-first analytics system with local storage (no PII collection)
 - [x] Event tracking for verification flow (started, result, error)
 - [x] Ledger analytics for page views and filter usage
@@ -17,6 +19,7 @@
 - [x] No sensitive data (hashes, personal info) in telemetry
 
 ### Operations & Monitoring
+
 - [x] Production monitoring system with health metrics
 - [x] Alert system for pending actions, response times, error rates
 - [x] Receipt upgrade drift detection and monitoring
@@ -24,6 +27,7 @@
 - [x] Emergency restore procedures with integrity validation
 
 ### User Experience
+
 - [x] Enhanced verification interface with copy buttons
 - [x] Configurable Bitcoin explorer links (Mempool.space, Blockstream, custom)
 - [x] Contextual error messages with helpful guidance
