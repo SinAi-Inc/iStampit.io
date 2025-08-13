@@ -37,7 +37,13 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_AUTH_ORIGIN: https://app.istampit.io
-        run: npm run build && npm run export || (echo "Export step warning (non-blocking)" )
+        run: npm run build && npm run export
+      - name: Verify export output
+        run: |
+          if [ ! -d "istampit-web/out" ]; then
+            echo "Expected directory istampit-web/out not found" >&2
+            exit 1
+          fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
