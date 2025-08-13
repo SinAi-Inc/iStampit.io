@@ -6,7 +6,7 @@ const withBundleAnalyzer = process.env.ANALYZE === 'true'
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
-  // Using legacy `next export` via script for GitHub Pages; cannot set output:'export' due to dynamic routes.
+  output: 'export',
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,
