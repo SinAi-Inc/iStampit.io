@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { Suspense } from 'react';
 import MonitoringDashboard from '../components/MonitoringDashboard';
 import { ThemeProvider } from '../components/ThemeProvider';
+import AuthProvider from '../components/AuthProvider';
 import Navigation from '../components/Navigation';
 import { baseMetadata } from '../lib/seo/metadata';
 import BrandLogo from '../components/BrandLogo';
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}>
+        <AuthProvider>
         <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
           <Suspense fallback={null}>
             <GoogleTag />
@@ -242,6 +244,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             )}
           </div>
         </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

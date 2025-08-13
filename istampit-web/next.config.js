@@ -6,7 +6,7 @@ const withBundleAnalyzer = process.env.ANALYZE === 'true'
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
-  output: 'export',
+  // Removed static export: dynamic auth routes & APIs required
   // Removed dynamic basePath to avoid export module resolution issues
   images: { unoptimized: true },
   // Optional directory-style URLs
