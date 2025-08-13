@@ -14,7 +14,10 @@ export function useRemoteSession() {
 
   const fetchSession = useCallback(async () => {
     try {
-      const res = await fetch(`${AUTH_ORIGIN}/api/session`, { credentials: 'include' });
+      const res = await fetch(`${AUTH_ORIGIN}/api/session`, {
+        credentials: 'include',
+        headers: { 'Accept': 'application/json' }
+      });
       if (!res.ok) throw new Error('bad status');
       const data: RemoteSessionResponse = await res.json();
       if (data.authenticated) {
@@ -31,6 +34,11 @@ export function useRemoteSession() {
   }, []);
 
   useEffect(() => { fetchSession(); }, [fetchSession]);
+  // Lightweight polling every 90s (balance freshness vs cost)
+  useEffect(() => {
+    const t = setInterval(fetchSession, 90000);
+    return () => clearInterval(t);
+  }, [fetchSession]);
 
   const signIn = useCallback((callbackPath: string = '/') => {
     const callbackUrl = encodeURIComponent(window.location.origin + callbackPath);
