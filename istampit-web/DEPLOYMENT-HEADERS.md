@@ -10,6 +10,7 @@ add_header Referrer-Policy "no-referrer" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header Permissions-Policy "clipboard-read=self, clipboard-write=self" always;
 add_header X-Frame-Options "SAMEORIGIN" always;
+add_header Content-Security-Policy "<INSERT GENERATED CSP STRING>" always;
 
 # Widget caching
 location /widget/ {
@@ -28,6 +29,10 @@ Create `vercel.json`:
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "<INSERT GENERATED CSP STRING>"
+        },
         {
           "key": "Referrer-Policy",
           "value": "no-referrer"
@@ -69,6 +74,7 @@ Create `_headers` file in the public directory:
   X-Content-Type-Options: nosniff
   Permissions-Policy: clipboard-read=self, clipboard-write=self
   X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: <INSERT GENERATED CSP STRING>
 
 /widget/*
   Cache-Control: public, max-age=31536000, immutable

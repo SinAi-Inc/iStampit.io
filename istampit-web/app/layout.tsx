@@ -11,7 +11,7 @@ import { baseMetadata } from '../lib/seo/metadata';
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], weight: ["400","600","700"] });
 
 export const metadata: Metadata = {
   ...baseMetadata,
@@ -60,6 +60,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="application-name" content="iStampit.io" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
+  {/* PWA & iOS install assets */}
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/appicon_180.png" />
+  <link rel="manifest" href="/site.webmanifest" />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -101,7 +104,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Navigation
               logo={
                 <div className="flex items-center space-x-2 sm:space-x-3 group">
-                  <BrandLogo height={28} className="sm:h-8" />
+                  {/* Remove height-only CSS override to satisfy Next.js image aspect ratio warning.
+                      If future responsive sizing needed, adjust both width & height (e.g. via a wrapper utility).
+                   */}
+                  <BrandLogo size={34} />
                   <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                     iStampit.io
                   </span>
@@ -131,7 +137,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       Digital watermarking and timestamp verification platform. Secure your content with Bitcoin-anchored proof of existence.
                     </p>
                     <p className="text-gray-500 dark:text-gray-500 text-xs">
-                      Provable innovation, for everyone. MIT Licensed — Uses opentimestamps (LGPL)
+                      Provable innovation, Free for everyone. MIT Licensed — Uses opentimestamps (LGPL)
                     </p>
                   </div>
 
@@ -214,7 +220,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <p className="text-gray-500 dark:text-gray-500 text-xs">
                       © {new Date().getFullYear()} iStampit.io. All rights reserved to{' '}
                       <a
-                        href="https://sinai.inc"
+                        href="https://sinai.eihdah.com"
                         className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -235,8 +241,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </div>
             )}
           </div>
-          <GoogleTag />
-          {children}
         </ThemeProvider>
       </body>
     </html>
