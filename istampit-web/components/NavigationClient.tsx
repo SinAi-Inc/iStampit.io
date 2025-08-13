@@ -11,8 +11,9 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpe
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-gray-900 shadow-2xl">
+      {/* Darkened backdrop for better contrast (was bg-black/50) */}
+      <div className="fixed inset-0 bg-black/70" onClick={onClose} />
+      <div className="fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-gray-200 dark:ring-gray-700">
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
             {logo ? <Link href="/" className="flex items-center" onClick={onClose}>{logo}</Link> : null}
