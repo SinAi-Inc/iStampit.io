@@ -1,5 +1,18 @@
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
+// Robust SITE_URL resolution with safe fallbacks to avoid build-time invalid URL crashes
+function resolveSiteUrl(): string {
+  let raw = (process.env.NEXT_PUBLIC_SITE_URL || '').trim();
+  if (!raw && process.env.VERCEL_URL) raw = process.env.VERCEL_URL.trim();
+  if (!raw) raw = 'http://localhost:3000';
+  if (!/^https?:\/\//i.test(raw)) raw = 'https://' + raw; // assume https if protocol missing
+  try {
+    const sanitized = new URL(raw).toString().replace(/\/$/, '');
+    return sanitized;
+  } catch {
+    return 'https://istampit.io';
+  }
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 export const SITE = {
   name: "iStampit.io",
