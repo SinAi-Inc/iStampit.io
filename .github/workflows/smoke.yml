@@ -1,0 +1,18 @@
+name: Smoke (API/CORS)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke tests
+        working-directory: istampit-auth
+        env:
+          AUTH_ORIGIN: https://app.istampit.io
+          MARKETING_ORIGIN: https://www.istampit.io
+        run: |
+          chmod +x scripts/smoke-auth.sh
+          ./scripts/smoke-auth.sh

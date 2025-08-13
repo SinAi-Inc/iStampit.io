@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import { useRemoteSession } from '../lib/remoteSession';
+import AuthBadge from './AuthBadge';
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
@@ -65,27 +66,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
     <>
       <div className="hidden lg:flex items-center space-x-4">
         <ThemeToggle variant="dropdown" />
-  {status === 'authenticated' ? (
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-semibold">
-                {(session.user?.name || session.user?.email || '?').slice(0,1).toUpperCase()}
-              </div>
-              <div className="leading-tight">
-                <p className="text-xs font-medium text-gray-800 dark:text-gray-200 max-w-[120px] truncate">{session.user?.name || 'User'}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400 max-w-[120px] truncate">{session.user?.email}</p>
-              </div>
-            </div>
-            <button onClick={()=>signOut()} className="btn-ghost">Sign Out</button>
-          </div>
-        ) : status === 'loading' ? (
-          <div className="text-xs text-gray-500 dark:text-gray-400 animate-pulse">Checking session…</div>
-        ) : (
-          <div className="flex items-center space-x-3">
-            <button onClick={()=>signIn()} className="btn-ghost">Sign In</button>
-            <button onClick={()=>signIn()} className="btn-primary">Get Started</button>
-          </div>
-        )}
+        <AuthBadge />
       </div>
       <div className="flex lg:hidden items-center space-x-3">
         <ThemeToggle />
