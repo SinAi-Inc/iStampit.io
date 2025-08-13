@@ -17,14 +17,7 @@ const baseConfig = {
   // For development, headers can be set via middleware instead
 
   webpack: (config) => {
-      if (process.env.NODE_ENV === 'production') {
-        const missing = ['GOOGLE_CLIENT_ID','GOOGLE_CLIENT_SECRET'].filter(k => !process.env[k] || process.env[k]==='placeholder');
-        if (missing.length) {
-          // Throwing here fails the build to avoid deploying with insecure placeholder creds.
-          throw new Error('Missing required OAuth env vars: '+ missing.join(', '));
-        }
-      }
-    // Shim Node core modules used indirectly by opentimestamps -> request -> fs/net/tls
+    // Auth moved to dedicated service; no local Google OAuth env vars required.
     config.resolve = config.resolve || {};
     config.resolve.fallback = {
       ...(config.resolve.fallback || {}),
