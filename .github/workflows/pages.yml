@@ -34,6 +34,11 @@ jobs:
         run: npm ci || npm install
       - name: Build
         working-directory: istampit-web
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
         run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
