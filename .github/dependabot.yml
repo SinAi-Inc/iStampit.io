@@ -6,6 +6,13 @@ updates:
     labels: ["dependencies", "npm"]
     open-pull-requests-limit: 10
 
+  # Include the web app package (separate package.json) so Dependabot tracks its dependencies too
+  - package-ecosystem: "npm"
+    directory: "/istampit-web"
+    schedule: { interval: "weekly" }
+    labels: ["dependencies", "npm", "web"]
+    open-pull-requests-limit: 10
+
   - package-ecosystem: "pip"
     directory: "/"
     schedule: { interval: "weekly" }
