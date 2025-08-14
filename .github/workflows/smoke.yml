@@ -8,11 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Run smoke tests
         working-directory: istampit-auth
         env:
           AUTH_ORIGIN: https://auth.istampit.io
           MARKETING_ORIGIN: https://www.istampit.io
         run: |
+          command -v curl >/dev/null 2>&1 || { echo "curl missing"; exit 1; }
           chmod +x scripts/smoke-auth.sh
           ./scripts/smoke-auth.sh
