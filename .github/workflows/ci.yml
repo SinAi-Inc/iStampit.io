@@ -14,8 +14,8 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          # Provide a PAT with read access to private submodules (optional if public)
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Fallback to default token if SUBMODULES_TOKEN not set
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
 
       - name: Sync submodules
         run: git submodule sync --recursive && git submodule update --init --recursive
@@ -41,7 +41,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -53,6 +53,11 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .[test] || pip install .
+
+      - name: (Optional) Install OpenTimestamps CLI
+        working-directory: istampit-cli
+        run: pip install opentimestamps-client
+        continue-on-error: true
 
       - name: Run pytest
         working-directory: istampit-cli
@@ -71,6 +76,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
       - name: Run release verification
         run: bash scripts/verify-release.sh || echo "(optional) verification failed" && exit 0

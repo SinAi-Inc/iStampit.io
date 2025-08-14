@@ -9,7 +9,12 @@ jobs:
   selftest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
       - name: Create sample file
         run: echo "hello timestamp" > sample.txt
       - name: Use action to stamp (pending only)
