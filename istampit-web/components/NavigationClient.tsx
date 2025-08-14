@@ -7,7 +7,7 @@ import AuthBadge from './AuthBadge';
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
-function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: ()=>void; signOut: ()=>void }) {
+function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void }) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -49,8 +49,8 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpe
               </>
             ) : (
               <>
-                <button onClick={()=>{ signIn(); onClose(); }} className="btn-ghost w-full justify-center">Sign In</button>
-                <button onClick={()=>{ signIn(); onClose(); }} className="btn-primary w-full justify-center">Get Started</button>
+                <button onClick={()=>{ signIn('/'); onClose(); }} className="btn-ghost w-full justify-center">Sign In</button>
+                <button onClick={()=>{ signIn('/verify'); onClose(); }} className="btn-primary w-full justify-center">Get Started</button>
               </>
             )}
           </div>
