@@ -15,6 +15,10 @@ function withEnv(key: string, value: string | undefined, fn: () => void) {
 if (!(global as any).fetch) {
   (global as any).fetch = () => Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
 }
+// Minimal window stub for components referencing layout metrics in error paths
+if (!(global as any).window) {
+  (global as any).window = { location: { reload: () => {} }, screenX:0, outerWidth:1024, screenY:0, outerHeight:768 } as any;
+}
 
 describe('Static auth gating', () => {
   it('hides full auth badge and shows fallback text when NEXT_PUBLIC_PAGES_STATIC=1', () => {
