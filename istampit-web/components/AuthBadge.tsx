@@ -1,19 +1,26 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react';
+
+// Optional remote auth origin (used when static-exported site lacks local API routes)
+const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 
 type Session = { user?: { email?: string; name?: string; image?: string } };
 
 export default function AuthBadge() {
   const [session, setSession] = useState<Session | null>(null);
+  const disabledRef = useRef(false);
 
   async function load() {
     try {
-      const res = await fetch('/api/auth/session', {
-        credentials: 'include',
-        headers: { Accept: 'application/json' }
-      });
+      const url = AUTH_BASE ? `${AUTH_BASE}/api/auth/session` : '/api/auth/session';
+      const res = await fetch(url, { credentials: 'include', headers: { Accept: 'application/json' } });
+      if (res.status === 404) {
+        disabledRef.current = true;
+        setSession({});
+        return;
+      }
       if (!res.ok) { setSession({}); return; }
       setSession(await res.json());
     } catch { setSession({}); }
@@ -21,20 +28,22 @@ export default function AuthBadge() {
 
   useEffect(() => {
     load();
-    const id = setInterval(load, 90_000);
+  const id = setInterval(() => { if (!disabledRef.current) load(); }, 90_000);
     return () => clearInterval(id);
   }, []);
 
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
   if (!session.user) {
-    return (
-      <button
-        type="button"
-        onClick={() => signIn('google', { callbackUrl: '/verify' })}
-        className="rounded px-3 py-2 border text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
-      >Sign in</button>
-    );
+    const handleSignIn = () => {
+      if (AUTH_BASE) {
+        const cb = encodeURIComponent(window.location.origin + '/verify');
+        window.location.href = `${AUTH_BASE}/api/auth/signin?callbackUrl=${cb}`;
+      } else {
+        nextAuthSignIn('google', { callbackUrl: '/verify' });
+      }
+    };
+    return <button type="button" onClick={handleSignIn} className="rounded px-3 py-2 border text-sm hover:bg-gray-50 dark:hover:bg-gray-800">Sign in</button>;
   }
 
   return (
@@ -43,10 +52,12 @@ export default function AuthBadge() {
         <Image src={session.user.image} alt="" width={28} height={28} className="rounded-full" />
       )}
       <span className="max-w-[140px] truncate">{session.user?.email || session.user?.name || 'Signed in'}</span>
-      <button
-        className="rounded px-2 py-1 border text-xs hover:bg-gray-50 dark:hover:bg-gray-800"
-        onClick={() => signOut({ callbackUrl: '/' })}
-      >Sign out</button>
+      {!AUTH_BASE && (
+        <button
+          className="rounded px-2 py-1 border text-xs hover:bg-gray-50 dark:hover:bg-gray-800"
+          onClick={() => nextAuthSignOut({ callbackUrl: '/' })}
+        >Sign out</button>
+      )}
     </div>
   );
 }
