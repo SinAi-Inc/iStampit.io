@@ -12,8 +12,8 @@ const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
-  // Removed static export because middleware + API routes require a runtime server.
-  // If a pure static export is ever desired, reintroduce `output: 'export'` and remove middleware/API usage.
+  // Static export enabled for GitHub Pages deployment. Avoid using Next middleware or dynamic API routes here.
+  output: 'export',
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,
