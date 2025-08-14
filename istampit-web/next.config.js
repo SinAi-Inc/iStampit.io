@@ -11,9 +11,9 @@ const isProd = process.env.NODE_ENV === 'production';
 const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 
 /** @type {import('next').NextConfig} */
+const isExport = process.env.STATIC_EXPORT === '1';
 const baseConfig = {
-  // Static export enabled for GitHub Pages deployment. Avoid using Next middleware or dynamic API routes here.
-  output: 'export',
+  ...(isExport ? { output: 'export' } : {}),
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,

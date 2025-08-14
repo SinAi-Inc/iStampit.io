@@ -35,7 +35,8 @@ if (!actualAuth) {
   console.warn('ℹ NEXT_PUBLIC_AUTH_ORIGIN not set; auth requests will use relative same-origin endpoints. This is OK for local dev or unified deployments.');
 } else {
   const norm = s => s.replace(/\/$/, '');
-  if (!ALLOWED.map(norm).includes(norm(actualAuth))) {
+  const allowLocal = process.env.STATIC_EXPORT !== '1';
+  if (!ALLOWED.map(norm).includes(norm(actualAuth)) && !(allowLocal && norm(actualAuth).startsWith('http://localhost'))) {
     console.error(`❌ NEXT_PUBLIC_AUTH_ORIGIN '${actualAuth}' not in allowed set: ${ALLOWED.join(', ')}`);
     failed = true;
   } else {

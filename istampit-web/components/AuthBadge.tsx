@@ -12,7 +12,7 @@ export default function AuthBadge() {
 
   async function load() {
     try {
-  const res = await fetch(`${originPrefix}/api/session`, {
+  const res = await fetch(`${originPrefix}/api/auth/session`, {
         credentials: 'include',
         headers: { Accept: 'application/json' }
       });

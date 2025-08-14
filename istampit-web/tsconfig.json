@@ -21,6 +21,10 @@
       "@testing-library/jest-dom"
     ],
     "incremental": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "plugins": [
       {
         "name": "next"
