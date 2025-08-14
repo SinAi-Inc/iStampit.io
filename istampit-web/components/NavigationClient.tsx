@@ -110,9 +110,12 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
   <div className="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
         {!PAGES_STATIC ? <AuthBadge /> : (
           <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
-            Auth disabled
-            {' '}·{' '}
-            <a href="https://istampit.io/verify" className="underline hover:no-underline">Sign in on live site</a>
+            Auth disabled ·{' '}
+            <a
+              href={"https://app.istampit.io/api/auth/signin?callbackUrl=" + encodeURIComponent("https://istampit.io/verify")}
+              className="underline hover:no-underline"
+              rel="noopener noreferrer"
+            >Sign in on live site</a>
           </span>
         )}
       </div>

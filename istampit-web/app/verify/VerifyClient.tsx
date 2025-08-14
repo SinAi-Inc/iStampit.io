@@ -145,6 +145,8 @@ export default function VerifyClient() {
 
   // Unauthenticated gate
   if (status === 'unauthenticated') {
+    const IS_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
+    const externalAuthHref = `https://app.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
     return (
       <div className={containerClass}>
         <div className={isEmbed ? 'p-4 space-y-4 border rounded bg-white shadow-sm' : 'mx-auto max-w-xl p-8 space-y-6 border rounded-lg bg-white shadow'}>
@@ -155,9 +157,19 @@ export default function VerifyClient() {
             </p>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <button onClick={() => signIn('/verify')} className="btn-primary w-full justify-center">
-              Continue with Google
-            </button>
+            {IS_STATIC ? (
+              <a
+                href={externalAuthHref}
+                className="btn-primary w-full justify-center text-center"
+                rel="noopener noreferrer"
+              >
+                Continue with Google
+              </a>
+            ) : (
+              <button onClick={() => signIn('/verify')} className="btn-primary w-full justify-center">
+                Continue with Google
+              </button>
+            )}
             <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-sm text-center leading-relaxed">
               We only use your email to link verifications and improve abuse prevention. Your files & receipts never leave your device.
             </p>
