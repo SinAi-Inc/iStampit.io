@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import React from 'react';
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import './globals.css';
@@ -12,6 +13,8 @@ import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
 
 const inter = Inter({ subsets: ["latin"], weight: ["400","600","700"] });
+// Explicit static Pages flag for clarity & future regression safety
+const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
 
 export const metadata: Metadata = {
   ...baseMetadata,
@@ -61,10 +64,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
   {/* PWA & iOS install assets */}
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/appicon_180.png" />
-  {process.env.NEXT_PUBLIC_PAGES_STATIC === '1' ? null : (
-    <link rel="manifest" href="/site.webmanifest" />
-  )}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/appicon_180.png" />
+        {/* Include manifest only on dynamic (non-GitHub Pages static) builds */}
+        {!IS_PAGES_STATIC && (
+          <link rel="manifest" href="/site.webmanifest" />
+        )}
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
