@@ -6,7 +6,7 @@ Email security@istampit.io with steps, impact, and a proof-of-concept if availab
 
 ## Scope
 
-This repository (auth service at `app.istampit.io`).
+This repository (auth service at `auth.istampit.io`).
 
 ## Exclusions
 

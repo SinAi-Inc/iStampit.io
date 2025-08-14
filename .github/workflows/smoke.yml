@@ -11,7 +11,7 @@ jobs:
       - name: Run smoke tests
         working-directory: istampit-auth
         env:
-          AUTH_ORIGIN: https://app.istampit.io
+          AUTH_ORIGIN: https://auth.istampit.io
           MARKETING_ORIGIN: https://www.istampit.io
         run: |
           chmod +x scripts/smoke-auth.sh

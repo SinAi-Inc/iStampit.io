@@ -1,14 +1,14 @@
 # Cookie Policy (Session Authentication)
 
-This document describes how iStampit uses browser cookies for user authentication between the public site (`istampit.io`) and the application (`app.istampit.io`).
+This document describes how iStampit uses browser cookies for user authentication between the public marketing site (`istampit.io`) and the centralized authentication service (`auth.istampit.io`).
 
 ## 1. Cookie Purpose
 
-We issue a single session cookie after a successful login via the auth service (`app.istampit.io`). This cookie authenticates subsequent requests to protected application APIs.
+We issue a single session cookie after a successful login via the auth service (`auth.istampit.io`). This cookie authenticates subsequent requests to protected application APIs and is scoped for cross‑subdomain usage.
 
 ## 2. Scope & Domain
 
-The session cookie is scoped to the `app.istampit.io` subdomain (host-only) to apply the principle of least privilege. Public, unauthenticated pages at `istampit.io` do not need direct access to this cookie.
+The session cookie is set with the `Domain=.istampit.io` attribute so that future subdomains (e.g. `app.istampit.io`) can share authentication. Public, unauthenticated pages at `istampit.io` do not read the cookie directly in client JavaScript; they fetch session state through lightweight JSON endpoints.
 
 ## 3. Lifetime
 
@@ -25,21 +25,21 @@ The session cookie lifetime is short-lived (rolling) to reduce risk if intercept
 
 `SameSite=Lax` is chosen because:
 
-- It supports typical navigation flows from `istampit.io` (marketing site) to `app.istampit.io` (app) without degrading UX.
+- It supports typical navigation or popup flows from `istampit.io` (marketing site) to `auth.istampit.io` (auth) without degrading UX.
 - It provides stronger CSRF mitigation than `None`.
 
 If future embedded contexts (iframes, third‑party initiations) require cross-site POSTs, we may switch to `SameSite=None; Secure` accompanied by explicit CSRF tokens and Origin/Referer validation.
 
 ## 6. Cross-Domain Considerations
 
-Although `istampit.io` and `app.istampit.io` share a registrable eTLD+1, the cookie set on `app.istampit.io` (host-only) is not automatically sent with requests to `istampit.io`, reducing exposure. Public site components that need authenticated data should proxy via server-side endpoints at `app.istampit.io` rather than reading cookies directly in the browser.
+With a parent-domain cookie (`Domain=.istampit.io`), subdomains share session state. Public site components that need authenticated data still avoid direct cookie parsing in the browser; instead they rely on a CORS-enabled `/api/session` endpoint at `auth.istampit.io`.
 
 ## 7. Recommended Validation Checklist (Pre-Public Launch)
 
 Run in Chrome, Firefox, and Safari (Desktop + iOS):
 
 1. Login and capture `Set-Cookie` header: confirm `HttpOnly; Secure; SameSite=Lax` attributes present.
-2. Perform a top-level navigation from `istampit.io` to a protected `app.istampit.io` route: cookie is sent.
+2. Perform a popup or navigation from `istampit.io` to a protected route on an application subdomain: cookie is sent.
 3. Open a new tab and request an authenticated API endpoint: cookie is sent.
 4. Perform cross-site fetch from a third-party origin (if applicable): cookie not sent (expected).
 5. Let session idle past TTL: cookie becomes invalid server-side; refresh prompts re-auth.
