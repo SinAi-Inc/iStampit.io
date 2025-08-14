@@ -17,21 +17,21 @@ jobs:
           # Provide a PAT with read access to private submodules (optional if public)
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Sync submodules
+        run: git submodule sync --recursive && git submodule update --init --recursive
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install root deps
-        run: npm ci || echo "No root package.json"
+      - name: Install site deps
+        working-directory: istampit-web
+        run: npm ci
 
-      - name: Build site (if present)
-        run: |
-          if [ -d "istampit-web" ]; then
-            cd istampit-web
-            npm ci
-            npm run build
-          fi
+      - name: Build site
+        working-directory: istampit-web
+        run: npm run build
 
   cli-tests:
     runs-on: ubuntu-latest
