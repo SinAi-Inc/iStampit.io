@@ -73,7 +73,7 @@ export const baseMetadata: Metadata = {
     ],
     shortcut: SITE.favicon,
   },
-  manifest: SITE.manifest,
+  // Manifest link is injected manually in RootLayout <head> to ensure simple CORS-neutral fetch on GitHub Pages.
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
     other: {
