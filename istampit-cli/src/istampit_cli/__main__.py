@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse, subprocess, sys, json, shutil, os, hashlib, re
+import argparse, subprocess, sys, json, shutil, hashlib, re
 from pathlib import Path
 
 EXIT_OK = 0
@@ -23,12 +23,21 @@ def run_ots(*args: str) -> subprocess.CompletedProcess:
         # Fallback: python -m opentimestamps.client.cmd <args>
         base_cmd = [sys.executable, "-m", "opentimestamps.client.cmd"]
     try:
-        return subprocess.run([*base_cmd, *args], check=True, capture_output=True, text=True)
+        return subprocess.run(
+            [*base_cmd, *args],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
     except (FileNotFoundError, ModuleNotFoundError):
-        print("error: OpenTimestamps client not available; install opentimestamps-client", file=sys.stderr)
+        print(
+            "error: OpenTimestamps client not available; install opentimestamps-client",
+            file=sys.stderr,
+        )
         sys.exit(EXIT_ERR)
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(e.stderr.strip() or e.stdout.strip() or str(e))
+        # Provide original traceback context for better debugging (ruff B904)
+        raise RuntimeError(e.stderr.strip() or e.stdout.strip() or str(e)) from e
 
 def cmd_stamp(paths: list[str], json_out: bool):
     receipts = []
@@ -40,7 +49,7 @@ def cmd_stamp(paths: list[str], json_out: bool):
         try:
             run_ots("stamp", str(path))
             receipts.append(str(path) + ".ots")
-        except Exception as e:  # noqa: BLE001
+        except (subprocess.CalledProcessError, OSError, RuntimeError) as e:
             print(f"error stamping {p}: {e}", file=sys.stderr)
     if json_out:
         print(json.dumps({"receipts": receipts}, indent=2))
@@ -62,24 +71,34 @@ def cmd_verify(receipt: str, json_out: bool):
         out = cp.stdout.strip()
         bitcoin = _parse_bitcoin_attestation(out)
         status = "confirmed" if bitcoin else "pending"
-        calendars = []
+        calendars: list[str] = []
         if status == "pending":
             try:
                 info_cp = run_ots("info", receipt)
                 lines = info_cp.stdout.splitlines()
-                calendars = [ln.split(maxsplit=1)[1] for ln in lines if ln.lower().startswith("calendar ")]
-            except Exception:  # noqa: BLE001
+                calendars = [
+                    ln.split(maxsplit=1)[1]
+                    for ln in lines
+                    if ln.lower().startswith("calendar ")
+                ]
+            except (subprocess.CalledProcessError, OSError, RuntimeError):
+                # Non-fatal – calendars list stays empty
                 pass
         if json_out:
-            print(json.dumps({
-                "status": status,
-                "bitcoin": bitcoin,
-                "calendars": calendars,
-                "detail": out
-            }, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "status": status,
+                        "bitcoin": bitcoin,
+                        "calendars": calendars,
+                        "detail": out,
+                    },
+                    indent=2,
+                )
+            )
         else:
             print(out)
-    except Exception as e:  # noqa: BLE001
+    except (subprocess.CalledProcessError, OSError, RuntimeError) as e:
         if json_out:
             print(json.dumps({"status": "error", "error": str(e)}))
         else:
@@ -96,14 +115,24 @@ def cmd_upgrade(receipt: str, json_out: bool):
             v_out = v_cp.stdout.strip()
             bitcoin = _parse_bitcoin_attestation(v_out)
             status = "confirmed" if bitcoin else "pending"
-        except Exception:  # noqa: BLE001
+        except (subprocess.CalledProcessError, OSError, RuntimeError):
             bitcoin = None
             status = "unknown"
         if json_out:
-            print(json.dumps({"upgraded": True, "status": status, "bitcoin": bitcoin, "detail": out}, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "upgraded": True,
+                        "status": status,
+                        "bitcoin": bitcoin,
+                        "detail": out,
+                    },
+                    indent=2,
+                )
+            )
         else:
             print(out)
-    except Exception as e:  # noqa: BLE001
+    except (subprocess.CalledProcessError, OSError, RuntimeError) as e:
         if json_out:
             print(json.dumps({"upgraded": False, "error": str(e)}))
         else:
@@ -125,7 +154,7 @@ def cmd_upgrade_all(root: str, json_out: bool):
             bitcoin = _parse_bitcoin_attestation(v_out)
             status = "confirmed" if bitcoin else "pending"
             results.append({"receipt": str(r), "status": status, "bitcoin": bitcoin})
-        except Exception as e:  # noqa: BLE001
+        except (subprocess.CalledProcessError, OSError, RuntimeError) as e:
             results.append({"receipt": str(r), "status": "error", "error": str(e)})
     if json_out:
         print(json.dumps({"results": results}, indent=2))
@@ -148,7 +177,7 @@ def cmd_info(receipt: str, json_out: bool):
             print(json.dumps({"raw": out, "calendars": calendars}, indent=2))
         else:
             print(out)
-    except Exception as e:  # noqa: BLE001
+    except (subprocess.CalledProcessError, OSError, RuntimeError) as e:
         if json_out:
             print(json.dumps({"error": str(e)}))
         else:
@@ -172,7 +201,10 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("info", help="Show receipt operations/attestations")
     sp.add_argument("receipt", help="Receipt file (.ots)")
 
-    sp = sub.add_parser("upgrade-all", help="Upgrade all .ots receipts under a directory (recursive)")
+    sp = sub.add_parser(
+        "upgrade-all",
+        help="Upgrade all .ots receipts under a directory (recursive)",
+    )
     sp.add_argument("root", help="Directory to scan (or a single .ots file)")
 
     return p
