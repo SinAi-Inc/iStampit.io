@@ -64,19 +64,35 @@ Drop-in verification for any website:
 ## Architecture
 
 ```text
-iStampit.io/
-├── istampit-web/          # Next.js web application
-│   ├── app/              # App router pages
-│   │   ├── verify/       # Verification interface
-│   │   ├── ledger/       # Innovation ledger
-│   │   └── embed/        # Widget documentation
-│   ├── components/       # Reusable UI components
-│   ├── public/widget/    # Embed widget script
-│   └── types/           # TypeScript declarations
-├── .github/workflows/    # CI/CD and automation
-├── ledger.json          # Innovation ledger data
-└── ledger-entry.schema.json # Data validation schema
+repo-root/
+├── istampit-web/             # Web frontend (Next.js static export)
+│   ├── app/                  # App Router routes (verify, ledger, embed, etc.)
+│   ├── components/           # UI components
+│   ├── public/widget/        # Embed widget bundle(s)
+│   └── types/                # Shared TS types
+├── istampit-auth/            # Auth service (NextAuth, Google provider)
+├── istampit-cli/             # Python CLI (packaging + src + tests)
+├── istampit-action/          # GitHub Action for automated stamping
+├── artifacts/                # Daily stamped artifacts + OTS receipts
+├── docs/                     # Centralized documentation (policies, guides, status)
+├── ledger.json               # Innovation ledger data
+├── ledger-entry.schema.json  # JSON Schema for ledger entries
+└── scripts/                  # Utility / verification scripts
 ```
+
+## Documentation Index
+
+All non-README docs have been consolidated under `docs/`.
+
+Key documents:
+- Security: [`docs/SECURITY.md`](./docs/SECURITY.md) / [`docs/SECURITY_NOTES.md`](./docs/SECURITY_NOTES.md)
+- Policies: [`docs/CODE_OF_CONDUCT.md`](./docs/CODE_OF_CONDUCT.md), [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md), [`docs/COOKIE_POLICY.md`](./docs/COOKIE_POLICY.md)
+- Operations: [`docs/HOSTING.md`](./docs/HOSTING.md), [`docs/RELEASE.md`](./docs/RELEASE.md)
+- Status & Releases: [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), [`docs/PRODUCTION-TEST-COMPLETE.md`](./docs/PRODUCTION-TEST-COMPLETE.md)
+- Security Deep Dive: [`docs/SECURITY_NOTES.md`](./docs/SECURITY_NOTES.md)
+- UX / Implementation Notes: [`docs/NAVIGATION_IMPROVEMENTS.md`](./docs/NAVIGATION_IMPROVEMENTS.md), [`docs/MOBILE_MENU_BLUR_ENHANCEMENTS.md`](./docs/MOBILE_MENU_BLUR_ENHANCEMENTS.md), [`docs/LEGAL_PAGES_IMPLEMENTATION.md`](./docs/LEGAL_PAGES_IMPLEMENTATION.md)
+
+See `docs/ORGANIZATION.md` for migration rationale.
 
 ## Quick Start
 
