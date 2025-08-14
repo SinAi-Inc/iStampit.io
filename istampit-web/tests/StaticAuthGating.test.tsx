@@ -11,6 +11,11 @@ function withEnv(key: string, value: string | undefined, fn: () => void) {
   try { fn(); } finally { if (prev === undefined) delete process.env[key]; else process.env[key] = prev; }
 }
 
+// Provide minimal window.fetch mock to suppress unhandled rejections when components attempt network calls
+if (!(global as any).fetch) {
+  (global as any).fetch = () => Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
+}
+
 describe('Static auth gating', () => {
   it('hides full auth badge and shows fallback text when NEXT_PUBLIC_PAGES_STATIC=1', () => {
     withEnv('NEXT_PUBLIC_PAGES_STATIC', '1', () => {
