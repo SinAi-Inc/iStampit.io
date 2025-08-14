@@ -4,6 +4,12 @@ const withBundleAnalyzer = process.env.ANALYZE === 'true'
   ? analyzer({ enabled: true })
   : (cfg) => cfg;
 
+// Determine environment + chosen auth origin (optional)
+const isProd = process.env.NODE_ENV === 'production';
+// If you want an explicit separate auth host in prod, set NEXT_PUBLIC_AUTH_ORIGIN to that full origin.
+// Leave it undefined/empty in development to keep everything relative.
+const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+
 /** @type {import('next').NextConfig} */
 const baseConfig = {
   output: 'export',
@@ -12,10 +18,13 @@ const baseConfig = {
   // trailingSlash: true,
   experimental: {},
   async redirects() {
+    // In dev (or when no auth origin explicitly set) keep calls relative so local preview works.
+    if (!isProd || !AUTH_ORIGIN) return [];
+    // Only emit redirect entries when building for production AND an auth origin is provided.
     return [
       {
         source: '/api/auth/:path*',
-        destination: 'https://auth.istampit.io/api/auth/:path*',
+        destination: `${AUTH_ORIGIN}/api/auth/:path*`,
         permanent: false,
       },
     ];
