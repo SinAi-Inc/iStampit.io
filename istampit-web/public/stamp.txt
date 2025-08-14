@@ -1,0 +1,8 @@
+iStampit.io stamp placeholder file
+
+Purpose: This file exists to satisfy unexpected client/network requests to /stamp.txt observed as 404s (e.g. during /verify loads).
+It contains no operational data. Safe to cache.
+
+If removing, ensure no external monitors, embeds, or browser extensions rely on its presence.
+
+Last updated: 2025-08-14
