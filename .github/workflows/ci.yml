@@ -77,15 +77,15 @@ jobs:
 
       - name: Install CLI deps
         working-directory: istampit-cli
-                pip install ruff
         run: |
           pip install --upgrade pip
+          pip install ruff
           pip install .[test] || pip install .
 
       - name: (Optional) Install OpenTimestamps CLI
         working-directory: istampit-cli
-        run: pip install opentimestamps-client
-                if ! pytest -q tests; then
+        run: |
+          pip install opentimestamps-client || echo "Skipping opentimestamps-client (optional)"
 
       - name: Run pytest
         working-directory: istampit-cli
