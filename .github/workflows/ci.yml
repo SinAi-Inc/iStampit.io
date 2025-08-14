@@ -56,7 +56,11 @@ jobs:
 
       - name: Run pytest
         working-directory: istampit-cli
-        run: pytest -q || echo "(non-fatal) CLI tests failed" && exit 1
+        run: |
+          if ! pytest -q; then
+            echo "CLI tests failed"
+            exit 1
+          fi
 
   verify-release:
     if: github.event_name == 'pull_request'
