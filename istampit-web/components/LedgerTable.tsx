@@ -59,13 +59,18 @@ export default function LedgerTable({ entries }: Props) {
             </button>
           ))}
         </div>
-        <input
-          type="text"
-          placeholder="Filter by tag..."
-          value={searchTag}
-          onChange={(e) => setSearchTag(e.target.value)}
-          className="px-3 py-1 border rounded text-sm"
-        />
+        <div className="flex items-center gap-2">
+          <label htmlFor="ledger-tag-filter" className="sr-only">Filter by tag</label>
+          <input
+            id="ledger-tag-filter"
+            name="ledger-tag-filter"
+            type="text"
+            placeholder="Filter by tag..."
+            value={searchTag}
+            onChange={(e) => setSearchTag(e.target.value)}
+            className="px-3 py-1 border rounded text-sm"
+          />
+        </div>
       </div>
 
       {/* Stats */}
