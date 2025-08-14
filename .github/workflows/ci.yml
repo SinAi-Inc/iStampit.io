@@ -14,6 +14,8 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          # Provide a PAT with read access to private submodules (optional if public)
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -31,6 +33,31 @@ jobs:
             npm run build
           fi
 
+  cli-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install CLI deps
+        working-directory: istampit-cli
+        run: |
+          pip install --upgrade pip
+          pip install .[test] || pip install .
+
+      - name: Run pytest
+        working-directory: istampit-cli
+        run: pytest -q || echo "(non-fatal) CLI tests failed" && exit 1
+
   verify-release:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -40,5 +67,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run release verification
         run: bash scripts/verify-release.sh || echo "(optional) verification failed" && exit 0
