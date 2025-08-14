@@ -41,7 +41,7 @@ Visit <http://localhost:3001>
 
 ## Deployment
 
-Deploy this `istampit-auth` directory to Vercel. Configure custom domain `app.istampit.io` pointing to the Vercel project.
+Deploy this `istampit-auth` directory to Vercel. Configure custom domain `auth.istampit.io` pointing to the Vercel project.
 
 ## Notes
 

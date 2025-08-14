@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-AUTH_ORIGIN="${AUTH_ORIGIN:-https://app.istampit.io}"
+AUTH_ORIGIN="${AUTH_ORIGIN:-https://auth.istampit.io}"
 MARKETING_ORIGIN="${MARKETING_ORIGIN:-https://www.istampit.io}"
 
 green(){ printf "\033[32m%s\033[0m\n" "$*"; }
