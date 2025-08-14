@@ -23,9 +23,12 @@ if (!(global as any).window) {
 describe('Static auth gating', () => {
   it('hides full auth badge and shows fallback text when NEXT_PUBLIC_PAGES_STATIC=1', () => {
     withEnv('NEXT_PUBLIC_PAGES_STATIC', '1', () => {
-      render(<ThemeProvider><NavigationClient /></ThemeProvider>);
-      expect(screen.getByText(/Auth disabled/i)).toBeTruthy();
+  render(<ThemeProvider><NavigationClient /></ThemeProvider>);
+  const fallback = screen.getByText(/Auth disabled/i);
+  expect(fallback).toBeTruthy();
       expect(screen.queryByText(/Sign out/i)).toBeNull();
+  const link = screen.getByText(/Sign in on live site/i) as HTMLAnchorElement;
+  expect(link.href).toMatch(/\/auth\/google\?callbackUrl=/);
     });
   });
 
