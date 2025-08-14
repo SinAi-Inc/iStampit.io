@@ -146,7 +146,12 @@ export default function VerifyClient() {
   // Unauthenticated gate
   if (status === 'unauthenticated') {
     const IS_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-  const externalAuthHref = `https://app.istampit.io/auth/google?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
+    const externalAuthHref = `https://app.istampit.io/auth/google?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
+    const staticModeNote = IS_STATIC && (
+      <p className="text-[11px] text-blue-600 bg-blue-50 border border-blue-200 rounded px-2 py-1">
+        You are viewing the static demo. Sign-in opens the live app and returns here.
+      </p>
+    );
     return (
       <div className={containerClass}>
         <div className={isEmbed ? 'p-4 space-y-4 border rounded bg-white shadow-sm' : 'mx-auto max-w-xl p-8 space-y-6 border rounded-lg bg-white shadow'}>
@@ -173,11 +178,7 @@ export default function VerifyClient() {
             <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-sm text-center leading-relaxed">
               We only use your email to link verifications and improve abuse prevention. Your files & receipts never leave your device.
             </p>
-            {IS_STATIC && (
-              <p className="text-[11px] text-blue-600 bg-blue-50 border border-blue-200 rounded px-2 py-1">
-                You are viewing the static demo. Sign-in opens the live app and returns here.
-              </p>
-            )}
+            {staticModeNote}
           </div>
           {isEmbed && (
             <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 p-2 rounded">

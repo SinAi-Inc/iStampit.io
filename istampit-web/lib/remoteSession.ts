@@ -19,7 +19,7 @@ export function useRemoteSession() {
   const disabledRef = useRef(false);
 
   const fetchSession = useCallback(async () => {
-    if (PAGES_STATIC) return; // skip network in static build
+    if (PAGES_STATIC || typeof window === 'undefined') return; // skip network in static build or SSR/test w/out window
     try {
   const res = await fetch(`${originPrefix || ''}/api/auth/session`, {
         credentials: 'include',
@@ -58,7 +58,8 @@ export function useRemoteSession() {
   const signIn = useCallback((callbackPath: string = '/verify') => {
     if (PAGES_STATIC || typeof window === 'undefined') return;
     const callbackUrl = encodeURIComponent(callbackPath);
-    window.location.href = `${originPrefix || ''}/api/auth/signin?callbackUrl=${callbackUrl}`;
+    // Use local forwarder (client redirect) for one-click provider selection
+    window.location.href = `/auth/google?callbackUrl=${callbackUrl}`;
   }, []);
 
   const signOut = useCallback(() => {
