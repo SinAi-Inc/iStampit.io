@@ -127,7 +127,8 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
     if (PAGES_STATIC) return;
     if (status === 'loading' || typeof window === 'undefined') return;
     const callback = encodeURIComponent(path || '/verify');
-    window.location.href = `/api/auth/signin?callbackUrl=${callback}`;
+  // Use local forwarder which client-redirects to provider endpoint
+  window.location.href = `/auth/google?callbackUrl=${callback}`;
   }
   return (
     <>

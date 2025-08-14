@@ -42,7 +42,8 @@ export default function AuthBadge() {
         const cb = encodeURIComponent(window.location.origin + '/verify');
         window.location.href = `${AUTH_BASE}/api/auth/signin?callbackUrl=${cb}`;
       } else {
-        nextAuthSignIn('google', { callbackUrl: '/verify' });
+        // Use dedicated forwarder for one-click provider selection
+        window.location.href = '/auth/google?callbackUrl=/verify';
       }
     };
     return <button type="button" onClick={handleSignIn} className="rounded px-3 py-2 border text-sm hover:bg-gray-50 dark:hover:bg-gray-800">Sign in</button>;
