@@ -1,4 +1,5 @@
-# iStampit (Web) — Innovation Timestamping & Public Ledger
+<!-- Consolidated title -->
+# iStampit.io — Innovation Timestamping & Public Ledger
 
 ![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
 ![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
@@ -9,16 +10,7 @@
 
 > Status: **Alpha.** APIs, CLI flags, and proof formats may change before v1.0. Use at your own risk. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `SECURITY.md` for how to verify signatures and provenance.
 
-# iStampit.io — Innovation Timestamping & Public Ledger
-
-![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
-![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
-![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
-![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
-
-**Mission:** Provable innovation, Free for everyone. Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, with a public **Innovation Ledger** and embeddable verification widget.
-
-> **Status: v1.0 Ready** — Production-ready with automated workflows, comprehensive documentation, and security hardening. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance.
+<!-- Removed duplicate H1 and repeated badges/mission paragraph -->
 
 ## What's New in v1.0
 
@@ -195,18 +187,23 @@ Made with ❤️ for the global innovation community
 
 *Empowering creators, researchers, and innovators with cryptographic proof of their work since 2024.*
 
-## Stack
+<!-- Stack section folded into Tech Stack earlier; removed duplicate -->
 
-- **Next.js + TypeScript + Tailwind** (static export OK)
+## CI / Submodules Access
+
+This meta-repo includes private submodules (`istampit-auth`, `istampit-cli`, `istampit-action`). GitHub Actions workflows require a Personal Access Token secret with read access to these repositories:
+
+1. Create a PAT with `repo` scope.
+2. Add it to this repo's secrets as `SUBMODULES_TOKEN`.
+3. Workflows use `actions/checkout@v4` with `submodules: recursive` and `token: ${{ secrets.SUBMODULES_TOKEN }}` to fetch private submodules.
+
+If the submodules become public or migrate orgs, update `.gitmodules` and remove the PAT reference accordingly.
+
+## Client Libraries
+
 - **JS OTS lib:** `opentimestamps` (NPM) for in-browser operations.
 
-## Quick Start
-
-```bash
-# Node 20+ recommended
-npm install
-npm run dev
-```
+> Workflows use a fallback expression: `${{ secrets.SUBMODULES_TOKEN || github.token }}` so they still function if the PAT is absent (for public repos).
 
 ## Verifying Release Artifacts & Receipts (Cosign Keyless)
 

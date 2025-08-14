@@ -7,7 +7,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
+      - name: Sync submodules
+        run: git submodule sync --recursive && git submodule update --init --recursive
       - uses: actions/setup-node@v4
         with:
           node-version: 20
