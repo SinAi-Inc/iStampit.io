@@ -77,6 +77,7 @@ jobs:
 
       - name: Install CLI deps
         working-directory: istampit-cli
+                pip install ruff
         run: |
           pip install --upgrade pip
           pip install .[test] || pip install .
@@ -84,7 +85,7 @@ jobs:
       - name: (Optional) Install OpenTimestamps CLI
         working-directory: istampit-cli
         run: pip install opentimestamps-client
-        continue-on-error: true
+                if ! pytest -q tests; then
 
       - name: Run pytest
         working-directory: istampit-cli

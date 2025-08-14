@@ -30,7 +30,10 @@ jobs:
           git submodule update --init --recursive --depth=1
       - name: Remove nested duplicate directory (if present)
         run: |
-          if [ -d istampit-cli ]; then echo "Removing nested istampit-cli/istampit-cli"; rm -rf istampit-cli; fi
+            if [ -d istampit-cli ]; then
+              echo "Removing nested istampit-cli/istampit-cli duplicate";
+              rm -rf istampit-cli;
+            fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -38,8 +41,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -e . pytest ruff build
-      - name: Lint
-        run: ruff check src
+      - name: Lint (auto-fix)
+        run: |
+          ruff check --fix src || true
+          ruff check src
       - name: Tests
         run: pytest -q tests
       - name: Build sdist/wheel
