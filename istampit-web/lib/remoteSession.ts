@@ -1,26 +1,29 @@
 "use client";
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface RemoteSessionResponseV4 {
   user: { id?: string; email?: string; name?: string } | null;
   expires?: string;
 }
 
-// Always use same-origin relative calls; a distinct auth domain can be handled via reverse proxy.
-const originPrefix = '';
+// Support optional remote auth host for static-exported site; leave blank for same-origin
+const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+const originPrefix = AUTH_BASE || '';
 
 export function useRemoteSession() {
   const [status, setStatus] = useState<'loading'|'authenticated'|'unauthenticated'>('loading');
   const [session, setSession] = useState<any>(null);
+  const disabledRef = useRef(false);
 
   const fetchSession = useCallback(async () => {
     try {
-  const res = await fetch(`/api/auth/session`, {
+  const res = await fetch(`${originPrefix || ''}/api/auth/session`, {
         credentials: 'include',
         headers: { 'Accept': 'application/json' }
       });
       if (res.status === 404) {
-        // Static-export / no runtime API: treat as logged out.
+        // Auth API not present (static export). Stop further polling.
+        disabledRef.current = true;
         setSession(null);
         setStatus('unauthenticated');
         return;
@@ -43,7 +46,7 @@ export function useRemoteSession() {
   useEffect(() => { fetchSession(); }, [fetchSession]);
   // Lightweight polling every 90s (balance freshness vs cost)
   useEffect(() => {
-    const t = setInterval(fetchSession, 90000);
+    const t = setInterval(() => { if (!disabledRef.current) fetchSession(); }, 90000);
     return () => clearInterval(t);
   }, [fetchSession]);
 
@@ -52,13 +55,13 @@ export function useRemoteSession() {
     const left = window.screenX + (window.outerWidth - w) / 2;
     const top = window.screenY + (window.outerHeight - h) / 2.2;
     const callbackUrl = encodeURIComponent(callbackPath);
-  window.open(`/api/auth/signin/google?callbackUrl=${callbackUrl}`, 'istampit-auth', `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`);
+  window.open(`${originPrefix || ''}/api/auth/signin/google?callbackUrl=${callbackUrl}`, 'istampit-auth', `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`);
   }, []);
 
   const signOut = useCallback(() => {
-    fetch(`/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
+    fetch(`${originPrefix || ''}/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
       .then(r => r.json())
-      .then(csrf => fetch(`/api/auth/signout`, {
+      .then(csrf => fetch(`${originPrefix || ''}/api/auth/signout`, {
         method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ csrfToken: csrf.csrfToken }).toString()
       }))
