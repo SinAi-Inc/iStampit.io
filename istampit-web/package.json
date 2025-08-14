@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-  "dev": "next dev -p ${PORT:-3000}",
+  "dev": "node scripts/dev.cjs",
   "build": "npm run validate-env && next build",
   "validate-env": "node scripts/validate-env.cjs",
   "export": "next export",
