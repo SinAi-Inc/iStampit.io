@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 type Session = { authenticated: boolean; user?: { email?: string; name?: string; image?: string } };
-const AUTH_ORIGIN = process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://app.istampit.io';
+// Central auth service origin
+const AUTH_ORIGIN = process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io';
 
 export default function AuthBadge() {
   const [session, setSession] = useState<Session | null>(null);
@@ -30,7 +31,7 @@ export default function AuthBadge() {
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
   if (!session.authenticated) {
-    const callbackTarget = 'https://app.istampit.io/dashboard';
+    const callbackTarget = 'https://istampit.io/dashboard';
     const callback = encodeURIComponent(callbackTarget);
 
     function openPopup() {
@@ -38,7 +39,7 @@ export default function AuthBadge() {
       const height = 600;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2.5;
-      const url = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${callback}`;
+  const url = `${AUTH_ORIGIN}/api/auth/signin/google?callbackUrl=${callback}`;
       const popup = window.open(
         url,
         'istampit_auth',

@@ -11,6 +11,15 @@ const baseConfig = {
   // Optional directory-style URLs
   // trailingSlash: true,
   experimental: {},
+  async redirects() {
+    return [
+      {
+        source: '/api/auth/:path*',
+        destination: 'https://auth.istampit.io/api/auth/:path*',
+        permanent: false,
+      },
+    ];
+  },
 
   // Note: Security headers are configured at deployment level when using output: 'export'
   // For development, headers can be set via middleware instead

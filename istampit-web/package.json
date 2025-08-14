@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3000",
-  "build": "next build",
+  "build": "npm run validate-env && next build",
+  "validate-env": "node scripts/validate-env.cjs",
   "export": "next export",
     "build:widget": "node scripts/build-widget.cjs",
   "build:all": "npm run build:widget && npm run build",
