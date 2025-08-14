@@ -17,10 +17,16 @@ export function useRemoteSession() {
 
   const fetchSession = useCallback(async () => {
     try {
-  const res = await fetch(`${originPrefix}/api/session`, {
+	const res = await fetch(`${originPrefix}/api/session`, {
         credentials: 'include',
         headers: { 'Accept': 'application/json' }
       });
+      if (res.status === 404) {
+        // Static-export / no runtime API: treat as logged out.
+        setSession(null);
+        setStatus('unauthenticated');
+        return;
+      }
       if (!res.ok) throw new Error('bad status');
       const data: RemoteSessionResponse = await res.json();
       if (data.authenticated) {

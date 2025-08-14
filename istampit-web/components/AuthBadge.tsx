@@ -16,6 +16,10 @@ export default function AuthBadge() {
         credentials: 'include',
         headers: { Accept: 'application/json' }
       });
+      if (res.status === 404) {
+        setSession({ authenticated: false });
+        return;
+      }
       const data = (await res.json()) as Session;
       setSession(data);
     } catch {
