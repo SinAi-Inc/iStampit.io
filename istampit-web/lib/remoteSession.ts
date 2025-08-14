@@ -6,7 +6,10 @@ interface RemoteSessionResponse {
   user?: { id?: string; email?: string; name?: string };
 }
 
-const AUTH_ORIGIN = process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io';
+// Use relative origin by default so dev/preview work on current host.
+// Allow override via NEXT_PUBLIC_AUTH_ORIGIN only if explicitly set.
+const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+const originPrefix = AUTH_BASE || '';
 
 export function useRemoteSession() {
   const [status, setStatus] = useState<'loading'|'authenticated'|'unauthenticated'>('loading');
@@ -14,7 +17,7 @@ export function useRemoteSession() {
 
   const fetchSession = useCallback(async () => {
     try {
-      const res = await fetch(`${AUTH_ORIGIN}/api/session`, {
+  const res = await fetch(`${originPrefix}/api/session`, {
         credentials: 'include',
         headers: { 'Accept': 'application/json' }
       });
@@ -46,16 +49,16 @@ export function useRemoteSession() {
     const top = window.screenY + (window.outerHeight - h) / 2.2;
     const callbackUrl = encodeURIComponent(callbackPath);
     window.open(
-      `${AUTH_ORIGIN}/api/auth/signin/google?callbackUrl=${callbackUrl}`,
+      `${originPrefix}/api/auth/signin/google?callbackUrl=${callbackUrl}`,
       'istampit-auth',
       `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`
     );
   }, []);
 
   const signOut = useCallback(() => {
-    fetch(`${AUTH_ORIGIN}/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
+    fetch(`${originPrefix}/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
       .then(r => r.json())
-      .then(csrf => fetch(`${AUTH_ORIGIN}/api/auth/signout`, {
+      .then(csrf => fetch(`${originPrefix}/api/auth/signout`, {
         method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ csrfToken: csrf.csrfToken }).toString()
       }))

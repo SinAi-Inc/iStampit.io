@@ -3,15 +3,16 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 type Session = { authenticated: boolean; user?: { email?: string; name?: string; image?: string } };
-// Central auth service origin
-const AUTH_ORIGIN = process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io';
+// Prefer same-origin auth routes; allow optional override via NEXT_PUBLIC_AUTH_ORIGIN (e.g. separate auth domain in prod)
+const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+const originPrefix = AUTH_BASE || '';
 
 export default function AuthBadge() {
   const [session, setSession] = useState<Session | null>(null);
 
   async function load() {
     try {
-      const res = await fetch(`${AUTH_ORIGIN}/api/session`, {
+  const res = await fetch(`${originPrefix}/api/session`, {
         credentials: 'include',
         headers: { Accept: 'application/json' }
       });
@@ -31,7 +32,7 @@ export default function AuthBadge() {
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
   if (!session.authenticated) {
-    const callbackTarget = 'https://istampit.io/dashboard';
+  const callbackTarget = '/dashboard';
     const callback = encodeURIComponent(callbackTarget);
 
     function openPopup() {
@@ -39,7 +40,7 @@ export default function AuthBadge() {
       const height = 600;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2.5;
-  const url = `${AUTH_ORIGIN}/api/auth/signin/google?callbackUrl=${callback}`;
+  const url = `${originPrefix}/api/auth/signin/google?callbackUrl=${callback}`;
       const popup = window.open(
         url,
         'istampit_auth',
@@ -47,7 +48,9 @@ export default function AuthBadge() {
       );
       if (!popup) return;
       const listen = (ev: MessageEvent) => {
-        if (ev.origin !== new URL(AUTH_ORIGIN).origin) return;
+  // Accept messages only from same origin (or configured override)
+  const allowedOrigin = AUTH_BASE ? new URL(AUTH_BASE).origin : window.location.origin;
+  if (ev.origin !== allowedOrigin) return;
         if (ev.data === 'auth:complete') {
           window.removeEventListener('message', listen);
           popup.close();
@@ -75,10 +78,10 @@ export default function AuthBadge() {
         className="rounded px-2 py-1 border text-xs hover:bg-gray-50 dark:hover:bg-gray-800"
         onClick={async () => {
           try {
-            const csrf = await fetch(`${AUTH_ORIGIN}/api/auth/csrf`, {
+            const csrf = await fetch(`${originPrefix}/api/auth/csrf`, {
               credentials: 'include', headers: { Accept: 'application/json' }
             }).then(r => r.json());
-            await fetch(`${AUTH_ORIGIN}/api/auth/signout`, {
+            await fetch(`${originPrefix}/api/auth/signout`, {
               method: 'POST', credentials: 'include',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: new URLSearchParams({ csrfToken: csrf.csrfToken }).toString()
