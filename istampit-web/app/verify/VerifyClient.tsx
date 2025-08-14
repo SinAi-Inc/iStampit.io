@@ -146,7 +146,7 @@ export default function VerifyClient() {
   // Unauthenticated gate
   if (status === 'unauthenticated') {
     const IS_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-    const externalAuthHref = `https://app.istampit.io/auth/google?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
+  const externalAuthHref = `https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
     const staticModeNote = IS_STATIC && (
       <p className="text-[11px] text-blue-600 bg-blue-50 border border-blue-200 rounded px-2 py-1">
         You are viewing the static demo. Sign-in opens the live app and returns here.

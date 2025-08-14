@@ -14,7 +14,7 @@ export default function DemoBanner() {
       <span className="hidden sm:inline">You are viewing the static demo build. </span>
       Interactive authentication is disabled here. Continue to{' '}
       <a
-        href="https://app.istampit.io/auth/google?callbackUrl=https%3A%2F%2Fistampit.io%2Fverify"
+        href="https://auth.istampit.io/api/auth/signin?callbackUrl=https%3A%2F%2Fistampit.io%2Fverify"
         className="underline font-semibold hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-amber-500 rounded"
         rel="noopener noreferrer"
       >live app sign‑in</a>.

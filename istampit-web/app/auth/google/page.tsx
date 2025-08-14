@@ -2,8 +2,8 @@
 import React, { useEffect } from 'react';
 
 // Client-side forwarder so static export can succeed (no server redirect or searchParams access during prerender).
-// Dynamic deployment: instantly redirect client to provider endpoint, preserving optional callbackUrl.
-// Static deployment: show notice + link to live app forwarder.
+// Dynamic deployment: instantly redirect client to generic NextAuth sign-in endpoint (no provider slug) preserving optional callbackUrl.
+// Static deployment: show notice + link to live auth service generic endpoint.
 export default function GoogleAuthForwarder() {
   const IS_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
   useEffect(() => {
@@ -12,9 +12,9 @@ export default function GoogleAuthForwarder() {
       const url = new URL(window.location.href);
       const raw = url.searchParams.get('callbackUrl') || '/verify';
       const safe = raw.startsWith('/') ? raw : '/verify';
-      window.location.replace(`/api/auth/signin/google?callbackUrl=${encodeURIComponent(safe)}`);
+  window.location.replace(`/api/auth/signin?callbackUrl=${encodeURIComponent(safe)}`);
     } catch {
-      window.location.replace('/api/auth/signin/google?callbackUrl=%2Fverify');
+  window.location.replace('/api/auth/signin?callbackUrl=%2Fverify');
     }
   }, [IS_STATIC]);
 
@@ -29,7 +29,7 @@ export default function GoogleAuthForwarder() {
         This static demo build does not include live authentication. Visit the live site to sign in.
       </p>
       <p>
-        <a href={`https://app.istampit.io/auth/google?callbackUrl=${encodeURIComponent(safe)}`} className="text-blue-600 underline">
+        <a href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io'+safe)}`} className="text-blue-600 underline">
           Continue on live app
         </a>
       </p>
