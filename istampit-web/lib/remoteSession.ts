@@ -6,10 +6,8 @@ interface RemoteSessionResponseV4 {
   expires?: string;
 }
 
-// Use relative origin by default so dev/preview work on current host.
-// Allow override via NEXT_PUBLIC_AUTH_ORIGIN only if explicitly set.
-const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
-const originPrefix = AUTH_BASE || '';
+// Always use same-origin relative calls; a distinct auth domain can be handled via reverse proxy.
+const originPrefix = '';
 
 export function useRemoteSession() {
   const [status, setStatus] = useState<'loading'|'authenticated'|'unauthenticated'>('loading');
@@ -17,7 +15,7 @@ export function useRemoteSession() {
 
   const fetchSession = useCallback(async () => {
     try {
-  const res = await fetch(`${originPrefix}/api/auth/session`, {
+  const res = await fetch(`/api/auth/session`, {
         credentials: 'include',
         headers: { 'Accept': 'application/json' }
       });
@@ -54,17 +52,13 @@ export function useRemoteSession() {
     const left = window.screenX + (window.outerWidth - w) / 2;
     const top = window.screenY + (window.outerHeight - h) / 2.2;
     const callbackUrl = encodeURIComponent(callbackPath);
-    window.open(
-      `${originPrefix}/api/auth/signin/google?callbackUrl=${callbackUrl}`,
-      'istampit-auth',
-      `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`
-    );
+  window.open(`/api/auth/signin/google?callbackUrl=${callbackUrl}`, 'istampit-auth', `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`);
   }, []);
 
   const signOut = useCallback(() => {
-    fetch(`${originPrefix}/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
+    fetch(`/api/auth/csrf`, { credentials: 'include', headers: { Accept: 'application/json' } })
       .then(r => r.json())
-      .then(csrf => fetch(`${originPrefix}/api/auth/signout`, {
+      .then(csrf => fetch(`/api/auth/signout`, {
         method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ csrfToken: csrf.csrfToken }).toString()
       }))
