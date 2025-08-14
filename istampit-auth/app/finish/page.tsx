@@ -2,16 +2,24 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 
+// Keep list of allowed opener origins (add staging domains as needed)
 const ALLOWED_OPENERS = ['https://istampit.io'];
 
 export default function FinishPage() {
-  const params = useSearchParams();
-  const callback = params.get('callback') || '/';
   useEffect(() => {
-    const target = new URL(callback, window.location.origin);
+    // Parse callback from query string client-side to avoid useSearchParams (which triggers prerender bailouts)
+    let callback = '/';
     try {
+      const qs = typeof window !== 'undefined' ? window.location.search : '';
+      if (qs.startsWith('?')) {
+        const params = new URLSearchParams(qs);
+        callback = params.get('callback') || '/';
+      }
+    } catch { /* fallback to '/' */ }
+
+    try {
+      const target = new URL(callback, window.location.origin);
       if (window.opener && typeof window.opener.postMessage === 'function') {
         if (ALLOWED_OPENERS.includes(target.origin)) {
           window.opener.postMessage('auth:complete', target.origin);
@@ -23,6 +31,6 @@ export default function FinishPage() {
     } catch {
       window.location.replace(callback);
     }
-  }, [callback]);
+  }, []);
   return null;
 }
