@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Force static export mode so next build emits ./out for GitHub Pages
+      STATIC_EXPORT: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,6 +40,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
+          STATIC_EXPORT: '1'
         run: npm run build
       - name: Verify export output
         run: |
