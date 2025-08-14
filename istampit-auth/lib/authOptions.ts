@@ -10,12 +10,15 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   session: { strategy: 'jwt' },
+  // Restructured architecture: central auth service at auth.istampit.io issues a session cookie
+  // to parent domain so the static marketing site (istampit.io) can read session via /api/session.
+  // SameSite=None required for future embedded / popup flows. Always Secure in production.
   cookies: process.env.NODE_ENV === 'production' ? {
     sessionToken: {
       name: 'next-auth.session-token',
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
         path: '/',
         secure: true,
         domain: '.istampit.io'

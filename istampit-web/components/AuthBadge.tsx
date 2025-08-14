@@ -30,12 +30,37 @@ export default function AuthBadge() {
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
   if (!session.authenticated) {
-    const callback = encodeURIComponent('https://app.istampit.io/dashboard');
+    const callbackTarget = 'https://app.istampit.io/dashboard';
+    const callback = encodeURIComponent(callbackTarget);
+
+    function openPopup() {
+      const width = 500;
+      const height = 600;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2.5;
+      const url = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${callback}`;
+      const popup = window.open(
+        url,
+        'istampit_auth',
+        `popup=yes,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=${width},height=${height},top=${top},left=${left}`
+      );
+      if (!popup) return;
+      const listen = (ev: MessageEvent) => {
+        if (ev.origin !== new URL(AUTH_ORIGIN).origin) return;
+        if (ev.data === 'auth:complete') {
+          window.removeEventListener('message', listen);
+          popup.close();
+          load();
+        }
+      };
+      window.addEventListener('message', listen);
+    }
     return (
-      <a
+      <button
+        type="button"
+        onClick={openPopup}
         className="rounded px-3 py-2 border text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
-        href={`${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${callback}`}
-      >Sign in</a>
+      >Sign in</button>
     );
   }
 
