@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import { useRemoteSession } from '../lib/remoteSession';
-import { signIn as nextAuthSignIn } from 'next-auth/react';
+import { signIn as nextAuthSignIn } from 'next-auth/react'; // retained only if future provider popup reinstated
 import AuthBadge from './AuthBadge';
 
 interface NavigationClientProps { logo?: React.ReactNode }
@@ -124,9 +124,10 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
   const { session, status, signIn: legacySignIn, signOut } = useRemoteSession();
   // Wrap signIn to use NextAuth v4 pages API route with correct callbackUrl param
   function signIn(path?: string) {
-  if (PAGES_STATIC) return; // disabled on static pages build
-  if (status === 'loading') return;
-  nextAuthSignIn('google', { callbackUrl: path || '/' });
+    if (PAGES_STATIC) return;
+    if (status === 'loading' || typeof window === 'undefined') return;
+    const callback = encodeURIComponent(path || '/verify');
+    window.location.href = `/api/auth/signin?callbackUrl=${callback}`;
   }
   return (
     <>

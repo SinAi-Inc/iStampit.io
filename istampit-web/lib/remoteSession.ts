@@ -55,13 +55,10 @@ export function useRemoteSession() {
     return () => clearInterval(t);
   }, [fetchSession]);
 
-  const signIn = useCallback((callbackPath: string = '/') => {
-  if (PAGES_STATIC || typeof window === 'undefined') return; // disabled or non-browser
-    const w = 520, h = 640;
-    const left = window.screenX + (window.outerWidth - w) / 2;
-    const top = window.screenY + (window.outerHeight - h) / 2.2;
+  const signIn = useCallback((callbackPath: string = '/verify') => {
+    if (PAGES_STATIC || typeof window === 'undefined') return;
     const callbackUrl = encodeURIComponent(callbackPath);
-  window.open(`${originPrefix || ''}/api/auth/signin/google?callbackUrl=${callbackUrl}`, 'istampit-auth', `popup=yes,width=${w},height=${h},left=${left},top=${top},resizable,scrollbars`);
+    window.location.href = `${originPrefix || ''}/api/auth/signin?callbackUrl=${callbackUrl}`;
   }, []);
 
   const signOut = useCallback(() => {
