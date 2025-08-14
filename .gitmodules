@@ -1,12 +1,12 @@
-[submodule "istampit-action"]
-	path = istampit-action
-	url = ../istampit-action.git
-	branch = main
 [submodule "istampit-auth"]
 	path = istampit-auth
-	url = ../istampit-auth.git
+	url = https://github.com/iStampit/istampit-auth.git
 	branch = main
 [submodule "istampit-cli"]
 	path = istampit-cli
-	url = ../istampit-cli.git
+	url = https://github.com/iStampit/istampit-cli.git
+	branch = main
+[submodule "istampit-action"]
+	path = istampit-action
+	url = https://github.com/iStampit/istampit-action.git
 	branch = main
