@@ -38,15 +38,15 @@ export function gaEvent(params: {
  *   <GoogleTag />
  */
 export default function GoogleTag() {
-  const pathname = usePathname();
+  const pathname = usePathname() || '/';
   const searchParams = useSearchParams();
 
   // Track client-side navigations
   useEffect(() => {
     if (process.env.NODE_ENV !== "production" || !GA_ID) return;
-    const qs = searchParams?.toString();
-    const url = qs ? `${pathname}?${qs}` : pathname;
-    pageview(url);
+  const qs = searchParams ? searchParams.toString() : '';
+  const url = qs ? `${pathname}?${qs}` : pathname;
+  pageview(url);
   }, [pathname, searchParams]);
 
   // Don’t inject scripts in dev or without an ID
