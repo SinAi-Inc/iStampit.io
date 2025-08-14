@@ -146,7 +146,7 @@ export default function VerifyClient() {
   // Unauthenticated gate
   if (status === 'unauthenticated') {
     const IS_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-    const externalAuthHref = `https://app.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
+  const externalAuthHref = `https://app.istampit.io/auth/google?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
     return (
       <div className={containerClass}>
         <div className={isEmbed ? 'p-4 space-y-4 border rounded bg-white shadow-sm' : 'mx-auto max-w-xl p-8 space-y-6 border rounded-lg bg-white shadow'}>
