@@ -6,8 +6,10 @@ interface RemoteSessionResponseV4 {
   expires?: string;
 }
 
-// Support optional remote auth host for static-exported site; leave blank for same-origin
-const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+// Support optional remote auth host (skipped entirely for static Pages build to prevent hard-coded origin leakage)
+const AUTH_BASE = process.env.NEXT_PUBLIC_PAGES_STATIC === '1'
+  ? ''
+  : (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 const originPrefix = AUTH_BASE || '';
 const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
 
