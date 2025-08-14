@@ -62,7 +62,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="msapplication-config" content="/browserconfig.xml" />
   {/* PWA & iOS install assets */}
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/appicon_180.png" />
-  <link rel="manifest" href="/site.webmanifest" />
+  {process.env.NEXT_PUBLIC_PAGES_STATIC === '1' ? null : (
+    <link rel="manifest" href="/site.webmanifest" />
+  )}
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
