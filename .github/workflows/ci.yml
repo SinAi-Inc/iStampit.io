@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v4
@@ -42,6 +44,10 @@ jobs:
           submodules: recursive
           fetch-depth: 0
           token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
+      - name: Remove nested duplicate directory (if present)
+        working-directory: istampit-cli
+        run: |
+          if [ -d istampit-cli ]; then echo "Removing nested istampit-cli/istampit-cli"; rm -rf istampit-cli; fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -62,7 +68,7 @@ jobs:
       - name: Run pytest
         working-directory: istampit-cli
         run: |
-          if ! pytest -q; then
+          if ! pytest -q tests; then
             echo "CLI tests failed"
             exit 1
           fi

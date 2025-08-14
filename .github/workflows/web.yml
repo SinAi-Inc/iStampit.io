@@ -10,6 +10,8 @@ jobs:
     defaults:
       run:
         working-directory: istampit-web
+    env:
+      NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v4
