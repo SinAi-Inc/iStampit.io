@@ -94,19 +94,27 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }:
 }
 
 export default function NavigationClient({ logo }: NavigationClientProps) {
+  const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
   const [open, setOpen] = useState(false);
   const { session, status, signIn: legacySignIn, signOut } = useRemoteSession();
   // Wrap signIn to use NextAuth v4 pages API route with correct callbackUrl param
   function signIn(path?: string) {
-    if (status === 'loading') return;
-    nextAuthSignIn('google', { callbackUrl: path || '/' });
+  if (PAGES_STATIC) return; // disabled on static pages build
+  if (status === 'loading') return;
+  nextAuthSignIn('google', { callbackUrl: path || '/' });
   }
   return (
     <>
       <div className="hidden lg:flex items-center space-x-4">
         <ThemeToggle variant="dropdown" />
-        <div className="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
-        <AuthBadge />
+  <div className="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
+        {!PAGES_STATIC ? <AuthBadge /> : (
+          <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
+            Auth disabled
+            {' '}·{' '}
+            <a href="https://istampit.io/verify" className="underline hover:no-underline">Sign in on live site</a>
+          </span>
+        )}
       </div>
       <div className="flex lg:hidden items-center space-x-3">
         <ThemeToggle />

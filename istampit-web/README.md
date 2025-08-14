@@ -21,3 +21,40 @@ Browser-based OpenTimestamps verification demo. Authentication (Google OAuth via
 - Provide copyable JSON summary.
 
 License: MIT (web UI). Underlying `opentimestamps` library retains its original license.
+
+## Deployment Modes
+
+This project supports two distinct deployment targets:
+
+### 1. Dynamic (Vercel or any Node runtime)
+
+- `STATIC_EXPORT` unset.
+- Full NextAuth `/api/auth/*` routes available (pages directory).
+- Auth UI (`AuthBadge`, remote session polling) is active.
+- Environment may set `NEXT_PUBLIC_AUTH_ORIGIN` if auth is hosted on a different domain (optional).
+
+### 2. Pure Static (GitHub Pages)
+
+- Workflow sets `STATIC_EXPORT=1` and `NEXT_PUBLIC_PAGES_STATIC=1`.
+- Auth-related UI & network calls are gated off to avoid 404 spam (no API routes exist on Pages).
+- `NEXT_PUBLIC_AUTH_ORIGIN` intentionally omitted to prevent cross-origin fetch attempts.
+- Users see no auth badge (optional fallback text can be enabled – see below).
+
+### Environment Flags
+
+- `STATIC_EXPORT`: In `next.config.js` triggers `output: 'export'` for static HTML export.
+- `NEXT_PUBLIC_PAGES_STATIC`: Public runtime flag used in components/hooks to disable authentication logic entirely in static builds.
+- `NEXT_PUBLIC_AUTH_ORIGIN`: Optional remote auth base (e.g. `https://auth.example.com`). Leave blank for same-origin or static builds with auth disabled.
+
+## Optional Auth Fallback UI
+
+If you wish to show a placeholder instead of hiding auth completely in static mode, set `SHOW_STATIC_AUTH_FALLBACK=1` (or adapt logic) and render a small badge like:
+
+```tsx
+{process.env.NEXT_PUBLIC_PAGES_STATIC === '1' && (
+	<span className="text-xs text-gray-500">Auth disabled in static preview</span>
+)}
+```
+
+This keeps production Pages clean while informing users why sign-in is absent.
+
