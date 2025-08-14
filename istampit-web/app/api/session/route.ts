@@ -8,9 +8,9 @@ import type { NextRequest } from 'next/server';
 export const runtime = 'edge';
 
 export async function GET(_req: NextRequest) {
-  const origin = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
   try {
-    const res = await fetch(`${origin}/api/session`, {
+    // Delegate to NextAuth session route directly (same-origin).
+    const res = await fetch(`${process.env.NEXTAUTH_URL || ''}/api/auth/session` || '/api/auth/session', {
       headers: { Accept: 'application/json' },
       // @ts-ignore - fetch in edge runtime supports this; credential passthrough depends on browser
       credentials: 'include',
