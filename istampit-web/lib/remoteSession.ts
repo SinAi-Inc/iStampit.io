@@ -17,7 +17,7 @@ export function useRemoteSession() {
 
   const fetchSession = useCallback(async () => {
     try {
-	const res = await fetch(`${originPrefix}/api/session`, {
+  const res = await fetch(`${originPrefix}/api/auth/session`, {
         credentials: 'include',
         headers: { 'Accept': 'application/json' }
       });
