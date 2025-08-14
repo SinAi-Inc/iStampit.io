@@ -32,8 +32,7 @@ if (!process.env.NEXT_PUBLIC_AUTH_ORIGIN) {
 let failed = false;
 const actualAuth = process.env.NEXT_PUBLIC_AUTH_ORIGIN;
 if (!actualAuth) {
-  console.error('❌ Missing required env var NEXT_PUBLIC_AUTH_ORIGIN');
-  failed = true;
+  console.warn('ℹ NEXT_PUBLIC_AUTH_ORIGIN not set; auth requests will use relative same-origin endpoints. This is OK for local dev or unified deployments.');
 } else {
   const norm = s => s.replace(/\/$/, '');
   if (!ALLOWED.map(norm).includes(norm(actualAuth))) {

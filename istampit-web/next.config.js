@@ -17,18 +17,8 @@ const baseConfig = {
   // Optional directory-style URLs
   // trailingSlash: true,
   experimental: {},
-  async redirects() {
-    // In dev (or when no auth origin explicitly set) keep calls relative so local preview works.
-    if (!isProd || !AUTH_ORIGIN) return [];
-    // Only emit redirect entries when building for production AND an auth origin is provided.
-    return [
-      {
-        source: '/api/auth/:path*',
-        destination: `${AUTH_ORIGIN}/api/auth/:path*`,
-        permanent: false,
-      },
-    ];
-  },
+  // Removed auth redirect: client code now always calls relative /api/auth.* endpoints; optional
+  // cross-origin deployments should configure reverse proxy / CDN routing instead of Next redirects.
 
   // Note: Security headers are configured at deployment level when using output: 'export'
   // For development, headers can be set via middleware instead
