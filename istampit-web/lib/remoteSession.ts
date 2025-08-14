@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect, useCallback } from 'react';
 
-interface RemoteSessionResponse {
-  authenticated: boolean;
-  user?: { id?: string; email?: string; name?: string };
+interface RemoteSessionResponseV4 {
+  user: { id?: string; email?: string; name?: string } | null;
+  expires?: string;
 }
 
 // Use relative origin by default so dev/preview work on current host.
@@ -28,8 +28,8 @@ export function useRemoteSession() {
         return;
       }
       if (!res.ok) throw new Error('bad status');
-      const data: RemoteSessionResponse = await res.json();
-      if (data.authenticated) {
+      const data: RemoteSessionResponseV4 = await res.json();
+      if (data.user) {
         setSession({ user: data.user });
         setStatus('authenticated');
       } else {

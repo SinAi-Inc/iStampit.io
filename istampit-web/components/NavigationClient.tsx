@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import { useRemoteSession } from '../lib/remoteSession';
+import { signIn as nextAuthSignIn } from 'next-auth/react';
 import AuthBadge from './AuthBadge';
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
-function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void }) {
+function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void; status: string }) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -70,13 +71,15 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpe
             ) : (
               <div className="space-y-3">
                 <button
-                  onClick={()=>{ signIn('/'); onClose(); }}
+                  disabled={status==='loading'}
+                  onClick={()=>{ if(status!=='loading') { signIn('/'); onClose(); } }}
                   className="btn-ghost w-full justify-center text-base py-3 rounded-xl border-2 border-gray-400 dark:border-gray-500 hover:border-gray-500 dark:hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-gray-600/90 font-medium"
                 >
                   Sign In
                 </button>
                 <button
-                  onClick={()=>{ signIn('/verify'); onClose(); }}
+                  disabled={status==='loading'}
+                  onClick={()=>{ if(status!=='loading') { signIn('/verify'); onClose(); } }}
                   className="btn-primary w-full justify-center text-base py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 backdrop-blur-sm font-semibold"
                 >
                   Get Started
@@ -92,7 +95,12 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut }: { isOpe
 
 export default function NavigationClient({ logo }: NavigationClientProps) {
   const [open, setOpen] = useState(false);
-  const { session, status, signIn, signOut } = useRemoteSession();
+  const { session, status, signIn: legacySignIn, signOut } = useRemoteSession();
+  // Wrap signIn to use NextAuth v4 pages API route with correct callbackUrl param
+  function signIn(path?: string) {
+    if (status === 'loading') return;
+    nextAuthSignIn('google', { callbackUrl: path || '/' });
+  }
   return (
     <>
       <div className="hidden lg:flex items-center space-x-4">
@@ -113,7 +121,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           </svg>
         </button>
       </div>
-  <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} session={status==='authenticated'?session:null} signIn={signIn} signOut={signOut} />
+  <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} session={status==='authenticated'?session:null} signIn={signIn} signOut={signOut} status={status} />
     </>
   );
 }

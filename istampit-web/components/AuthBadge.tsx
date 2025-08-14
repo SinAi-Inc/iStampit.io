@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-type Session = { authenticated: boolean; user?: { email?: string; name?: string; image?: string } };
+type Session = { user?: { email?: string; name?: string; image?: string } };
 // Prefer same-origin auth routes; allow optional override via NEXT_PUBLIC_AUTH_ORIGIN (e.g. separate auth domain in prod)
 const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 const originPrefix = AUTH_BASE || '';
@@ -17,13 +17,13 @@ export default function AuthBadge() {
         headers: { Accept: 'application/json' }
       });
       if (res.status === 404) {
-        setSession({ authenticated: false });
+        setSession({});
         return;
       }
       const data = (await res.json()) as Session;
       setSession(data);
     } catch {
-      setSession({ authenticated: false });
+  setSession({});
     }
   }
 
@@ -35,7 +35,7 @@ export default function AuthBadge() {
 
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
-  if (!session.authenticated) {
+  if (!session.user) {
   const callbackTarget = '/dashboard';
     const callback = encodeURIComponent(callbackTarget);
 
