@@ -6,6 +6,8 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v4

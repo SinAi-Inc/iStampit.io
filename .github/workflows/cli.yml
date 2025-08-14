@@ -10,6 +10,8 @@ jobs:
     defaults:
       run:
         working-directory: istampit-cli
+    env:
+      PYTHONPATH: src
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v4
@@ -17,6 +19,9 @@ jobs:
           submodules: recursive
           fetch-depth: 0
           token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
+      - name: Remove nested duplicate directory (if present)
+        run: |
+          if [ -d istampit-cli ]; then echo "Removing nested istampit-cli/istampit-cli"; rm -rf istampit-cli; fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -27,6 +32,6 @@ jobs:
       - name: Lint
         run: ruff check src
       - name: Tests
-        run: pytest -q
+        run: pytest -q tests
       - name: Build sdist/wheel
         run: python -m build
