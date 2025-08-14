@@ -1,22 +1,26 @@
-import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
+"use client";
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-// After successful OAuth callback, NextAuth will redirect to this page (optional custom callback URL)
-// which then notifies opener and closes (if popup) or redirects user onward.
+const ALLOWED_OPENERS = ['https://istampit.io'];
+
 export default function FinishPage() {
-  // Notify opener (if popup) that auth flow completed.
-  const script = `
-    (function(){
-      try { window.opener && window.opener.postMessage('auth:complete', window.location.origin); } catch(_) {}
-      setTimeout(function(){ window.close(); }, 150);
-    })();
-  `;
-  return (
-    <html>
-      <body>
-        <p style={{fontFamily:'system-ui',padding:'1rem'}}>Authentication complete. You may close this window.</p>
-        <script dangerouslySetInnerHTML={{ __html: script }} />
-      </body>
-    </html>
-  );
+  const params = useSearchParams();
+  const callback = params.get('callback') || '/';
+  useEffect(() => {
+    const target = new URL(callback, window.location.origin);
+    try {
+      if (window.opener && typeof window.opener.postMessage === 'function') {
+        if (ALLOWED_OPENERS.includes(target.origin)) {
+          window.opener.postMessage('auth:complete', target.origin);
+        }
+        setTimeout(() => window.close(), 80);
+      } else {
+        window.location.replace(callback);
+      }
+    } catch {
+      window.location.replace(callback);
+    }
+  }, [callback]);
+  return null;
 }
