@@ -208,7 +208,10 @@ export default function VerifyClient() {
           {isEmbed ? "Upload .ots Receipt" : "2. Load .ots Receipt"}
         </h2>
         <div className="space-y-2">
+          <label htmlFor="ots-receipt" className="block text-sm font-medium">Select .ots Receipt</label>
           <input
+            id="ots-receipt"
+            name="ots-receipt"
             type="file"
             accept=".ots"
             onChange={async (e) => {

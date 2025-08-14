@@ -24,8 +24,10 @@ export default function HashUploader({ onHash }: Props) {
   return (
     <div className="space-y-3 border rounded-md p-4 bg-white">
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Select File</label>
+        <label htmlFor="hash-file" className="block text-sm font-medium">Select File</label>
         <input
+          id="hash-file"
+          name="hash-file"
           type="file"
           onChange={(e) => {
             const f = e.target.files?.[0];
@@ -39,18 +41,22 @@ export default function HashUploader({ onHash }: Props) {
         <div className="flex-1" />
       </div>
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Paste SHA-256 (hex)</label>
+        <label htmlFor="hash-manual" className="block text-sm font-medium">Paste SHA-256 (hex)</label>
         <input
+          id="hash-manual"
+          name="hash-manual"
           className="w-full border rounded px-2 py-1 text-sm"
           placeholder="e3b0c442..."
           value={manual}
+          aria-invalid={manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual)}
+          aria-describedby={manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual) ? 'hash-manual-error' : undefined}
           onChange={(e) => setManual(e.target.value.trim())}
           onBlur={() => {
             if (/^[0-9a-fA-F]{64}$/.test(manual)) onHash(manual.toLowerCase());
           }}
         />
         {!/^[0-9a-fA-F]{64}$/.test(manual) && manual.length > 0 && (
-          <p className="text-xs text-red-600">Must be 64 hex chars.</p>
+          <p id="hash-manual-error" className="text-xs text-red-600" role="alert">Must be 64 hex chars.</p>
         )}
       </div>
       {busy && <p className="text-xs text-slate-500">Computing hash…</p>}
