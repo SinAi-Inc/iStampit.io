@@ -9,14 +9,21 @@ jobs:
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout with submodules
+      - name: Checkout (root only)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
-          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
-      - name: Sync submodules
-        run: git submodule sync --recursive && git submodule update --init --recursive
+      - name: Fetch submodules (with PAT if available)
+        env:
+          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
+        run: |
+          if [ -n "${SUBMODULES_TOKEN}" ]; then
+            git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+          else
+            echo "No SUBMODULES_TOKEN provided; attempting public submodule fetch"
+          fi
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth=1
       - uses: actions/setup-node@v4
         with:
           node-version: 20
