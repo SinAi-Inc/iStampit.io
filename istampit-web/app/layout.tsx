@@ -11,6 +11,7 @@ import Navigation from '../components/Navigation';
 import { baseMetadata } from '../lib/seo/metadata';
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
+import DemoBanner from '../components/DemoBanner';
 
 const inter = Inter({ subsets: ["latin"], weight: ["400","600","700"] });
 // Explicit static Pages flag for clarity & future regression safety
@@ -106,6 +107,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <GoogleTag />
           </Suspense>
           <div className="min-h-screen flex flex-col">
+            {/* Demo banner for static export builds */}
+            <DemoBanner />
             {/* Navigation */}
             <Navigation
               logo={
