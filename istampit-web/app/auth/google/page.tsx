@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // Client-side forwarder so static export can succeed (no server redirect or searchParams access during prerender).
 // Dynamic deployment: instantly redirect client to provider endpoint, preserving optional callbackUrl.
