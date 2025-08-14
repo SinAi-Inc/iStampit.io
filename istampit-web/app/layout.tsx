@@ -184,20 +184,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <nav aria-label="Legal navigation">
                       <ul className="space-y-2">
                         <li>
-                          <a
+                          <Link
                             href="/privacy"
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Privacy Policy
-                          </a>
+                          </Link>
                         </li>
                         <li>
-                          <a
+                          <Link
                             href="/terms"
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Terms of Service
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <a
