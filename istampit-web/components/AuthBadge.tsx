@@ -21,7 +21,7 @@ export default function AuthBadge() {
     // If no remote auth base, do a full redirect to local forwarder
     if (!AUTH_BASE) {
       setAuthLoading(true);
-      window.location.href = '/auth/google?callbackUrl=/verify';
+      window.location.href = '/api/auth/signin?callbackUrl=%2Fverify';
       return;
     }
     setAuthLoading(true);
