@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 try {
   require('opentimestamps');
 } catch {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any).opentimestamps = {
     DetachedTimestampFile: class {
       static deserialize() {
@@ -13,4 +12,18 @@ try {
     },
     OpSHA256: class {}
   };
+}
+
+// Basic matchMedia mock for components relying on it (ThemeProvider)
+if (typeof window !== 'undefined' && !window.matchMedia) {
+  (window as any).matchMedia = (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {}, // deprecated
+    removeListener: () => {}, // deprecated
+    dispatchEvent: () => false
+  });
 }

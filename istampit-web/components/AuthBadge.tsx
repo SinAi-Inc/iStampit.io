@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react';
 
 // Optional remote auth origin (used when static-exported site lacks local API routes)
 const AUTH_BASE = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
+const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
 
 type Session = { user?: { email?: string; name?: string; image?: string } };
 
@@ -27,11 +28,12 @@ export default function AuthBadge() {
   }
 
   useEffect(() => {
+    if (PAGES_STATIC || typeof window === 'undefined') return; // skip on static build or non-browser test env
     load();
-  const id = setInterval(() => { if (!disabledRef.current) load(); }, 90_000);
+    const id = setInterval(() => { if (!disabledRef.current) load(); }, 90_000);
     return () => clearInterval(id);
   }, []);
-
+  if (PAGES_STATIC) return null; // fully hidden in static build
   if (!session) return <span className="text-xs text-gray-500">…</span>;
 
   if (!session.user) {
