@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Fetch submodules (with PAT if available)
+      - name: Fetch submodules (with PAT if available, retry x2)
         env:
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
@@ -23,7 +23,13 @@ jobs:
             echo "No SUBMODULES_TOKEN provided; attempting public submodule fetch"
           fi
           git submodule sync --recursive
-          git submodule update --init --recursive --depth=1
+          attempt=1
+          until git submodule update --init --recursive --depth=1; do
+            if [ $attempt -ge 2 ]; then
+              echo "Submodule fetch failed after $attempt attempts"; exit 1; fi
+            echo "Retrying submodule fetch (attempt $((attempt+1)))"; sleep 3; attempt=$((attempt+1));
+            git submodule sync --recursive
+          done
       - uses: actions/setup-node@v4
         with:
           node-version: 20
