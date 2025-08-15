@@ -28,7 +28,7 @@ describe('Static auth gating', () => {
   expect(fallback).toBeTruthy();
       expect(screen.queryByText(/Sign out/i)).toBeNull();
   const link = screen.getByText(/Sign in on live site/i) as HTMLAnchorElement;
-  expect(link.href).toMatch(/\/auth\/google\?callbackUrl=/);
+  expect(link.href).toMatch(/\/api\/auth\/signin\?callbackUrl=/);
     });
   });
 
