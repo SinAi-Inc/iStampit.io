@@ -17,6 +17,9 @@ jobs:
           fetch-depth: 0
           submodules: recursive
           token: ${{ secrets.SUBMODULES_TOKEN }}
+      - name: Remove nested duplicate directory (if present)
+        run: |
+          if [ -d istampit-auth ]; then echo "Removing nested istampit-auth/istampit-auth"; rm -rf istampit-auth; fi
       - uses: actions/setup-node@v4
         with:
           node-version: 20

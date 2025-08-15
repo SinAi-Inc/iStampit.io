@@ -39,11 +39,9 @@ jobs:
         working-directory: istampit-web
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          # In pure static Pages deployment we intentionally omit NEXT_PUBLIC_AUTH_ORIGIN
-          # to avoid runtime auth fetch noise. Auth UI is gated by NEXT_PUBLIC_PAGES_STATIC.
           NEXT_PUBLIC_PAGES_STATIC: '1'
           STATIC_EXPORT: '1'
-        run: npm run build
+        run: npm run build:static
       - name: Verify export output
         run: |
           if [ ! -d "istampit-web/out" ]; then
