@@ -13,29 +13,11 @@ jobs:
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout (defer submodules)
+      - name: Checkout (no submodules needed for web build)
         uses: actions/checkout@v4
         with:
-          submodules: false
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Init submodules
-        working-directory: .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/init-submodules.sh"
-
-      - name: Submodule guard (helpful error)
-        run: |
-          set -e
-          git submodule status || true
-          if ! git -c protocol.version=2 submodule update --init --recursive --depth=1; then
-            echo "::error::Failed to fetch private submodules. Ensure job has 'permissions: contents: read' and checkout uses submodules: recursive. If external, provide SUBMODULES_TOKEN."; exit 1; fi
-
-      - name: Sync submodules
-        run: git submodule sync --recursive && git submodule update --init --recursive
+          submodules: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -55,18 +37,12 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (defer submodules)
+      - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: false
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Init submodules
-        working-directory: .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/init-submodules.sh"
+          submodules: recursive
+          token: ${{ secrets.SUBMODULES_TOKEN }}
       - name: Remove nested duplicate directory (if present)
         working-directory: istampit-cli
         run: |
@@ -104,18 +80,11 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (defer submodules)
+      - name: Checkout (no submodules)
         uses: actions/checkout@v4
         with:
-          submodules: false
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Init submodules
-        working-directory: .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/init-submodules.sh"
+          submodules: false
       - name: Run release verification
         run: bash scripts/verify-release.sh || echo "(optional) verification failed" && exit 0
 

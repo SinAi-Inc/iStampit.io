@@ -11,19 +11,12 @@ jobs:
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout (defer submodules)
+      - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: false
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Init submodules
-        # Override default working-directory to ensure script path resolves
-        working-directory: .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/init-submodules.sh"
+          submodules: recursive
+          token: ${{ secrets.SUBMODULES_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
