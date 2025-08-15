@@ -8,9 +8,9 @@
   ],
   "scripts": {
   "vercel-build": "git submodule update --init --recursive && npm install --workspaces && cross-env NEXT_TELEMETRY_DISABLED=1 npm --workspace istampit-web run build",
-  "lint:upgrade-check": "npm outdated || true",
+    "lint:upgrade-check": "npm outdated --workspaces || node -e \"process.exit(0)\"",
   "lint:upgrade-eslint": "npm install -D eslint@latest @eslint/config-array @eslint/object-schema && npm --workspace istampit-web install -D eslint@latest",
-  "deps:audit-fix": "npm audit fix --workspaces || true"
+    "deps:audit-fix": "npm audit fix --workspaces || node -e \"process.exit(0)\""
   },
   "dependencies": {
     "clsx": "^2.1.1",
