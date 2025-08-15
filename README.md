@@ -11,6 +11,9 @@
 ![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
 ![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
 
+<img width="930" height="664" alt="image" src="https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf" />
+
+
 **Mission:** Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, plus a public **Innovation Ledger** and an embeddable **Verify** widget for third-party sites.
 
 > Status: **Alpha.** APIs, CLI flags, and proof formats may change before v1.0. Use at your own risk. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `SECURITY.md` for how to verify signatures and provenance.
