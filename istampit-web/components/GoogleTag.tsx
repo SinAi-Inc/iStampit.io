@@ -49,8 +49,10 @@ export default function GoogleTag() {
   pageview(url);
   }, [pathname, searchParams]);
 
-  // Don’t inject scripts in dev or without an ID
-  if (process.env.NODE_ENV !== "production" || !GA_ID) return null;
+  // Skip script injection if not prod, missing ID, or static export build
+  if (process.env.NODE_ENV !== "production" || !GA_ID || process.env.NEXT_PUBLIC_PAGES_STATIC === '1') {
+    return null;
+  }
 
   return (
     <>
@@ -67,11 +69,14 @@ export default function GoogleTag() {
       </Script>
 
       {/* gtag.js loader */}
-      <Script
-        id="gtag-loader"
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-      />
+      {/* Loader script via inline tag to avoid type issues in some build contexts */}
+      <Script id="gtag-loader" strategy="afterInteractive">
+        {`(function(){
+          var gtagScript=document.createElement('script');
+          gtagScript.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
+          gtagScript.async=true;document.head.appendChild(gtagScript);
+        })();`}
+      </Script>
 
       {/* GA config */}
       <Script id="gtag-config" strategy="afterInteractive">
