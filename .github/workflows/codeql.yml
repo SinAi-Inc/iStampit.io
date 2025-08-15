@@ -19,7 +19,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript-typescript', 'python' ]
+        # Removed 'python' since repository currently has no Python source code; prevents spurious failures
+        language: [ 'javascript-typescript' ]
     steps:
       - uses: actions/checkout@v4
       - name: Initialize CodeQL
