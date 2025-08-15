@@ -160,6 +160,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         <li>
                           <Link
                             href="/stamp"
+                            prefetch={process.env.NEXT_PUBLIC_PAGES_STATIC !== '1'}
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Create Timestamp
