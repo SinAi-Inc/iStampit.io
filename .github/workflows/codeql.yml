@@ -23,15 +23,18 @@ jobs:
         # Removed 'python' since repository currently has no Python source code; prevents spurious failures
         language: [ 'javascript-typescript' ]
     steps:
-      - name: Checkout repository (with submodules)
+      - name: Checkout repository with submodules
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive
-      - name: Set up git credentials (fallback)
+          token: ${{ secrets.GIT_CREDENTIALS }}
+      - name: Rewrite submodule URLs to embed token
         run: |
-          if [ -n "$GIT_CREDENTIALS" ]; then
-            git config --global url."https://$GIT_CREDENTIALS@github.com/".insteadOf "https://github.com/"
+          if [ -n "${{ secrets.GIT_CREDENTIALS }}" ]; then
+            git config --global url."https://${{ secrets.GIT_CREDENTIALS }}@github.com/".insteadOf "https://github.com/"
+            git submodule sync --recursive
+            git submodule update --init --recursive
           fi
       - name: Use Node 20
         uses: actions/setup-node@v4
