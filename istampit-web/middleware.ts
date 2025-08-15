@@ -17,6 +17,12 @@ function allow(key: string) {
 }
 
 export function middleware(req: NextRequest) {
+	// Apex domain redirect: istampit.io -> app.istampit.io (preserve path & query)
+	if (req.nextUrl.hostname === 'istampit.io') {
+		const url = req.nextUrl.clone();
+		url.hostname = 'app.istampit.io';
+		return NextResponse.redirect(url, 308);
+	}
 	if (req.nextUrl.pathname.startsWith('/api/') && req.method === 'POST') {
 		const ip = req.ip || req.headers.get('x-forwarded-for') || 'anon';
 		if (!allow(ip)) {
@@ -30,5 +36,5 @@ export function middleware(req: NextRequest) {
 	}
 	return NextResponse.next();
 }
-
-export const config = { matcher: ['/api/:path*'] };
+// Apply middleware to all routes so apex redirect works, but keep internal logic scoped.
+export const config = { matcher: ['/:path*'] };
