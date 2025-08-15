@@ -13,40 +13,32 @@ jobs:
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout (with private submodules)
+      - name: Checkout (defer submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Submodule PAT fallback (if private repos not accessible)
+      - name: Init submodules (token / PAT fallback)
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
           set -e
-          echo "Verifying submodule accessibility..."
-          if git submodule status >/dev/null 2>&1; then
-            missing=0
-            while read -r line; do
-              sha=$(echo "$line" | awk '{print $1}')
-              case "$sha" in
-                -*) :;; # ignore not-yet-initialized marker
-                *) :;;
-              esac
-            done < <(git submodule status || true)
+          echo "Initializing submodules with GITHUB_TOKEN (deferred)..."
+          if [ -n "${GITHUB_TOKEN}" ]; then
+            git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf https://github.com/
           fi
-          # Quick probe: list first submodule directory or attempt a ls
-          if ls istampit-auth >/dev/null 2>&1; then
-            echo "Submodules present (no fallback needed)."; exit 0; fi
-          if [ -z "${SUBMODULES_TOKEN}" ]; then
-            echo "::error::Submodule clone failed with GITHUB_TOKEN and SUBMODULES_TOKEN not set. Add SUBMODULES_TOKEN (fine-grained PAT with repo read) to repository secrets."; exit 1; fi
-          echo "Attempting fallback with SUBMODULES_TOKEN..."
-          git submodule deinit -f --all || true
-          git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-          git submodule sync --recursive
-          git submodule update --init --recursive || { echo '::error::Fallback submodule init failed.'; exit 1; }
-          echo "Fallback submodule fetch succeeded."
+          if ! git submodule update --init --recursive --depth=1; then
+            echo "Primary submodule init failed. Trying SUBMODULES_TOKEN (if provided).";
+            if [ -z "${SUBMODULES_TOKEN}" ]; then
+              echo "::error::Submodule init failed and SUBMODULES_TOKEN not set."; exit 1; fi
+            git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+            git submodule sync --recursive
+            git submodule update --init --recursive || { echo '::error::Submodule init failed with provided PAT.'; exit 1; }
+          fi
+          echo "Submodules initialized."
 
       - name: Submodule guard (helpful error)
         run: |
@@ -76,24 +68,25 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (with private submodules)
+      - name: Checkout (defer submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Submodule PAT fallback (if private repos not accessible)
+      - name: Init submodules (token / PAT fallback)
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
           set -e
-          if ls istampit-auth >/dev/null 2>&1; then exit 0; fi
-          if [ -z "${SUBMODULES_TOKEN}" ]; then
-            echo "::error::Submodule clone failed; provide SUBMODULES_TOKEN."; exit 1; fi
-          git submodule deinit -f --all || true
-          git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          if [ -n "${GITHUB_TOKEN}" ]; then git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf https://github.com/; fi
+          if ! git submodule update --init --recursive --depth=1; then
+            if [ -z "${SUBMODULES_TOKEN}" ]; then echo "::error::Submodule init failed; set SUBMODULES_TOKEN."; exit 1; fi
+            git config --global --replace-all url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+            git submodule sync --recursive
+            git submodule update --init --recursive || { echo '::error::Submodule init failed with PAT.'; exit 1; }
+          fi
       - name: Remove nested duplicate directory (if present)
         working-directory: istampit-cli
         run: |
@@ -131,24 +124,25 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (with private submodules)
+      - name: Checkout (defer submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Submodule PAT fallback (if private repos not accessible)
+      - name: Init submodules (token / PAT fallback)
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
           set -e
-          if ls istampit-auth >/dev/null 2>&1; then exit 0; fi
-          if [ -z "${SUBMODULES_TOKEN}" ]; then
-            echo "::error::Submodule clone failed; provide SUBMODULES_TOKEN."; exit 1; fi
-          git submodule deinit -f --all || true
-          git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          if [ -n "${GITHUB_TOKEN}" ]; then git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf https://github.com/; fi
+          if ! git submodule update --init --recursive --depth=1; then
+            if [ -z "${SUBMODULES_TOKEN}" ]; then echo "::error::Submodule init failed; set SUBMODULES_TOKEN."; exit 1; fi
+            git config --global --replace-all url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+            git submodule sync --recursive
+            git submodule update --init --recursive || { echo '::error::Submodule init failed with PAT.'; exit 1; }
+          fi
       - name: Run release verification
         run: bash scripts/verify-release.sh || echo "(optional) verification failed" && exit 0
 

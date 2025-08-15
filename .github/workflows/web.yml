@@ -15,24 +15,25 @@ jobs:
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout (with private submodules)
+      - name: Checkout (defer submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Submodule PAT fallback (if private repos not accessible)
+      - name: Init submodules (token / PAT fallback)
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
           set -e
-          if ls istampit-auth >/dev/null 2>&1; then exit 0; fi
-          if [ -z "${SUBMODULES_TOKEN}" ]; then
-            echo "::error::Submodule clone failed; provide SUBMODULES_TOKEN (PAT)."; exit 1; fi
-          git submodule deinit -f --all || true
-          git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          if [ -n "${GITHUB_TOKEN}" ]; then git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf https://github.com/; fi
+          if ! git submodule update --init --recursive --depth=1; then
+            if [ -z "${SUBMODULES_TOKEN}" ]; then echo "::error::Submodule init failed; set SUBMODULES_TOKEN."; exit 1; fi
+            git config --global --replace-all url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+            git submodule sync --recursive
+            git submodule update --init --recursive || { echo '::error::Submodule init failed with PAT.'; exit 1; }
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
