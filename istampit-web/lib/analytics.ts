@@ -22,7 +22,10 @@ class Analytics {
     if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
       const array = new Uint32Array(2);
       window.crypto.getRandomValues(array);
-      randomStr = Array.from(array).map(n => n.toString(36)).join('');
+      const array = new Uint32Array(4);
+      window.crypto.getRandomValues(array);
+      // Each 32-bit number in base-36 is up to 7 chars; pad to 7 for consistency
+      randomStr = Array.from(array).map(n => n.toString(36).padStart(7, '0')).join('');
     } else {
       // Fallback for environments without crypto (should not happen in browser)
       throw new Error('Secure random number generator is not available. Cannot generate session ID securely.');
