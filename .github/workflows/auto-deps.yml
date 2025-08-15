@@ -1,0 +1,93 @@
+name: Automated Dependency Maintenance
+
+on:
+  schedule:
+    - cron: '15 4 * * 1'  # Weekly Monday 04:15 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-deps
+  cancel-in-progress: false
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Show Node & npm versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Install base workspace deps (no changes yet)
+        run: npm install --workspaces
+
+      - name: Run npm-check-updates (minor/patch) across workspaces
+        run: |
+          set -e
+          for d in . istampit-web istampit-auth istampit-action; do
+            if [ -f "$d/package.json" ]; then
+              echo "Updating deps in $d";
+              (cd $d && npx npm-check-updates -u -t minor || true);
+            fi
+          done
+
+      - name: Install updated dependencies & refresh lockfile
+        run: npm install --workspaces
+
+      - name: Build web app to validate
+        run: npm --workspace istampit-web run build
+
+      - name: (Optional) Run web tests
+        run: |
+          npm --workspace istampit-web run test || echo "Tests failed or missing; continuing to allow manual review"
+
+      - name: Detect changes
+        id: git_diff
+        run: |
+          if git diff --quiet HEAD --; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.git_diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore(deps): automated minor & patch dependency updates'
+          branch: chore/deps-auto
+          title: 'chore(deps): automated minor & patch dependency updates'
+          body: |
+            Automated dependency refresh (minor & patch) via npm-check-updates.
+
+            Validation:
+            - Installed with workspaces
+            - Built istampit-web (Next.js) successfully
+            - Attempted tests (ignored failures for manual review)
+
+            Notes:
+            - Major versions intentionally not upgraded (target=minor)
+            - Review any peer dependency warnings before merging
+          labels: dependencies, automation
+          delete-branch: true
+
+      - name: No changes summary
+        if: steps.git_diff.outputs.changed != 'true'
+        run: echo "No dependency updates this run."
