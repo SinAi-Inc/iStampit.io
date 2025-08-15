@@ -26,7 +26,7 @@ jobs:
 
       - name: Install site deps
         working-directory: istampit-web
-        run: npm ci
+        run: bash -c "npm ci || npm install"
 
       - name: Build site
         working-directory: istampit-web
