@@ -2,6 +2,16 @@
 
 Browser-based OpenTimestamps verification demo. Authentication (Google OAuth via NextAuth) now lives exclusively in the separate `istampit-auth` service; this web app only consumes the remote session endpoint and no longer needs Google OAuth env vars.
 
+## Dynamic vs Static Builds
+
+When deploying a fully static export (e.g. GitHub Pages) set `NEXT_PUBLIC_PAGES_STATIC=1`. In this mode:
+
+- `/verify` and `/session-test` render static shells and skip server-side session decoding.
+- Auth links point to the external auth service and return with a callback to the dynamic app domain.
+- Dynamic deployment (no `NEXT_PUBLIC_PAGES_STATIC=1`) enables server session gating for `/verify` and live session inspection at `/session-test`.
+
+This split allows marketing / documentation hosting on static infrastructure while keeping authenticated functionality on the dynamic app deployment.
+
 ## Features
 
 - Upload a file OR paste its SHA-256.
