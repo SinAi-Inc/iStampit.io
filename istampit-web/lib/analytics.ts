@@ -17,7 +17,17 @@ class Analytics {
   }
 
   private generateSessionId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+    // Use cryptographically secure random values for session ID
+    let randomStr = '';
+    if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+      const array = new Uint32Array(2);
+      window.crypto.getRandomValues(array);
+      randomStr = Array.from(array).map(n => n.toString(36)).join('');
+    } else {
+      // Fallback for environments without crypto (should not happen in browser)
+      randomStr = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+    }
+    return Date.now().toString(36) + randomStr;
   }
 
   private loadStoredEvents() {
