@@ -9,12 +9,15 @@ export default function GoogleAuthForwarder() {
   useEffect(() => {
     if (IS_STATIC) return;
     try {
+      const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
+      const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
       const url = new URL(window.location.href);
       const raw = url.searchParams.get('callbackUrl') || '/verify';
       const safe = raw.startsWith('/') ? raw : '/verify';
-  window.location.replace(`/api/auth/signin?callbackUrl=${encodeURIComponent(safe)}`);
+      const full = `${APP_ORIGIN}${safe}`;
+      window.location.replace(`${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(full)}`);
     } catch {
-  window.location.replace('/api/auth/signin?callbackUrl=%2Fverify');
+      window.location.replace('https://auth.istampit.io/api/auth/signin?callbackUrl='+encodeURIComponent('https://app.istampit.io/verify'));
     }
   }, [IS_STATIC]);
 
@@ -29,7 +32,7 @@ export default function GoogleAuthForwarder() {
         This static demo build does not include live authentication. Visit the live site to sign in.
       </p>
       <p>
-        <a href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io'+safe)}`} className="text-blue-600 underline">
+  <a href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://app.istampit.io'+safe)}`} className="text-blue-600 underline">
           Continue on live app
         </a>
       </p>
