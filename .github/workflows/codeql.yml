@@ -24,6 +24,11 @@ jobs:
         language: [ 'javascript-typescript' ]
     steps:
       - uses: actions/checkout@v4
+      - name: Set up git credentials
+        run: |
+          if [ -n "${GIT_CREDENTIALS}" ]; then
+            git config --global url."https://${GIT_CREDENTIALS}@github.com/".insteadOf "https://github.com/"
+          fi
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
