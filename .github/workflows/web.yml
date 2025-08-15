@@ -22,10 +22,11 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Init submodules
+        working-directory: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: bash .github/scripts/init-submodules.sh
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/init-submodules.sh"
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
