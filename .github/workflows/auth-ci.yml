@@ -17,6 +17,18 @@ jobs:
           submodules: recursive
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Submodule PAT fallback (if private repos not accessible)
+        env:
+          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
+        run: |
+          set -e
+          if ls istampit-auth >/dev/null 2>&1; then exit 0; fi
+          if [ -z "${SUBMODULES_TOKEN}" ]; then
+            echo "::error::Submodule clone failed; provide SUBMODULES_TOKEN (PAT)."; exit 1; fi
+          git submodule deinit -f --all || true
+          git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
+          git submodule sync --recursive
+          git submodule update --init --recursive
       - uses: actions/setup-node@v4
         with:
           node-version: 20
