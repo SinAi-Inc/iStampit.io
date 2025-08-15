@@ -25,7 +25,7 @@ class Analytics {
       randomStr = Array.from(array).map(n => n.toString(36)).join('');
     } else {
       // Fallback for environments without crypto (should not happen in browser)
-      randomStr = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+      throw new Error('Secure random number generator is not available. Cannot generate session ID securely.');
     }
     return Date.now().toString(36) + randomStr;
   }
