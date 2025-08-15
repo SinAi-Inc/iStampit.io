@@ -1,0 +1,29 @@
+name: "Minimal security scan"
+# Disable default large query suite to speed up analysis
+# We'll explicitly include the security-and-quality pack (which is aggregated) plus language-specific packs we care about.
+disable-default-queries: true
+
+queries:
+  - uses: security-and-quality
+  - uses: github/codeql/javascript-queries@main
+  # Add others later (java, python) when those languages are actually present
+  # - uses: github/codeql/java-queries@main
+  # - uses: github/codeql/python-queries@main
+  # Framework-specific (opt-in)
+  # - uses: github/codeql/queries/javascript/react
+
+paths:
+  - istampit-web/src
+  - istampit-web/app
+  - istampit-web/pages
+  - istampit-auth
+  - istampit-cli
+  - istampit-action
+
+paths-ignore:
+  - '**/node_modules'
+  - '**/dist'
+  - '**/build'
+  - '**/.next'
+  - '**/out'
+  - '**/coverage'

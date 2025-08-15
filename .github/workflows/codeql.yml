@@ -28,7 +28,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+          config-file: codeql-config.yml
+      # JS/TS does not require an explicit build step for most static query packs
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
