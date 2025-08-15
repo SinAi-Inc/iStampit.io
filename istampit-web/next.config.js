@@ -12,6 +12,10 @@ const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '
 
 /** @type {import('next').NextConfig} */
 const isExport = process.env.STATIC_EXPORT === '1';
+// If performing a static export and the marketing/static flag wasn't explicitly set, enable it
+if (isExport && !process.env.NEXT_PUBLIC_PAGES_STATIC) {
+  process.env.NEXT_PUBLIC_PAGES_STATIC = '1';
+}
 const baseConfig = {
   ...(isExport ? { output: 'export' } : {}),
   images: { unoptimized: true },
