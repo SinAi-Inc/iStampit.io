@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch submodules (with PAT if available)
+      - name: Fetch submodules (with PAT if available, retry x2)
         env:
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
         run: |
@@ -26,8 +26,13 @@ jobs:
             echo "No SUBMODULES_TOKEN provided; attempting public submodule fetch"
           fi
           git submodule sync --recursive
-          git submodule update --init --recursive --depth=1 || {
-            echo "Submodule fetch failed"; exit 1; }
+          attempt=1
+          until git submodule update --init --recursive --depth=1; do
+            if [ $attempt -ge 2 ]; then
+              echo "Submodule fetch failed after $attempt attempts"; exit 1; fi
+            echo "Retrying submodule fetch (attempt $((attempt+1)))"; sleep 3; attempt=$((attempt+1));
+            git submodule sync --recursive
+          done
 
       - name: Sync submodules
         run: git submodule sync --recursive && git submodule update --init --recursive
@@ -119,3 +124,17 @@ jobs:
             echo "Submodule fetch failed"; exit 1; }
       - name: Run release verification
         run: bash scripts/verify-release.sh || echo "(optional) verification failed" && exit 0
+
+  submodule-guard:
+    runs-on: ubuntu-latest
+    name: Submodule Integrity Guard
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch submodules (shallow)
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth=1 || true
+      - name: Verify submodule SHAs exist upstream
+        run: bash .github/scripts/check-submodules.sh
