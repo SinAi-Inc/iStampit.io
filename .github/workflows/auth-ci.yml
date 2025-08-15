@@ -17,19 +17,11 @@ jobs:
           submodules: false
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Init submodules (token / PAT fallback)
+      - name: Init submodules
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: |
-          set -e
-          if [ -n "${GITHUB_TOKEN}" ]; then git config --global url."https://${GITHUB_TOKEN}@github.com/".InsteadOf https://github.com/; fi || true
-          if ! git submodule update --init --recursive --depth=1; then
-            if [ -z "${SUBMODULES_TOKEN}" ]; then echo "::error::Submodule init failed; set SUBMODULES_TOKEN."; exit 1; fi
-            git config --global --replace-all url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-            git submodule sync --recursive
-            git submodule update --init --recursive || { echo '::error::Submodule init failed with PAT.'; exit 1; }
-          fi
+        run: bash .github/scripts/init-submodules.sh
       - uses: actions/setup-node@v4
         with:
           node-version: 20
