@@ -9,27 +9,30 @@ interface AnalyticsEvent {
 
 class Analytics {
   private events: AnalyticsEvent[] = [];
-  private sessionId: string;
+  private sessionId: string | null = null;
 
   constructor() {
-    this.sessionId = this.generateSessionId();
-    this.loadStoredEvents();
+    // Defer secure session ID generation until in browser to avoid SSR build errors
+    if (typeof window !== 'undefined') {
+      this.ensureSession();
+      this.loadStoredEvents();
+    }
   }
 
   private generateSessionId(): string {
-    // Use cryptographically secure random values for session ID
-    let randomStr = '';
-    if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
-      const array = new Uint32Array(2);
-      const array = new Uint32Array(4);
-      window.crypto.getRandomValues(array);
-      // Each 32-bit number in base-36 is up to 7 chars; pad to 7 for consistency
-      randomStr = Array.from(array).map(n => n.toString(36).padStart(7, '0')).join('');
-    } else {
-      // Fallback for environments without crypto (should not happen in browser)
-      throw new Error('Secure random number generator is not available. Cannot generate session ID securely.');
+    // Use cryptographically secure random values for session ID when possible
+    if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
+      const randArray = new Uint32Array(4); // 128 bits entropy
+      window.crypto.getRandomValues(randArray);
+      const randomStr = Array.from(randArray).map(n => n.toString(36).padStart(7, '0')).join('');
+      return Date.now().toString(36) + randomStr;
     }
-    return Date.now().toString(36) + randomStr;
+    // SSR / non-browser fallback: lower entropy but acceptable since no tracking server-side
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  }
+
+  private ensureSession() {
+    if (!this.sessionId) this.sessionId = this.generateSessionId();
   }
 
   private loadStoredEvents() {
@@ -60,11 +63,12 @@ class Analytics {
   track(event: string, properties?: Record<string, string | number>) {
     if (typeof window === 'undefined') return; // Skip during SSR
 
-    const analyticsEvent: AnalyticsEvent = {
+  this.ensureSession();
+  const analyticsEvent: AnalyticsEvent = {
       event,
       properties: {
         ...properties,
-        sessionId: this.sessionId,
+    sessionId: this.sessionId!,
         userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : 'unknown', // Just browser name
         referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
       },
