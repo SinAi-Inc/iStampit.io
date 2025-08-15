@@ -1,6 +1,11 @@
 <!-- Consolidated title -->
 # iStampit.io — Innovation Timestamping & Public Ledger
 
+![CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml/badge.svg)
+![Web CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/web.yml/badge.svg)
+![Auth CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/auth-ci.yml/badge.svg)
+![CLI CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/cli.yml/badge.svg)
+![Smoke](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/smoke.yml/badge.svg)
 ![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
 ![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
 ![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
@@ -85,6 +90,7 @@ repo-root/
 All non-README docs have been consolidated under `docs/`.
 
 Key documents:
+
 - Security: [`docs/SECURITY.md`](./docs/SECURITY.md) / [`docs/SECURITY_NOTES.md`](./docs/SECURITY_NOTES.md)
 - Policies: [`docs/CODE_OF_CONDUCT.md`](./docs/CODE_OF_CONDUCT.md), [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md), [`docs/COOKIE_POLICY.md`](./docs/COOKIE_POLICY.md)
 - Operations: [`docs/HOSTING.md`](./docs/HOSTING.md), [`docs/RELEASE.md`](./docs/RELEASE.md)
