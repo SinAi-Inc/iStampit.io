@@ -1,10 +1,16 @@
-name: "Minimal security scan"
+name: "JS/TS Scan"
 disable-default-queries: false
 
+# Explicit paths so CodeQL traverses submodules and app code
 paths:
-  - src
+  - istampit-web
+  - istampit-auth
+  - istampit-action
 
 paths-ignore:
   - '**/node_modules'
   - '**/dist'
   - '**/build'
+  - '**/.next'
+  - '**/out'
+  - '**/coverage'

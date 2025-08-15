@@ -23,17 +23,38 @@ jobs:
         # Removed 'python' since repository currently has no Python source code; prevents spurious failures
         language: [ 'javascript-typescript' ]
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up git credentials
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Set up git credentials (fallback)
         run: |
-          if [ -n "${GIT_CREDENTIALS}" ]; then
-            git config --global url."https://${GIT_CREDENTIALS}@github.com/".insteadOf "https://github.com/"
+          if [ -n "$GIT_CREDENTIALS" ]; then
+            git config --global url."https://$GIT_CREDENTIALS@github.com/".insteadOf "https://github.com/"
           fi
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            istampit-web/package-lock.json
+            istampit-auth/package-lock.json
+            istampit-action/package-lock.json
+      - name: Install web deps
+        working-directory: istampit-web
+        run: npm ci || npm install
+      - name: Install auth deps
+        working-directory: istampit-auth
+        run: npm ci || npm install
+      - name: Install action deps
+        working-directory: istampit-action
+        run: npm ci || npm install
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           config-file: codeql-config.yml
-      # JS/TS does not require an explicit build step for most static query packs
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
