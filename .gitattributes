@@ -1,4 +1,18 @@
 * text=auto eol=lf
+
+# Binary / archives (do not normalize)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.zip binary
+*.pdf binary
+*.otf binary
+*.ttf binary
+
+# Explicit LF for source/text
 *.sh text eol=lf
 *.py text eol=lf
 *.ts text eol=lf

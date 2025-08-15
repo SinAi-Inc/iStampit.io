@@ -10,30 +10,17 @@ jobs:
     defaults:
       run:
         working-directory: istampit-web
+    permissions:
+      contents: read
     env:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
-      - name: Checkout (root only)
+      - name: Checkout (with private submodules)
         uses: actions/checkout@v4
         with:
+          submodules: recursive
           fetch-depth: 0
-      - name: Fetch submodules (with PAT if available, retry x2)
-        env:
-          SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
-        run: |
-          if [ -n "${SUBMODULES_TOKEN}" ]; then
-            git config --global url."https://${SUBMODULES_TOKEN}@github.com/".insteadOf https://github.com/
-          else
-            echo "No SUBMODULES_TOKEN provided; attempting public submodule fetch"
-          fi
-          git submodule sync --recursive
-          attempt=1
-          until git submodule update --init --recursive --depth=1; do
-            if [ $attempt -ge 2 ]; then
-              echo "Submodule fetch failed after $attempt attempts"; exit 1; fi
-            echo "Retrying submodule fetch (attempt $((attempt+1)))"; sleep 3; attempt=$((attempt+1));
-            git submodule sync --recursive
-          done
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
