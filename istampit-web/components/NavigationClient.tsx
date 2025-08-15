@@ -11,7 +11,7 @@ interface NavigationClientProps { logo?: React.ReactNode }
 function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void; status: string }) {
   if (!isOpen) return null;
   const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-  const externalAuthHref = `https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`;
+  const externalAuthHref = `https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://app.istampit.io/verify')}`;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       {/* Enhanced backdrop with stronger blur and contrast */}
@@ -139,7 +139,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
             Auth disabled ·{' '}
             <a
-              href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://istampit.io/verify')}`}
+              href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://app.istampit.io/verify')}`}
               className="underline hover:no-underline"
               rel="noopener noreferrer"
             >Sign in on live site</a>
