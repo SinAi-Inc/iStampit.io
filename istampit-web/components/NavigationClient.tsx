@@ -11,7 +11,9 @@ interface NavigationClientProps { logo?: React.ReactNode }
 function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void; status: string }) {
   if (!isOpen) return null;
   const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-  const externalAuthHref = `https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://app.istampit.io/verify')}`;
+  const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
+  const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
+  const externalAuthHref = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(`${APP_ORIGIN}/verify`)}`;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       {/* Enhanced backdrop with stronger blur and contrast */}
@@ -126,9 +128,12 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
   function signIn(path?: string) {
     if (PAGES_STATIC) return;
     if (status === 'loading' || typeof window === 'undefined') return;
-    const callback = encodeURIComponent(path || '/verify');
-  // Use local forwarder which client-redirects to provider endpoint
-  window.location.href = `/auth/google?callbackUrl=${callback}`; // local forwarder now points to generic /api/auth/signin
+    const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
+    const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
+    const targetPath = path || '/verify';
+    const safePath = targetPath.startsWith('/') ? targetPath : '/verify';
+    const callbackFull = `${APP_ORIGIN}${safePath}`;
+    window.location.href = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(callbackFull)}`;
   }
   return (
     <>
@@ -139,7 +144,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
             Auth disabled ·{' '}
             <a
-              href={`https://auth.istampit.io/api/auth/signin?callbackUrl=${encodeURIComponent('https://app.istampit.io/verify')}`}
+              href={`${(process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/,'')}/api/auth/signin?callbackUrl=${encodeURIComponent(`${(process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/,'')}/verify`)}`}
               className="underline hover:no-underline"
               rel="noopener noreferrer"
             >Sign in on live site</a>
