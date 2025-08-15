@@ -21,7 +21,6 @@ class Analytics {
     let randomStr = '';
     if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
       const array = new Uint32Array(2);
-      window.crypto.getRandomValues(array);
       const array = new Uint32Array(4);
       window.crypto.getRandomValues(array);
       // Each 32-bit number in base-36 is up to 7 chars; pad to 7 for consistency
