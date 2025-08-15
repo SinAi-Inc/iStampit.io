@@ -18,6 +18,13 @@
 
 > Status: **Alpha.** APIs, CLI flags, and proof formats may change before v1.0. Use at your own risk. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `SECURITY.md` for how to verify signatures and provenance.
 
+## Apex Domain Redirect & Auth Cookie Strategy
+
+The apex domain `istampit.io` is configured to 308 redirect all requests to `app.istampit.io` (implemented in `istampit-web/middleware.ts`). Paths & queries are preserved.
+
+Authentication happens on `auth.istampit.io` and sets session-related cookies with the domain `.istampit.io`, allowing seamless cross-subdomain sign-in (auth → app). This avoids split sessions and lets marketing links use the shorter apex domain while the app runs on the dedicated subdomain.
+
+
 <!-- Removed duplicate H1 and repeated badges/mission paragraph -->
 
 ## What's New in v1.0
