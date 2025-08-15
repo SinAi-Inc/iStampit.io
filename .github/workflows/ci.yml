@@ -47,6 +47,7 @@ jobs:
         working-directory: istampit-cli
         run: |
           if [ -d istampit-cli ]; then echo "Removing nested istampit-cli/istampit-cli"; rm -rf istampit-cli; fi
+          if [ -d istampit-auth/istampit-auth ]; then echo "(sanity) nested auth duplicate present unexpectedly"; fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
