@@ -12,7 +12,7 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }:
   if (!isOpen) return null;
   const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
   const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
-  const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
+  const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/, '');
   const externalAuthHref = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(`${APP_ORIGIN}/verify`)}`;
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -129,7 +129,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
     if (PAGES_STATIC) return;
     if (status === 'loading' || typeof window === 'undefined') return;
     const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
-    const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
+    const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/, '');
     const targetPath = path || '/verify';
     const safePath = targetPath.startsWith('/') ? targetPath : '/verify';
     const callbackFull = `${APP_ORIGIN}${safePath}`;
@@ -144,7 +144,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
             Auth disabled ·{' '}
             <a
-              href={`${(process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/,'')}/api/auth/signin?callbackUrl=${encodeURIComponent(`${(process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/,'')}/verify`)}`}
+              href={`${(process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/,'')}/api/auth/signin?callbackUrl=${encodeURIComponent(`${(process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/,'')}/verify`)}`}
               className="underline hover:no-underline"
               rel="noopener noreferrer"
             >Sign in on live site</a>

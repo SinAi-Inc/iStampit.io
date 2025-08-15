@@ -10,7 +10,7 @@ export default function GoogleAuthForwarder() {
     if (IS_STATIC) return;
     try {
       const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
-      const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://app.istampit.io').replace(/\/$/, '');
+      const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/, '');
       const url = new URL(window.location.href);
       const raw = url.searchParams.get('callbackUrl') || '/verify';
       const safe = raw.startsWith('/') ? raw : '/verify';
