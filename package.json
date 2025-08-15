@@ -12,14 +12,6 @@
   "lint:upgrade-eslint": "npm install -D eslint@latest @eslint/config-array @eslint/object-schema && npm --workspace istampit-web install -D eslint@latest",
     "deps:audit-fix": "npm audit fix --workspaces || node -e \"process.exit(0)\""
   },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "next": "^15.4.6"
-  },
-  "devDependencies": {
-    "@types/node": "^24.2.1",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "next-auth": "^4.24.11"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
