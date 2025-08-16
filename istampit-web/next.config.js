@@ -1,8 +1,13 @@
-// Bundle analyzer (enabled with ANALYZE=true)
-import analyzer from '@next/bundle-analyzer';
-const withBundleAnalyzer = process.env.ANALYZE === 'true'
-  ? analyzer({ enabled: true })
-  : (cfg) => cfg;
+// Optional bundle analyzer (only if installed and ANALYZE=true)
+let withBundleAnalyzer = (cfg) => cfg;
+try {
+  if (process.env.ANALYZE === 'true') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: true });
+  }
+} catch (_) {
+  // analyzer not installed; ignore
+}
 
 // Determine environment + chosen auth origin (optional)
 const isProd = process.env.NODE_ENV === 'production';
