@@ -2,6 +2,8 @@
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-iStampit--action-blue?logo=github)](https://github.com/marketplace/actions/istampit-timestamp)
 [![Example Workflow](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/istampit-action-example.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/istampit-action-example.yml)
+[![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/SinAi-Inc/iStampit.io/badge)](https://securityscorecards.dev/viewer/?uri=github.com/SinAi-Inc/iStampit.io)
 
 Composite GitHub Action that:
 
