@@ -1,0 +1,40 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '17 3 * * *' # daily at 03:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch verify page
+        id: fetch
+        run: |
+          set -euo pipefail
+          URL="https://istampit.io/verify/"
+          echo "Requesting $URL" >&2
+          STATUS=$(curl -L -s -o /tmp/body -w '%{http_code}' "$URL")
+          echo "Status: $STATUS" >&2
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Unexpected status $STATUS";
+            exit 1;
+          fi
+          head /tmp/body
+          if ! grep -iq 'verify' /tmp/body; then
+            echo "::error::Missing expected keyword in body";
+            exit 1;
+          fi
+          # Lightweight hash for provenance
+          echo "body_sha256=$(sha256sum /tmp/body | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - name: Emit summary
+        run: |
+          echo "### Uptime Monitor" >> $GITHUB_STEP_SUMMARY
+          echo "Verify page reachable and contains keyword." >> $GITHUB_STEP_SUMMARY
+          echo "Body hash: ${{ steps.fetch.outputs.body_sha256 }}" >> $GITHUB_STEP_SUMMARY
