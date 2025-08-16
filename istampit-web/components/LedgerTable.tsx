@@ -167,8 +167,10 @@ export default function LedgerTable({ entries }: Props) {
       </div>
 
       {filteredEntries.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          No entries match the current filters.
+        <div className="text-center py-8 text-gray-500 text-sm">
+          {entries.length === 0
+            ? 'No entries yet — be the first to stamp innovation 🚀'
+            : 'No entries match the current filters.'}
         </div>
       )}
     </div>

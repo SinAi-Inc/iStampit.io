@@ -23,20 +23,38 @@ export interface LedgerData {
 
 // For static public site we bundle the ledger JSON at build time. Dynamic deployments can still fetch.
 export async function fetchLedger(): Promise<LedgerData> {
-  // Attempt static import first (works in Next.js bundler for JSON in project root copied to public at build step)
-  try {
-    // @ts-ignore - using dynamic import hint; adjust path if ledger.json relocated
-    const data = await import('../../ledger.json');
-    if (data && data.default) {
-      return computeMetadata(data.default as any);
+  // Strategy: prefer current month chunk (e.g. /ledger/2025-08.json) then fallback to root ledger.json
+  const now = new Date();
+  const ym = now.toISOString().slice(0,7); // YYYY-MM
+  const monthlyUrl = `/ledger/${ym}.json`;
+  const rootUrl = '/ledger.json';
+
+  // Helper to load JSON via dynamic import (bundled) or network
+  async function tryLoad(pathLike: string, publicUrl: string): Promise<LedgerData | null> {
+    // Attempt bundler import only for root ledger.json (kept for backward compat)
+    if (pathLike === '../../ledger.json') {
+      try {
+        // @ts-ignore dynamic import of JSON in root (copied at build time)
+        const data = await import('../../ledger.json');
+        if (data?.default) return computeMetadata(data.default as any);
+      } catch {/* ignore */}
     }
-  } catch (_) {
-    // Fallback to runtime fetch (e.g., dynamic server environment)
+    try {
+      const res = await fetch(publicUrl, { cache: 'no-store' });
+      if (!res.ok) return null;
+      const raw = await res.json();
+      return computeMetadata(raw);
+    } catch { return null; }
   }
-  const response = await fetch('/ledger.json', { cache: 'no-store' });
-  if (!response.ok) throw new Error(`Failed to fetch ledger: ${response.status}`);
-  const raw = await response.json();
-  return computeMetadata(raw);
+
+  // Try monthly first
+  const monthly = await tryLoad('', monthlyUrl);
+  if (monthly) return monthly;
+
+  // Fallback to root
+  const root = await tryLoad('../../ledger.json', rootUrl);
+  if (root) return root;
+  throw new Error('Failed to load ledger data');
 }
 
 function computeMetadata(raw: any): LedgerData {
