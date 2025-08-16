@@ -5,18 +5,20 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/copy-ledger.mjs",
     "build": "next build",
+    "export": "next export",
+    "build:static": "npm run build && npm run export",
     "vercel-build": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "validate-env": "echo 'skip env validation in CI'",
-  "test": "echo 'No tests configured'",
-  "test:unit": "vitest run",
-  "test:e2e": "playwright test"
+    "test": "echo 'No tests configured'",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
-    "next": "14.2.31",
-    "next-auth": "^4.24.7",
+  "next": "14.2.31",
     "react": "18.3.1",
     "react-dom": "18.3.1",
   "tailwindcss": "3.4.17"

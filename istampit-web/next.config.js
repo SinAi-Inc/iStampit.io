@@ -16,8 +16,10 @@ const isProd = process.env.NODE_ENV === 'production';
 const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 
 /** @type {import('next').NextConfig} */
-const isStaticExport = process.env.STATIC_EXPORT === '1';
+const isStaticExport = true; // always exporting static site now
 const baseConfig = {
+  output: 'export',
+  trailingSlash: true,
   images: { unoptimized: true },
   // Optional directory-style URLs
   // trailingSlash: true,
@@ -27,8 +29,7 @@ const baseConfig = {
 
   // Note: For static export build (legacy), use npm run build:static which sets STATIC_EXPORT env separately.
 
-  // Enable static HTML export when requested (GitHub Pages)
-  ...(isStaticExport ? { output: 'export' } : {}),
+  // Static HTML export always enabled
   webpack: (config) => {
     // Auth moved to dedicated service; no local Google OAuth env vars required.
     config.resolve = config.resolve || {};

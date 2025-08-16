@@ -9,7 +9,7 @@ interface AnalyticsEvent {
 
 class Analytics {
   private events: AnalyticsEvent[] = [];
-  private sessionId: string | null = null;
+  // Removed sessionId for fully public, no-account analytics
 
   constructor() {
     // Defer secure session ID generation until in browser to avoid SSR build errors
@@ -31,9 +31,7 @@ class Analytics {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
   }
 
-  private ensureSession() {
-    if (!this.sessionId) this.sessionId = this.generateSessionId();
-  }
+  private ensureSession() { /* no-op: session tracking removed */ }
 
   private loadStoredEvents() {
     if (typeof window === 'undefined') return; // Skip during SSR
@@ -68,7 +66,6 @@ class Analytics {
       event,
       properties: {
         ...properties,
-    sessionId: this.sessionId!,
         userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.split(' ')[0] : 'unknown', // Just browser name
         referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
       },
