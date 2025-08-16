@@ -20,5 +20,8 @@
     "postcss": "^8.4.35",
     "postcss-nested": "^6.2.0",
     "autoprefixer": "^10.4.16"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
