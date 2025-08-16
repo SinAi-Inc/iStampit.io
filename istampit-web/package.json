@@ -9,24 +9,25 @@
     "vercel-build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-  "validate-env": "echo 'skip env validation in CI'",
-  "test": "echo 'No tests configured'"
+    "validate-env": "echo 'skip env validation in CI'",
+    "test": "echo 'No tests configured'"
   },
   "dependencies": {
     "next": "14.2.31",
+    "next-auth": "^4.24.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "next-auth": "^4.24.7"
+  "tailwindcss": "3.4.17"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
-  "eslint-config-next": "14.2.31",
-  "postcss": "^8.4.40",
-  "autoprefixer": "^10.4.20"
+    "eslint-config-next": "14.2.31",
+    "postcss": "^8.4.40",
+    "typescript": "^5.5.4"
   },
   "overrides": {
     "esbuild": "^0.25.0",
