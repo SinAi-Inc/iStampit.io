@@ -5,11 +5,12 @@ import { test, expect } from '@playwright/test';
 // we focus on verifying the page reacts to 'auth:complete'.
 
 test.describe('Popup auth flow (synthetic)', () => {
-  test('receives auth:complete message and updates badge (synthetic session)', async ({ page }) => {
-    // Detect dev server availability first (avoid failing when not started in CI convenience runs)
-    const reachable = await fetch(process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000').then(r=>r.ok).catch(()=>false);
-    if (!reachable) test.skip(true, 'Dev server not running; skip synthetic popup auth test');
-    // Navigate to home
+  test('receives auth:complete message and updates badge (synthetic session)', async ({ page, baseURL }) => {
+    // Ensure server reachable (retry a few times)
+    for (let i=0;i<5;i++) {
+      const ok = await fetch(baseURL || 'http://localhost:3000').then(r=>r.ok).catch(()=>false);
+      if (ok) break; if (i===4) test.skip(true, 'Dev server not reachable'); await new Promise(r=>setTimeout(r,1000));
+    }
     await page.goto('/');
 
     // Skip if static demo build (badge hidden)

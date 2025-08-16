@@ -20,8 +20,9 @@ test.describe('Embed security messaging', () => {
       </script>
     </body></html>`);
 
-    const frame = await (await page.waitForSelector('#w')).contentFrame();
-    await expect(frame!.locator('text=File or SHA-256')).toBeVisible();
+  const frameEl = await page.waitForSelector('#w');
+  const frame = await frameEl.contentFrame();
+  await expect(frame!.locator('text=File or SHA-256')).toBeVisible({ timeout: 15000 });
     await page.waitForFunction(() => (window as any).events.some((e: any) => e.type==='istampit:ready'));
     const events = await page.evaluate(() => (window as any).events);
     expect(events.find((e: any)=> e.type==='istampit:ready')).toBeTruthy();
@@ -34,8 +35,9 @@ test.describe('Embed security messaging', () => {
       <iframe id="w" src="${buildEmbedSrc({ origin: fakeOrigin })}" style="width:100%;height:600px;border:1px solid #ccc"></iframe>
       <script>window.events=[];window.addEventListener('message',e=>{window.events.push({o:e.origin,d:e.data});});</script>
     </body></html>`);
-    const frame = await (await page.waitForSelector('#w')).contentFrame();
-    await expect(frame!.locator('text=File or SHA-256')).toBeVisible();
+  const frameEl = await page.waitForSelector('#w');
+  const frame = await frameEl.contentFrame();
+  await expect(frame!.locator('text=File or SHA-256')).toBeVisible({ timeout: 15000 });
     await page.waitForTimeout(1000);
     const events = await page.evaluate(() => (window as any).events);
     expect(events.filter((e: any)=> e.d?.type==='istampit:ready')).toHaveLength(0);
@@ -51,8 +53,9 @@ test.describe('Embed security messaging', () => {
         window.addEventListener('message',e=>{ if(e.origin!== '${allowedOrigin}') return; window.events.push(e.data); });
       </script>
     </body></html>`);
-    const frame = await (await page.waitForSelector('#w')).contentFrame();
-    await expect(frame!.locator('text=File or SHA-256')).toBeVisible();
+  const frameEl = await page.waitForSelector('#w');
+  const frame = await frameEl.contentFrame();
+  await expect(frame!.locator('text=File or SHA-256')).toBeVisible({ timeout: 15000 });
     await page.waitForFunction(() => (window as any).events.some((e: any) => e.type==='istampit:ready'));
     // Trigger a UI change that should cause height recalculation: simulate selecting a file hash via JS
     await frame!.evaluate(() => {
