@@ -14,7 +14,7 @@
   "dependencies": {},
   "devDependencies": {
     "next": "14.2.31",
-    "eslint": "^8.57.0",
+    "eslint": "^9.33.0",
     "eslint-config-next": "15.4.6",
     "postcss": "^8.4.35",
     "postcss-nested": "^6.2.0",
