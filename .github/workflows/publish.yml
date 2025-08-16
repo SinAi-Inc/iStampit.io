@@ -1,0 +1,54 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write  # for OIDC trusted publishing
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Upgrade pip & install build backend
+        working-directory: istampit-cli
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build distributions (sdist + wheel)
+        working-directory: istampit-cli
+        run: python -m build
+
+      - name: Inspect artifacts
+        working-directory: istampit-cli
+        run: |
+          ls -l dist
+          sha256sum dist/* || shasum -a 256 dist/*
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true
+          verbose: true
+          skip-existing: true
+          packages-dir: istampit-cli/dist
+
+      - name: Post-publish summary
+        if: ${{ success() }}
+        run: |
+          echo "Published istampit-cli $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "Artifacts:" >> $GITHUB_STEP_SUMMARY
+          ls -1 istampit-cli/dist >> $GITHUB_STEP_SUMMARY
