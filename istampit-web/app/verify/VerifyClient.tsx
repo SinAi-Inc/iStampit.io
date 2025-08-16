@@ -136,9 +136,11 @@ export default function VerifyClient() {
   return (
     <div className={containerClass}>
       {!isEmbed && (
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Verify OpenTimestamps Receipt</h1>
-          <p className="text-gray-600">Upload your file and .ots receipt to verify timestamp proof</p>
+        <div className="text-center space-y-3">
+          <h1 className="text-3xl font-bold tracking-tight">Verify OpenTimestamps Receipt</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm">
+            Drop a file, paste a SHA-256 hash, and load its <code className="font-mono bg-gray-100 px-1 rounded">.ots</code> receipt to confirm a Bitcoin‑anchored timestamp. Nothing leaves your browser.
+          </p>
         </div>
       )}
 
@@ -146,7 +148,8 @@ export default function VerifyClient() {
         <h2 className={headingClass}>
           {isEmbed ? "File or SHA-256" : "1. Provide Artifact (file OR SHA-256)"}
         </h2>
-        <HashUploader onHash={handleHash} />
+  <HashUploader onHash={handleHash} />
+  <p className="text-xs text-gray-500 -mt-2">Tip: You can paste a 64‑char SHA‑256 hash directly; drag & drop also supported.</p>
         {fileHash && (
           <div className="bg-gray-50 p-3 rounded border">
             <p className="text-sm text-gray-700 break-all font-mono">
