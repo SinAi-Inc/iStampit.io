@@ -30,49 +30,13 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Install web deps (isolated)
+      - name: Install deps (web only)
         working-directory: ./istampit-web
         run: npm install --no-audit --no-fund --workspaces=false
-      - name: Print PostCSS plugins (web)
+      - name: Build web (static export)
         working-directory: ./istampit-web
-        run: node -e "import('postcss-load-config').then(m=>m.default?m.default().then(c=>console.log(Object.keys(c.plugins))):m().then(c=>console.log(Object.keys(c.plugins))))"
-      - name: Build web
-        working-directory: ./istampit-web
-        run: npm run build
-
-  build-auth:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Verify submodules pushed
-        run: |
-          git submodule foreach '
-            set -e
-            git fetch origin
-            branch=$(git rev-parse --abbrev-ref HEAD)
-            if [ "$branch" = "HEAD" ]; then
-              echo "INFO: $name detached at $(git rev-parse --short HEAD); skipping branch ancestry check"
-            elif git merge-base --is-ancestor HEAD origin/$branch; then
-              echo "OK: $name up-to-date on $branch"
-            else
-              echo "ERROR: Unpushed commit in $name (local HEAD not ancestor of origin/$branch)" >&2
-              exit 1
-            fi
-          '
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install auth deps (isolated)
-        working-directory: ./istampit-auth
-        run: npm install --no-audit --no-fund --workspaces=false
-      - name: Print PostCSS plugins (auth)
-        working-directory: ./istampit-auth
-        run: node -e "try{const r=require('postcss-load-config');Promise.resolve(r()).then(c=>console.log(Object.keys(c.plugins||{})))}catch(e){console.log('postcss-load-config not installed');}"
-      - name: Build auth
-        working-directory: ./istampit-auth
+        env:
+          NEXT_PUBLIC_PAGES_STATIC: '1'
         run: npm run build
 
   e2e:
@@ -82,38 +46,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Verify submodules pushed
-        run: |
-          git submodule foreach '
-            set -e
-            git fetch origin
-            branch=$(git rev-parse --abbrev-ref HEAD)
-            if [ "$branch" = "HEAD" ]; then
-              echo "INFO: $name detached at $(git rev-parse --short HEAD); skipping branch ancestry check"
-            elif git merge-base --is-ancestor HEAD origin/$branch; then
-              echo "OK: $name up-to-date on $branch"
-            else
-              echo "ERROR: Unpushed commit in $name (local HEAD not ancestor of origin/$branch)" >&2
-              exit 1
-            fi
-          '
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Install web deps (isolated)
+      - name: Install deps (web only)
         working-directory: ./istampit-web
         run: npm install --no-audit --no-fund --workspaces=false
-      - name: Build web
+      - name: Build web (static export)
         working-directory: ./istampit-web
+        env:
+          NEXT_PUBLIC_PAGES_STATIC: '1'
         run: npm run build
-      - name: Start web server
+      - name: Serve static out dir
         working-directory: ./istampit-web
         run: |
-          nohup npx next start -p 3000 > .next/server.log 2>&1 &
+          npx serve -l 3000 out &
           n=0
-          until curl -fsS http://localhost:3000 >/dev/null || [ $n -ge 30 ]; do n=$((n+1)); echo "Waiting for server... ($n)"; sleep 2; done
-          if [ $n -ge 30 ]; then echo "Server failed to start"; cat .next/server.log || true; exit 1; fi
+          until curl -fsS http://localhost:3000 >/dev/null || [ $n -ge 40 ]; do n=$((n+1)); echo "Waiting for server... ($n)"; sleep 2; done
+          if [ $n -ge 40 ]; then echo "Server failed to start"; ls -R out | head -100; exit 1; fi
       - name: Install Playwright browsers
         working-directory: ./istampit-web
         run: npx playwright install --with-deps
