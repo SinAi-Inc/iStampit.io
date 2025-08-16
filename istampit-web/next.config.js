@@ -21,17 +21,14 @@ const baseConfig = {
   output: 'export',
   trailingSlash: true,
   images: { unoptimized: true },
-  // Optional directory-style URLs
-  // trailingSlash: true,
   experimental: {},
-  // Removed auth redirect: client code now always calls relative /api/auth.* endpoints; optional
-  // cross-origin deployments should configure reverse proxy / CDN routing instead of Next redirects.
-
-  // Note: For static export build (legacy), use npm run build:static which sets STATIC_EXPORT env separately.
-
-  // Static HTML export always enabled
+  // Hard redirect legacy removed routes to /verify (SEO hygiene)
+  redirects: async () => [
+    { source: '/auth/google', destination: '/verify', permanent: true },
+    { source: '/session-test', destination: '/verify', permanent: true },
+    { source: '/api/auth/:path*', destination: '/verify', permanent: true },
+  ],
   webpack: (config) => {
-    // Auth moved to dedicated service; no local Google OAuth env vars required.
     config.resolve = config.resolve || {};
     config.resolve.fallback = {
       ...(config.resolve.fallback || {}),

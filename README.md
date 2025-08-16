@@ -219,6 +219,27 @@ Made with ❤️ for the global innovation community
 
 *Empowering creators, researchers, and innovators with cryptographic proof of their work since 2024.*
 
+### Ledger Data
+
+The build produces both an aggregated ledger JSON and per‑month segment files for efficient loading:
+
+- `public/ledger/index.json` – full aggregated ledger (legacy path, kept for compatibility)
+- `public/ledger/YYYY/MM/index.json` – month-specific slices generated at build time
+
+Generation happens automatically via the `prebuild` script (invoked before `next build`). You can run it explicitly:
+
+```bash
+cd istampit-web
+npm run prebuild
+```
+
+Source scripts:
+
+- `scripts/prebuild.mjs` – cleans `.next/` and `out/`, then triggers generation
+- `scripts/generate-ledger.mjs` – splits `../../ledger.json` into monthly JSON outputs
+
+This approach keeps the static bundle lean as the ledger grows while preserving a single file endpoint for existing consumers.
+
 <!-- Stack section folded into Tech Stack earlier; removed duplicate -->
 
 ## Client Libraries
