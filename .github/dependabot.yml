@@ -13,12 +13,6 @@ updates:
     labels: ["dependencies", "npm", "web"]
     open-pull-requests-limit: 10
 
-  # Auth service (Next.js) dependencies
-  - package-ecosystem: "npm"
-    directory: "/istampit-auth"
-    schedule: { interval: "weekly" }
-    labels: ["dependencies", "npm", "auth"]
-    open-pull-requests-limit: 10
 
   # GitHub Action (composite/JS) if any JS dependencies added later (safeguard)
   - package-ecosystem: "github-actions"

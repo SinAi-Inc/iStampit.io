@@ -16,7 +16,6 @@ jobs:
         project:
           - '.'
           - 'istampit-web'
-          - 'istampit-auth'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

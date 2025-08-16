@@ -41,7 +41,7 @@ jobs:
       - name: Run npm-check-updates (minor/patch) across workspaces
         run: |
           set -e
-          for d in . istampit-web istampit-auth istampit-action; do
+          for d in . istampit-web istampit-action; do
             if [ -f "$d/package.json" ]; then
               echo "Updating deps in $d";
               (cd $d && npx npm-check-updates -u -t minor || true);

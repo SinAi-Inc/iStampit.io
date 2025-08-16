@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPOS=("istampit-auth" "istampit-cli" "istampit-action" "istampit-web")
+REPOS=("istampit-cli" "istampit-action" "istampit-web")
 BRANCH="main"
 
 echo "🔎 Verifying submodule SHAs are pushed and on $BRANCH…"
