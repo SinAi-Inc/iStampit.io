@@ -12,7 +12,7 @@ jobs:
     outputs:
       slsa-subjects: ${{ steps.subjects.outputs.hashes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build CLI artifacts
         working-directory: istampit-cli

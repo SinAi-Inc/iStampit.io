@@ -12,7 +12,7 @@ jobs:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
       - name: Checkout (root only)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Fetch submodules (with PAT if available)

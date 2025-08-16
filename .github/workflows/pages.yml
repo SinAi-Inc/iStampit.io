@@ -21,7 +21,7 @@ jobs:
       # Force static export mode so next build emits ./out for GitHub Pages
       STATIC_EXPORT: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
