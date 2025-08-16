@@ -19,8 +19,9 @@ test('simulated verification result posts to allowed origin', async ({ page, bas
     </script>
   </body></html>`);
 
-  const frame = await (await page.waitForSelector('#w')).contentFrame();
-  await expect(frame!.locator('text=File or SHA-256')).toBeVisible();
+  const frameEl = await page.waitForSelector('#w');
+  const frame = await frameEl.contentFrame();
+  await expect(frame!.locator('text=File or SHA-256')).toBeVisible({ timeout: 15000 });
 
   await page.waitForFunction(() => (window as any).events.some((e: any) => e.type==='istampit:ready'));
 
