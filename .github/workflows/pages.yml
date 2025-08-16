@@ -41,14 +41,12 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://github.com/SinAi-Inc/iStampit.io' }}
           NEXT_PUBLIC_PAGES_STATIC: '1'
           STATIC_EXPORT: '1'
-        run: |
-          npm run build
-          npx next export
+        run: npm run build
       - name: Verify export output
         run: |
-          if [ ! -d "istampit-web/out" ]; then
-            echo "Expected directory istampit-web/out not found" >&2
-            ls -R .
+          if [ ! -d "istampit-web/out" ] && [ ! -d "istampit-web/dist" ] && [ ! -d "istampit-web/.next" ]; then
+            echo "No export directory found (expected istampit-web/out or .next)" >&2
+            ls -R istampit-web
             exit 1
           fi
       - name: Upload artifact
