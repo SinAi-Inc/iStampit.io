@@ -44,3 +44,35 @@ jobs:
       - name: Build auth
         working-directory: ./istampit-auth
         run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install web deps (isolated)
+        working-directory: ./istampit-web
+        run: npm install --no-audit --no-fund --workspaces=false
+      - name: Build web
+        working-directory: ./istampit-web
+        run: npm run build
+      - name: Start web server
+        working-directory: ./istampit-web
+        run: |
+          nohup npx next start -p 3000 > .next/server.log 2>&1 &
+          n=0
+          until curl -fsS http://localhost:3000 >/dev/null || [ $n -ge 30 ]; do n=$((n+1)); echo "Waiting for server... ($n)"; sleep 2; done
+          if [ $n -ge 30 ]; then echo "Server failed to start"; cat .next/server.log || true; exit 1; fi
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        env:
+          BASE_URL: http://localhost:3000
+        working-directory: ./istampit-web
+        run: npm run test:e2e
