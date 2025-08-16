@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import MonitoringDashboard from '../components/MonitoringDashboard';
 import { ThemeProvider } from '../components/ThemeProvider';
 import Navigation from '../components/Navigation';
+import BuildVersion from '../components/BuildVersion';
 import { baseMetadata } from '../lib/seo/metadata';
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
@@ -50,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+  <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -100,7 +101,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}>
+    <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}>
+  {/* Skip link for keyboard users */}
+  <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
   <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
           <Suspense fallback={null}>
             <GoogleTag />
@@ -123,7 +126,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             />
 
             {/* Main Content */}
-            <main className="flex-1">
+            <main id="main" className="flex-1">
               {children}
             </main>
 
@@ -235,8 +238,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       >
                         SinAI Inc
                       </a>
-                      .
+                      . <span className="mx-1" aria-hidden>•</span> <span className="text-gray-400">Open Source (MIT)</span>
                     </p>
+                    <BuildVersion />
                   </div>
                 </div>
               </div>
