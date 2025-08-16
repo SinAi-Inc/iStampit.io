@@ -1,11 +1,9 @@
 <!-- Consolidated title -->
 # iStampit.io — Innovation Timestamping & Public Ledger
 
-![CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml/badge.svg)
-![Web CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/web.yml/badge.svg)
-![Auth CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/auth-ci.yml/badge.svg)
+ [![CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml)
+ [![Pages](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml)
 ![CLI CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/cli.yml/badge.svg)
-![Smoke](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/smoke.yml/badge.svg)
 ![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
 ![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
 ![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
