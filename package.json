@@ -2,7 +2,6 @@
   "private": true,
   "workspaces": [
     "istampit-web",
-    "istampit-auth",
     "istampit-action",
     "istampit-cli"
   ],

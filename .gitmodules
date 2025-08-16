@@ -1,7 +1,3 @@
-[submodule "istampit-auth"]
-	path = istampit-auth
-	url = https://github.com/SinAi-Inc/istampit-auth.git
-	branch = main
 [submodule "istampit-cli"]
 	path = istampit-cli
 	url = https://github.com/SinAi-Inc/istampit-cli.git

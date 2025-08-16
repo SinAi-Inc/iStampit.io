@@ -83,7 +83,6 @@ repo-root/
 │   ├── components/           # UI components
 │   ├── public/widget/        # Embed widget bundle(s)
 │   └── types/                # Shared TS types
-├── istampit-auth/            # Auth service (NextAuth, Google provider)
 ├── istampit-cli/             # Python CLI (packaging + src + tests)
 ├── istampit-action/          # GitHub Action for automated stamping
 ├── artifacts/                # Daily stamped artifacts + OTS receipts
