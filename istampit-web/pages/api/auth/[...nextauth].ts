@@ -1,5 +1,7 @@
-import NextAuth from 'next-auth';
-import authOptions from '@/lib/authOptions';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-// Local NextAuth instance kept minimal (no providers) to decode shared session cookies if present.
-export default NextAuth(authOptions ?? { secret: process.env.NEXTAUTH_SECRET, providers: [] });
+// Deprecated endpoint: authentication removed from public web app.
+export default function handler(_req: NextApiRequest, res: NextApiResponse) {
+	res.setHeader('Cache-Control', 'max-age=300, public, immutable');
+	res.status(410).json({ error: 'gone', message: 'Authentication removed. Use auth.istampit.io for auth flows.' });
+}
