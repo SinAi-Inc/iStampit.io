@@ -10,7 +10,8 @@
     "dev": "next dev",
     "lint": "next lint",
     "validate-env": "echo 'skip env validation in CI'",
-    "test": "echo 'No tests configured'"
+  "test": "echo 'No tests configured'",
+  "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "14.2.31",
