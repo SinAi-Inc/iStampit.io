@@ -11,18 +11,18 @@
 ![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
 ![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
 
-<img width="930" height="664" alt="image" src="https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf" />
+![Project preview](https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf)
 
 
 **Mission:** Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, plus a public **Innovation Ledger** and an embeddable **Verify** widget for third-party sites.
 
 > Status: **Alpha.** APIs, CLI flags, and proof formats may change before v1.0. Use at your own risk. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `SECURITY.md` for how to verify signatures and provenance.
 
-## Apex Domain Redirect & Auth Cookie Strategy
+## Hosting Model
 
-The apex domain `istampit.io` is configured to 308 redirect all requests to `app.istampit.io` (implemented in `istampit-web/middleware.ts`). Paths & queries are preserved.
+The site is published as a **fully static export** (no server runtime) suitable for GitHub Pages, Cloudflare Pages, Netlify, or any static CDN. All verification and ledger features run entirely client-side; **no login is required or provided in this build**.
 
-Authentication happens on `auth.istampit.io` and sets session-related cookies with the domain `.istampit.io`, allowing seamless cross-subdomain sign-in (auth → app). This avoids split sessions and lets marketing links use the shorter apex domain while the app runs on the dedicated subdomain.
+Historic documentation referenced separate `auth.` / `app.` subdomains and cookie-based sessions; that architecture has been retired for the public, read‑only verification experience. Any lingering auth files were removed to prevent ghost UI or unused bundle weight.
 
 
 <!-- Removed duplicate H1 and repeated badges/mission paragraph -->
@@ -220,16 +220,6 @@ Made with ❤️ for the global innovation community
 *Empowering creators, researchers, and innovators with cryptographic proof of their work since 2024.*
 
 <!-- Stack section folded into Tech Stack earlier; removed duplicate -->
-
-## CI / Submodules Access
-
-This meta-repo includes private submodules (`istampit-auth`, `istampit-cli`, `istampit-action`). GitHub Actions workflows require a Personal Access Token secret with read access to these repositories:
-
-1. Create a PAT with `repo` scope.
-2. Add it to this repo's secrets as `SUBMODULES_TOKEN`.
-3. Workflows use `actions/checkout@v4` with `submodules: recursive` and `token: ${{ secrets.SUBMODULES_TOKEN }}` to fetch private submodules.
-
-If the submodules become public or migrate orgs, update `.gitmodules` and remove the PAT reference accordingly.
 
 ## Client Libraries
 
