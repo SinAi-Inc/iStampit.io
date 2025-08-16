@@ -11,6 +11,7 @@
     "lint": "next lint",
     "validate-env": "echo 'skip env validation in CI'",
   "test": "echo 'No tests configured'",
+  "test:unit": "vitest run",
   "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -21,6 +22,9 @@
   "tailwindcss": "3.4.17"
   },
   "devDependencies": {
+  "vitest": "^1.6.0",
+  "@testing-library/jest-dom": "^6.4.2",
+  "@testing-library/react": "^14.2.2",
   "@playwright/test": "^1.47.2",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.66",
