@@ -1,0 +1,44 @@
+{
+  "entries": [
+    {
+      "id": "roadmap-q4-2024",
+      "title": "iStampit Roadmap Q4 2024",
+      "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+      "receiptUrl": "/samples/roadmap.pdf.ots",
+      "status": "confirmed",
+      "txid": "abc123def456789abc123def456789abc123def456789abc123def456789abc1",
+      "blockHeight": 850000,
+      "blockTime": 1735689600,
+      "stampedAt": "2024-12-31T12:00:00Z",
+      "tags": [
+        "roadmap",
+        "planning",
+        "internal"
+      ]
+    },
+    {
+      "id": "api-design-v1",
+      "title": "API Design Document v1.0",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "receiptUrl": "/samples/api-design.md.ots",
+      "status": "confirmed",
+      "txid": "def456789abc123def456789abc123def456789abc123def456789abc123def4",
+      "blockHeight": 849500,
+      "blockTime": 1735603200,
+      "stampedAt": "2024-12-30T12:00:00Z",
+      "tags": [
+        "api",
+        "design",
+        "technical"
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-08-16T19:25:55.553Z",
+    "totalEntries": 2,
+    "confirmedEntries": 2,
+    "pendingEntries": 0,
+    "year": 2024,
+    "month": 12
+  }
+}
