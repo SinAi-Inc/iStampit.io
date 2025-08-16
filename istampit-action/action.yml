@@ -1,0 +1,67 @@
+name: "iStampit Timestamp"
+description: "Stamp build artifacts with OpenTimestamps (.ots receipts)"
+author: "SinAi-Inc"
+branding:
+  icon: "check-circle"
+  color: "blue"
+
+outputs:
+  receipts:
+    description: "JSON array of generated .ots receipt file paths"
+    value: ${{ steps.stamp.outputs.receipts }}
+
+inputs:
+  paths:
+    description: "Comma-separated glob(s) of files to stamp"
+    required: true
+  upgrade:
+    description: "Set to 'true' to attempt upgrading proofs after stamping"
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install OpenTimestamps client
+      shell: bash
+      run: pip install --upgrade pip opentimestamps-client
+    - name: Stamp artifacts
+      id: stamp
+      shell: bash
+      env:
+        PATHS_JSON: ${{ inputs.paths }}
+        UPGRADE: ${{ inputs.upgrade }}
+      run: |
+        python - <<'PY'
+import glob, os, subprocess, json, sys
+raw = os.environ.get('PATHS_JSON','')
+if not raw:
+    print('error: no paths provided', file=sys.stderr)
+    sys.exit(1)
+patterns = [p for p in raw.split(',') if p.strip()]
+files = []
+for g in patterns:
+    expanded = glob.glob(g.strip(), recursive=True)
+    if not expanded:
+        print(f'warning: pattern matched no files: {g}', file=sys.stderr)
+    files.extend(expanded)
+if not files:
+    print('warning: no files matched any pattern', file=sys.stderr)
+receipts = []
+for f in files:
+    subprocess.check_call(['ots','stamp',f])
+    r = f + '.ots'
+    if os.environ.get('UPGRADE','false').lower() == 'true':
+        subprocess.call(['ots','upgrade', r])
+    receipts.append(r)
+out = json.dumps(receipts)
+print(json.dumps({'receipts': receipts}))
+gh_out = os.environ.get('GITHUB_OUTPUT')
+if gh_out:
+    with open(gh_out, 'a', encoding='utf-8') as fh:
+        fh.write(f"receipts={out}\n")
+PY
