@@ -2,7 +2,7 @@
 let withBundleAnalyzer = (cfg) => cfg;
 try {
   if (process.env.ANALYZE === 'true') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line
     withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: true });
   }
 } catch (_) {
