@@ -9,7 +9,8 @@
     "vercel-build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "validate-env": "echo 'skip env validation in CI'"
+  "validate-env": "echo 'skip env validation in CI'",
+  "test": "echo 'No tests configured'"
   },
   "dependencies": {
     "next": "14.2.31",
@@ -23,7 +24,9 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.31"
+  "eslint-config-next": "14.2.31",
+  "postcss": "^8.4.40",
+  "autoprefixer": "^10.4.20"
   },
   "overrides": {
     "esbuild": "^0.25.0",
