@@ -28,14 +28,6 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GIT_CREDENTIALS }}
-      - name: Rewrite submodule URLs to embed token
-        run: |
-          if [ -n "${{ secrets.GIT_CREDENTIALS }}" ]; then
-            git config --global url."https://${{ secrets.GIT_CREDENTIALS }}@github.com/".insteadOf "https://github.com/"
-            git submodule sync --recursive
-            git submodule update --init --recursive
-          fi
       - name: Use Node 20
         uses: actions/setup-node@v4
         with:
