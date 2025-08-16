@@ -45,14 +45,17 @@ export default function HashUploader({ onHash }: Props) {
         <input
           id="hash-manual"
           name="hash-manual"
-          className="w-full border rounded px-2 py-1 text-sm"
+          className={`w-full rounded px-2 py-1 text-sm border ${manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual) ? 'border-red-500 focus:border-red-600' : 'border-gray-300 focus:border-blue-600'}`}
           placeholder="e3b0c442..."
           value={manual}
           aria-invalid={manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual)}
           aria-describedby={manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual) ? 'hash-manual-error' : undefined}
-          onChange={(e) => setManual(e.target.value.trim())}
-          onBlur={() => {
-            if (/^[0-9a-fA-F]{64}$/.test(manual)) onHash(manual.toLowerCase());
+          onChange={(e) => {
+            const val = e.target.value.trim();
+            setManual(val);
+            if (/^[0-9a-fA-F]{64}$/.test(val)) {
+              onHash(val.toLowerCase());
+            }
           }}
         />
         {!/^[0-9a-fA-F]{64}$/.test(manual) && manual.length > 0 && (
