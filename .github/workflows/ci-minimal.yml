@@ -1,0 +1,40 @@
+name: CI Minimal
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install web deps (isolated)
+        working-directory: ./istampit-web
+        run: npm ci --workspaces=false
+      - name: Build web
+        working-directory: ./istampit-web
+        run: npm run build
+
+  build-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install auth deps (isolated)
+        working-directory: ./istampit-auth
+        run: npm ci --workspaces=false
+      - name: Build auth
+        working-directory: ./istampit-auth
+        run: npm run build
