@@ -12,16 +12,16 @@ export default function LedgerClient() {
   useEffect(() => {
     trackLedgerView();
     fetchLedger()
-      .then(setLedgerData)
+      .then((data)=>{ setLedgerData(data); })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
+  if (loading && !ledgerData && !error) {
     return (
       <main className="min-h-screen p-8">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center">Loading Innovation Ledger...</div>
+          <div className="text-center animate-pulse text-gray-500">Loading Innovation Ledger...</div>
         </div>
       </main>
     );

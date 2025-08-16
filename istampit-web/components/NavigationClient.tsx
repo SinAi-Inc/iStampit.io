@@ -2,18 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
-import { useRemoteSession } from '../lib/remoteSession';
-import { signIn as nextAuthSignIn } from 'next-auth/react'; // retained only if future provider popup reinstated
-import AuthBadge from './AuthBadge';
+// Auth removed from primary navigation for public verification & ledger access.
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
-function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; session: any; signIn: (path?: string)=>void; signOut: ()=>void; status: string }) {
+function MobileMenu({ isOpen, onClose, logo }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; }) {
   if (!isOpen) return null;
-  const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
-  const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
-  const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/, '');
-  const externalAuthHref = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(`${APP_ORIGIN}/verify`)}`;
+  // No auth flows in mobile menu.
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       {/* Enhanced backdrop with stronger blur and contrast */}
@@ -53,67 +48,7 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }:
               })}
             </div>
           </nav>
-          <div className="p-6 border-t-2 border-gray-200/80 dark:border-gray-700/80 space-y-4 bg-gray-100/90 dark:bg-gray-800/90 backdrop-blur-lg">
-            {session ? (
-              <>
-                <div className="flex items-center space-x-4 p-3 rounded-xl bg-white/90 dark:bg-gray-700/90 backdrop-blur-md border border-gray-200/50 dark:border-gray-600/50 shadow-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-lg shadow-soft">
-                    {(session.user?.name || session.user?.email || '?').slice(0,1).toUpperCase()}
-                  </div>
-                  <div className="text-sm">
-                    <p className="font-semibold text-gray-900 dark:text-gray-50 truncate max-w-[140px]">{session.user?.name || 'Unnamed'}</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 truncate max-w-[140px]">{session.user?.email}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={()=>{ signOut(); onClose(); }}
-                  className="btn-ghost w-full justify-center text-base py-3 rounded-xl border-2 border-gray-400 dark:border-gray-500 hover:border-gray-500 dark:hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-gray-600/90 font-medium"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <div className="space-y-3">
-                {PAGES_STATIC ? (
-                  <>
-                    <a
-                      href={externalAuthHref}
-                      onClick={onClose}
-                      className="btn-ghost w-full justify-center text-base py-3 rounded-xl border-2 border-gray-400 dark:border-gray-500 hover:border-gray-500 dark:hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-gray-600/90 font-medium text-center"
-                      rel="noopener noreferrer"
-                    >
-                      Sign In
-                    </a>
-                    <a
-                      href={externalAuthHref}
-                      onClick={onClose}
-                      className="btn-primary w-full justify-center text-base py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 backdrop-blur-sm font-semibold text-center"
-                      rel="noopener noreferrer"
-                    >
-                      Get Started
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      disabled={status==='loading'}
-                      onClick={()=>{ if(status!=='loading') { signIn('/'); onClose(); } }}
-                      className="btn-ghost w-full justify-center text-base py-3 rounded-xl border-2 border-gray-400 dark:border-gray-500 hover:border-gray-500 dark:hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-gray-600/90 font-medium"
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      disabled={status==='loading'}
-                      onClick={()=>{ if(status!=='loading') { signIn('/verify'); onClose(); } }}
-                      className="btn-primary w-full justify-center text-base py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 backdrop-blur-sm font-semibold"
-                    >
-                      Get Started
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
+          {/* Auth controls removed for public flow */}
         </div>
       </div>
     </div>
@@ -123,33 +58,13 @@ function MobileMenu({ isOpen, onClose, logo, session, signIn, signOut, status }:
 export default function NavigationClient({ logo }: NavigationClientProps) {
   const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
   const [open, setOpen] = useState(false);
-  const { session, status, signIn: legacySignIn, signOut } = useRemoteSession();
-  // Wrap signIn to use NextAuth v4 pages API route with correct callbackUrl param
-  function signIn(path?: string) {
-    if (PAGES_STATIC) return;
-    if (status === 'loading' || typeof window === 'undefined') return;
-    const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/, '');
-    const APP_ORIGIN = (process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/, '');
-    const targetPath = path || '/verify';
-    const safePath = targetPath.startsWith('/') ? targetPath : '/verify';
-    const callbackFull = `${APP_ORIGIN}${safePath}`;
-    window.location.href = `${AUTH_ORIGIN}/api/auth/signin?callbackUrl=${encodeURIComponent(callbackFull)}`;
-  }
+  // Auth removed; placeholder state
+  const status: 'disabled' = 'disabled';
   return (
     <>
       <div className="hidden lg:flex items-center space-x-4">
         <ThemeToggle variant="dropdown" />
-  <div className="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
-        {!PAGES_STATIC ? <AuthBadge /> : (
-          <span className="text-xs text-gray-500" aria-label="Authentication disabled in static build">
-            Auth disabled ·{' '}
-            <a
-              href={`${(process.env.NEXT_PUBLIC_AUTH_ORIGIN || 'https://auth.istampit.io').replace(/\/$/,'')}/api/auth/signin?callbackUrl=${encodeURIComponent(`${(process.env.NEXT_PUBLIC_APP_ORIGIN || 'https://istampit.io').replace(/\/$/,'')}/verify`)}`}
-              className="underline hover:no-underline"
-              rel="noopener noreferrer"
-            >Sign in on live site</a>
-          </span>
-        )}
+        <div className="text-xs text-gray-400">Verification & Ledger are public</div>
       </div>
       <div className="flex lg:hidden items-center space-x-3">
         <ThemeToggle />
@@ -164,7 +79,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           </svg>
         </button>
       </div>
-  <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} session={status==='authenticated'?session:null} signIn={signIn} signOut={signOut} status={status} />
+  <MobileMenu isOpen={open} onClose={()=>setOpen(false)} logo={logo} />
     </>
   );
 }
