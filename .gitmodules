@@ -2,3 +2,7 @@
 	path = istampit-cli
 	url = https://github.com/SinAi-Inc/istampit-cli.git
 	branch = main
+[submodule "istampit-action"]
+	path = istampit-action
+	url = https://github.com/SinAi-Inc/istampit-action.git
+	branch = main
