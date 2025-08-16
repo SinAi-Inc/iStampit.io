@@ -1,6 +1,7 @@
 # iStampit GitHub Action — Timestamp your releases & artifacts
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-iStampit--action-blue?logo=github)](https://github.com/marketplace/actions/istampit-timestamp)
+[![Example Workflow](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/istampit-action-example.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/istampit-action-example.yml)
 
 Composite GitHub Action that:
 
