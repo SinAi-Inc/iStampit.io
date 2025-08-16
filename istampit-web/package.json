@@ -5,9 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-  "dev": "node scripts/dev.cjs",
-  "build": "npm run validate-env && next build",
-  "vercel-build": "git config --global url.\"https://${GIT_CREDENTIALS}@github.com/\".insteadOf \"https://github.com/\" && git submodule update --init --recursive && npm run build",
+  "dev": "git submodule update --init --recursive && node scripts/dev.cjs",
+  "build": "next build",
+  "vercel-build": "npm run build",
   "validate-env": "node scripts/validate-env.cjs",
   "export": "next export",
   "build:static": "cross-env STATIC_EXPORT=1 NEXT_PUBLIC_PAGES_STATIC=1 npm run build && next export && node scripts/check-static-export.cjs",
