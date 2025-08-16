@@ -34,14 +34,16 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install
         working-directory: istampit-web
-        run: npm ci || npm install
+        run: npm install --no-audit --no-fund
       - name: Build (static export)
         working-directory: istampit-web
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_PAGES_STATIC: '1'
           STATIC_EXPORT: '1'
-        run: npm run build:static
+        run: |
+          npm run build
+          npx next export
       - name: Verify export output
         run: |
           if [ ! -d "istampit-web/out" ]; then

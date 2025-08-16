@@ -17,7 +17,7 @@ jobs:
           cache: 'npm'
       - name: Install web deps (isolated)
         working-directory: ./istampit-web
-        run: npm ci --workspaces=false
+        run: npm install --no-audit --no-fund --workspaces=false
       - name: Build web
         working-directory: ./istampit-web
         run: npm run build
@@ -34,7 +34,7 @@ jobs:
           cache: 'npm'
       - name: Install auth deps (isolated)
         working-directory: ./istampit-auth
-        run: npm ci --workspaces=false
+        run: npm install --no-audit --no-fund --workspaces=false
       - name: Build auth
         working-directory: ./istampit-auth
         run: npm run build
