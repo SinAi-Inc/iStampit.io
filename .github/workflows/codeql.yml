@@ -43,13 +43,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             istampit-web/package-lock.json
-            istampit-auth/package-lock.json
             istampit-action/package-lock.json
       - name: Install web deps
         working-directory: istampit-web
-        run: npm ci || npm install
-      - name: Install auth deps
-        working-directory: istampit-auth
         run: npm ci || npm install
       - name: Install action deps
         working-directory: istampit-action

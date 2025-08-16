@@ -4,7 +4,6 @@ disable-default-queries: false
 # Explicit paths so CodeQL traverses submodules and app code
 paths:
   - istampit-web
-  - istampit-auth
   - istampit-action
 
 paths-ignore:

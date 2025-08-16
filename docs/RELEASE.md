@@ -5,12 +5,11 @@ Canonical copy.
 ````markdown
 # iStampit Release Handbook
 
-This repo is a **meta-repo** that tracks versioned submodules:
+Historically this repo tracked multiple submodules. Auth has been retired; remaining active components:
 
-- `istampit-auth` → auth.istampit.io
 - `istampit-cli`
 - `istampit-action`
-- `site` (this repo’s app)
+- `istampit-web` (static site)
 
 ## Versioning
 
@@ -36,7 +35,7 @@ This repo is a **meta-repo** that tracks versioned submodules:
    git checkout main
    git pull
    git submodule update --remote --merge   # moves submodules to latest on their tracked branch
-   git add istampit-auth istampit-cli istampit-action site
+   git add istampit-cli istampit-action istampit-web
    git commit -m "chore(release): bump submodules"
    git push
    ```
