@@ -18,6 +18,9 @@ jobs:
       - name: Install web deps (isolated)
         working-directory: ./istampit-web
         run: npm install --no-audit --no-fund --workspaces=false
+      - name: Print PostCSS plugins (web)
+        working-directory: ./istampit-web
+        run: node -e "import('postcss-load-config').then(m=>m.default?m.default().then(c=>console.log(Object.keys(c.plugins))):m().then(c=>console.log(Object.keys(c.plugins))))"
       - name: Build web
         working-directory: ./istampit-web
         run: npm run build
@@ -35,6 +38,9 @@ jobs:
       - name: Install auth deps (isolated)
         working-directory: ./istampit-auth
         run: npm install --no-audit --no-fund --workspaces=false
+      - name: Print PostCSS plugins (auth)
+        working-directory: ./istampit-auth
+        run: node -e "try{const r=require('postcss-load-config');Promise.resolve(r()).then(c=>console.log(Object.keys(c.plugins||{})))}catch(e){console.log('postcss-load-config not installed');}"
       - name: Build auth
         working-directory: ./istampit-auth
         run: npm run build
