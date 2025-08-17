@@ -28,7 +28,7 @@ jobs:
       - name: Debug installed CLI
         working-directory: istampit-cli
         run: |
-          python -c "import importlib, istampit_cli.stamp_hash as sh;print('stamp_hash file:',sh.__file__);print('Version:',importlib.metadata.version('istampit-cli'));import itertools;print('--- head ---');print('\n'.join(list(itertools.islice((l.rstrip() for l in open(sh.__file__,'r',encoding='utf-8')),20))))"
+          python -c "import sys,itertools;from importlib import import_module;sh=import_module('istampit_cli.stamp_hash');print('python',sys.version);print('stamp_hash file:',sh.__file__);\nimport importlib, importlib.util;\ntry:\n import importlib.metadata as _im\nexcept Exception:\n import importlib_metadata as _im\nprint('Version:',_im.version('istampit-cli'));print('--- head ---');print('\\n'.join(list(itertools.islice((l.rstrip() for l in open(sh.__file__,'r',encoding='utf-8')),20))))"
       - name: Hash stamp (detached)
         working-directory: istampit-cli
         run: |
