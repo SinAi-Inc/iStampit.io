@@ -3,6 +3,9 @@ declare module 'ioredis' {
   class Redis {
     constructor(url?: string, opts?: RedisOptions);
     eval(script: string, numKeys: number, ...args: any[]): Promise<any>;
+    set(key: string, value: string, mode?: string, ttl?: number): Promise<any>;
+    del(key: string): Promise<any>;
+    disconnect(): void;
   }
   export = Redis;
 }
