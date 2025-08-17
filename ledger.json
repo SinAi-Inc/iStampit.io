@@ -947,12 +947,552 @@
         "automated",
         "artifact"
       ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250812.txt.ots.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250812.txt.ots.ots.bak.ots.ots.bak",
+      "sha256": "837aba33c2892771814cb628374b6aa4e82ea03080c6543209b291c08ceb0e1e",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:31.874978+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250813.txt.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250813.txt.ots.bak.ots.ots.bak",
+      "sha256": "9dcffbc6bfb6b4592e14e7938185c56007a6bc76cbb4d13a8043ceba60dae8fa",
+      "receiptUrl": "/artifacts/research-doc-20250813.txt.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:34.300881+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250812.pdf.ots.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250812.pdf.ots.ots.ots.ots.ots.bak",
+      "sha256": "acc61c9d05352a1a9eba11425efc43336c1e695554a51da96ae8424146d524a4",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:36.709020+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250812.md.ots.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: api-spec-20250812.md.ots.ots.ots.bak.ots.bak",
+      "sha256": "fcacd6ca97e678c9f7e8d439034dbd329f28a6dc34bea7b906e171eda0c3ef3e",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:39.114674+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250814.md.ots.bak.ots.bak",
+      "title": "Automated Artifact: api-spec-20250814.md.ots.bak.ots.bak",
+      "sha256": "602691f037f947afc2dceb91b2c141d3b0ed52402bd8eb7b4eeb1d840455e98f",
+      "receiptUrl": "/artifacts/api-spec-20250814.md.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:41.524734+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250813.txt.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250813.txt.ots.ots.ots.ots.bak",
+      "sha256": "c91ecdd979d901e9d7765a1dbe53b057030c34341086bcba39c3d23fdfccbada",
+      "receiptUrl": "/artifacts/research-doc-20250813.txt.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:43.918168+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250813.pdf.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250813.pdf.ots.ots.ots.ots.bak",
+      "sha256": "6b1b40ad29c18dc0f4cfd5ddd2a200de687323d57ed72aaf2fdb6eaaed16b4d2",
+      "receiptUrl": "/artifacts/security-audit-20250813.pdf.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:45.288737+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250815.md.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250815.md.ots.ots.bak",
+      "sha256": "157ee1d9a99147c2272f8437773d1c97b6277c864eca7232c95a17827229bec2",
+      "receiptUrl": "/artifacts/api-spec-20250815.md.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:47.717169+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250812.pdf.ots.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250812.pdf.ots.ots.bak.ots.ots.bak",
+      "sha256": "ea8b4282146a4260f19bb1105911868be123be1aae883c46e30579b013644779",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:50.108187+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250815.txt.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250815.txt.ots.ots.bak",
+      "sha256": "d9d40bae467804c0c7fe7e072ec4d2621d5a7bc3ad10e3af46fc008c0f3f7b0a",
+      "receiptUrl": "/artifacts/research-doc-20250815.txt.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:52.537642+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250812.txt.ots.bak.ots.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250812.txt.ots.bak.ots.ots.ots.bak",
+      "sha256": "d91830c08ee1035666e4dd369f8d9b2bb6b2a34bc7452fe7b9275e72c8baaf84",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots.bak.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:54.930480+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250814.txt.ots.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250814.txt.ots.ots.ots.bak",
+      "sha256": "cd7ffc82d999d7819cee0a980b1f1f77019f081efb2fb7413258743b353f1de8",
+      "receiptUrl": "/artifacts/research-doc-20250814.txt.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:57.317480+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250813.md.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: api-spec-20250813.md.ots.ots.bak.ots.bak",
+      "sha256": "671da7ba56712c92cbfb11b634cfcbeb8f9a821dcc02e40a4ee61f607d45b064",
+      "receiptUrl": "/artifacts/api-spec-20250813.md.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:08:59.746846+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250813.pdf.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: security-audit-20250813.pdf.ots.ots.bak.ots.bak",
+      "sha256": "0a278e336ffe82e0b37795ba61f9bb457d9071a9cccfc840883cf76c7f220bd5",
+      "receiptUrl": "/artifacts/security-audit-20250813.pdf.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:02.195544+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250817.pdf",
+      "title": "Automated Artifact: security-audit-20250817.pdf",
+      "sha256": "8cc6d1fd53ccb9385d7fd29c3d02662f1a21c7f799ff64c457c85e7da5a5dd2a",
+      "receiptUrl": "/artifacts/security-audit-20250817.pdf.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:05.055731+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250812.md.ots.bak.ots.bak.ots.bak",
+      "title": "Automated Artifact: api-spec-20250812.md.ots.bak.ots.bak.ots.bak",
+      "sha256": "71af728165296d3f198a65489b3fba7a58ba45452eea73fbec8e9bd8358564da",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots.bak.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:07.489451+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250812.md.ots.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250812.md.ots.ots.bak.ots.ots.bak",
+      "sha256": "eaf859001c311e3af9ed264f538242ea69f5c6319f1ddc5810468c536f849d26",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:09.943067+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250812.txt.ots.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: research-doc-20250812.txt.ots.ots.ots.bak.ots.bak",
+      "sha256": "9586e51b82b391e9ac9e7f8d63cff154cededba06286ea6df3f905bfa53bd6ba",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:12.377643+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250814.md.ots.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250814.md.ots.ots.ots.bak",
+      "sha256": "e72559aa3102bfd64bf4b8bda11bb692c45622ebaf0ae29862e4b4e73bec55e9",
+      "receiptUrl": "/artifacts/api-spec-20250814.md.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:14.831846+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250813.txt.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: research-doc-20250813.txt.ots.ots.bak.ots.bak",
+      "sha256": "dd140eb8fca55d0b3272a32842625e2723f9bf4129becb446c2b5f347c7e5916",
+      "receiptUrl": "/artifacts/research-doc-20250813.txt.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:16.222507+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250817.txt",
+      "title": "Automated Artifact: research-doc-20250817.txt",
+      "sha256": "72c76e115540b239ad6a79e2cc6e31578760d5df2460302ce29d3a6c97b5ca22",
+      "receiptUrl": "/artifacts/research-doc-20250817.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:18.643720+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250814.pdf.ots.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250814.pdf.ots.ots.ots.bak",
+      "sha256": "75efdb9bdbcada81e8c8a89cb21ac4bce64a2f154e8ee1423c8eb91d1bce5373",
+      "receiptUrl": "/artifacts/security-audit-20250814.pdf.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:21.038520+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250813.md.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250813.md.ots.ots.ots.ots.bak",
+      "sha256": "9c649324556f34e714dcbd9e4f974e6fc01ce3145d19bbf4f9a8b81aefa58ab0",
+      "receiptUrl": "/artifacts/api-spec-20250813.md.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:23.454960+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250817.md",
+      "title": "Automated Artifact: api-spec-20250817.md",
+      "sha256": "def883b5889b82dd4f38468b195fd2cc8e238e28afc8e055bbe75d2d361c4657",
+      "receiptUrl": "/artifacts/api-spec-20250817.md.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:25.859009+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250814.pdf.ots.bak.ots.bak",
+      "title": "Automated Artifact: security-audit-20250814.pdf.ots.bak.ots.bak",
+      "sha256": "b8715355dd42f3942beeae00f0008c290a63b525fc9ed8524c3d26f1e3086ad4",
+      "receiptUrl": "/artifacts/security-audit-20250814.pdf.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:28.248540+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250814.txt.ots.bak.ots.bak",
+      "title": "Automated Artifact: research-doc-20250814.txt.ots.bak.ots.bak",
+      "sha256": "9c9b6ae10fb891492909e245972e4bb6d57379f2a03959cd80f3523e4dae062e",
+      "receiptUrl": "/artifacts/research-doc-20250814.txt.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:30.677313+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250813.md.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250813.md.ots.bak.ots.ots.bak",
+      "sha256": "1a6ae7bd1566eca3ccb89d58efee4647310b3c4d59a535f4b0bf454edc3c07b9",
+      "receiptUrl": "/artifacts/api-spec-20250813.md.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:33.108685+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250812.txt.ots.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: research-doc-20250812.txt.ots.ots.ots.ots.ots.bak",
+      "sha256": "55431cc33456821b2408982cf416d4864b7609d87627cce9d5551c31b1fdb9d9",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:34.471586+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250812.pdf.ots.bak.ots.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250812.pdf.ots.bak.ots.ots.ots.bak",
+      "sha256": "37a1767c9fa3359094e16f51f0db4a0497190644db2d1f93317c7c8a8f5e33fd",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots.bak.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:36.902510+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250812.pdf.ots.ots.ots.bak.ots.bak",
+      "title": "Automated Artifact: security-audit-20250812.pdf.ots.ots.ots.bak.ots.bak",
+      "sha256": "ba85a287255346828cb80584bd82459da067001daa06a67897b2feb111caab67",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots.ots.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:39.339886+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250812.pdf.ots.bak.ots.bak.ots.bak",
+      "title": "Automated Artifact: security-audit-20250812.pdf.ots.bak.ots.bak.ots.bak",
+      "sha256": "b908a4a87d15ff34426752f76c25d22ec0d9b201ef2e0e318d088196b322c72c",
+      "receiptUrl": "/artifacts/security-audit-20250812.pdf.ots.bak.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:41.747507+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250812.md.ots.ots.ots.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250812.md.ots.ots.ots.ots.ots.bak",
+      "sha256": "ef275a445f29031a5c39d5936dee915874951648835234547a8bd08840e39234",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots.ots.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:44.179943+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-api-spec-20250812.md.ots.bak.ots.ots.ots.bak",
+      "title": "Automated Artifact: api-spec-20250812.md.ots.bak.ots.ots.ots.bak",
+      "sha256": "918e52b2cce6d22eb875d8fc18138126eb157f473b34962d48ff0382edeaf9dc",
+      "receiptUrl": "/artifacts/api-spec-20250812.md.ots.bak.ots.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:46.594971+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250815.pdf.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250815.pdf.ots.ots.bak",
+      "sha256": "82e425b158b9f7795778ebf196718cdfb688f70b7c8a57997be86e95a3fc164f",
+      "receiptUrl": "/artifacts/security-audit-20250815.pdf.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:49.042666+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-security-audit-20250813.pdf.ots.bak.ots.ots.bak",
+      "title": "Automated Artifact: security-audit-20250813.pdf.ots.bak.ots.ots.bak",
+      "sha256": "54c7b414ff747ad66a1e49495de7aadb20e8e58dea17f2a3d5d6606ae29676b5",
+      "receiptUrl": "/artifacts/security-audit-20250813.pdf.ots.bak.ots.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:51.421286+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20250817-research-doc-20250812.txt.ots.bak.ots.bak.ots.bak",
+      "title": "Automated Artifact: research-doc-20250812.txt.ots.bak.ots.bak.ots.bak",
+      "sha256": "31b91a77684f739abf48163712a7048629fcc140ae3421874a5b941d88e03ee6",
+      "receiptUrl": "/artifacts/research-doc-20250812.txt.ots.bak.ots.bak.ots.bak.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-08-17T06:09:52.792425+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
     }
   ],
   "metadata": {
-    "lastUpdated": "2025-08-16T06:05:18.353904+00:00",
-    "totalEntries": 63,
+    "lastUpdated": "2025-08-17T06:09:52.792507+00:00",
+    "totalEntries": 99,
     "confirmedEntries": 2,
-    "pendingEntries": 61
+    "pendingEntries": 97
   }
 }
