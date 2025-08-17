@@ -129,5 +129,13 @@ export const trackWidgetInteraction = (action: 'open' | 'close' | 'verify') => {
   analytics.track('widget_interaction', { action });
 };
 
+export const trackStampSuccess = (size: number) => {
+  analytics.track('stamp_success', { size });
+};
+
+export const trackStampError = (code: string) => {
+  analytics.track('stamp_error', { code });
+};
+
 export { analytics };
 export default analytics;

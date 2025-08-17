@@ -1,14 +1,74 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { trackStampSuccess, trackStampError } from '../lib/analytics';
 import { sha256Hex } from '../lib/sha256';
 
 interface Props {
   onHash: (hex: string) => void;
+  /** When true, component will call backend to stamp the hash automatically */
+  autoStamp?: boolean;
+  /** Called when a receipt is fetched (autoStamp) */
+  onReceipt?: (bytes: Uint8Array, meta: { hash: string; filename: string }) => void;
 }
 
-export default function HashUploader({ onHash }: Props) {
-  const [busy, setBusy] = useState(false);
+export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Props) {
+  const [busy, setBusy] = useState(false); // hashing or stamping
   const [manual, setManual] = useState('');
+  const [stampStatus, setStampStatus] = useState<'idle'|'pending'|'success'|'error'>('idle');
+  const [message, setMessage] = useState<string>('');
+  const [lastMeta, setLastMeta] = useState<{hash:string; size:number; filename:string} | null>(null);
+  const lastStampedHash = useRef<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  function base64ToBytes(b64: string){
+    if (typeof window === 'undefined') return new Uint8Array();
+    try {
+      const bin = atob(b64);
+      const out = new Uint8Array(bin.length);
+      for (let i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
+      return out;
+    } catch { return new Uint8Array(); }
+  }
+
+  async function autoStampHash(hash: string){
+    if(!autoStamp) return;
+    if(!/^[0-9a-f]{64}$/.test(hash)) return;
+    if (hash === lastStampedHash.current && stampStatus === 'success') return; // avoid duplicate
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setStampStatus('pending');
+    setMessage('Stamping…');
+    try {
+      const res = await fetch('/api/stamp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ hash }), signal: controller.signal });
+      if(!res.ok){
+        const j = await res.json().catch(()=>({error:'unknown'}));
+        throw new Error(j.error || 'stamp_failed');
+      }
+      const data = await res.json();
+      if(!data.receiptB64){ throw new Error('missing_receipt'); }
+  const bytes = base64ToBytes(data.receiptB64);
+      if(!bytes.length) throw new Error('decode_failed');
+      // Trigger download
+      const blob = new Blob([bytes], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = data.filename || `${hash}.ots`; document.body.appendChild(a); a.click(); a.remove();
+      setStampStatus('success');
+  setMessage('Receipt ready');
+  setLastMeta({ hash, size: bytes.length, filename: data.filename || `${hash}.ots` });
+      lastStampedHash.current = hash;
+      onReceipt?.(bytes, { hash, filename: data.filename || `${hash}.ots` });
+  trackStampSuccess(bytes.length);
+      setTimeout(()=>{ setMessage(''); }, 4000);
+    } catch(e:any){
+      if(e.name === 'AbortError') return; // ignore
+      setStampStatus('error');
+  setMessage('Stamp failed');
+  trackStampError(e?.message || 'stamp_failed');
+      setTimeout(()=>{ setMessage(''); }, 5000);
+    }
+  }
 
   async function handleFile(file: File) {
     setBusy(true);
@@ -16,10 +76,19 @@ export default function HashUploader({ onHash }: Props) {
       const buf = await file.arrayBuffer();
       const hex = await sha256Hex(new Uint8Array(buf));
       onHash(hex);
+      void autoStampHash(hex);
     } finally {
       setBusy(false);
     }
   }
+
+  // When manual hash becomes valid, trigger auto stamp
+  useEffect(()=>{
+    if(autoStamp && /^[0-9a-f]{64}$/.test(manual.toLowerCase())){
+      void autoStampHash(manual.toLowerCase());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [manual, autoStamp]);
 
   return (
     <div className="space-y-3 border rounded-md p-4 bg-white">
@@ -54,7 +123,8 @@ export default function HashUploader({ onHash }: Props) {
             const val = e.target.value.trim();
             setManual(val);
             if (/^[0-9a-fA-F]{64}$/.test(val)) {
-              onHash(val.toLowerCase());
+        const h = val.toLowerCase();
+        onHash(h);
             }
           }}
         />
@@ -63,6 +133,20 @@ export default function HashUploader({ onHash }: Props) {
         )}
       </div>
       {busy && <p className="text-xs text-slate-500">Computing hash…</p>}
+      {autoStamp && stampStatus === 'pending' && <p className="text-xs text-blue-600">Stamping hash…</p>}
+      {autoStamp && stampStatus === 'success' && lastMeta && (
+        <div className="text-xs text-green-600 space-y-1" role="status">
+          <div>✅ {message} — <button onClick={()=>{
+            // Re-offer open dialog
+            if(lastMeta){
+              // Not storing bytes; user already downloaded. Provide GET link.
+              window.open(`/api/stamp/${lastMeta.hash}.ots`, '_blank');
+            }
+          }} className="underline text-green-700 hover:text-green-800">Open .ots</button></div>
+          <div className="text-[10px] text-green-700 font-mono break-all">{lastMeta.hash.slice(0,16)}… • {lastMeta.size.toLocaleString()} bytes</div>
+        </div>
+      )}
+      {autoStamp && stampStatus === 'error' && message && <p className="text-xs text-red-600" role="alert">❌ {message}</p>}
     </div>
   );
 }

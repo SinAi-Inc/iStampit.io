@@ -24,7 +24,7 @@ export function middleware(req: NextRequest) {
 		return NextResponse.redirect(url, 308);
 	}
 	if (req.nextUrl.pathname.startsWith('/api/') && req.method === 'POST') {
-		const ip = req.ip || req.headers.get('x-forwarded-for') || 'anon';
+		const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'anon';
 		if (!allow(ip)) {
 			return new NextResponse(JSON.stringify({ error: 'rate_limited' }), { status: 429, headers: { 'content-type': 'application/json' } });
 		}

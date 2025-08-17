@@ -74,6 +74,37 @@ Drop-in verification for any website:
 - **Static Export**: CDN-ready deployment with global distribution
 - **Type Safety**: Full TypeScript coverage with strict typing
 
+### Hash Stamping API (Experimental)
+
+Client-side UX calls a lightweight stamping endpoint to obtain an OpenTimestamps receipt from a precomputed SHA-256 hash (your file never uploads):
+
+POST `/api/stamp`
+
+Request body:
+
+```json
+{ "hash": "<64 hex sha256>" }
+```
+
+Successful response:
+
+```json
+{
+  "hash": "abcd...",            // normalized lowercase hash
+  "filename": "abcd....ots",     // suggested receipt filename
+  "size": 1234,                   // bytes
+  "receiptB64": "BASE64..."      // binary .ots file encoded in base64
+}
+```
+
+Errors return HTTP 4xx/5xx with `{ "error": "code" }` (e.g. `invalid_hash`, `rate_limited`, `stamp_failed`).
+
+GET `/api/stamp/{hash}.ots`
+
+Streaming binary receipt download for the given hash. Same rate limits as POST. Returns `application/octet-stream` with `Content-Disposition: attachment`.
+
+Rate limiting: sliding window (60/min, max 15 / 10s burst) per IP (in-memory demo implementation). For production deploy, back with Redis / durable KV and tighten thresholds.
+
 ## Architecture
 
 ```text

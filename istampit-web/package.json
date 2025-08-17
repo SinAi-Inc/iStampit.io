@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-  "prebuild": "node scripts/prebuild.mjs",
+    "prebuild": "node scripts/prebuild.mjs",
     "build": "next build",
     "export": "echo 'use build only; output:export handles static generation'",
     "build:static": "npm run build && npm run export",
@@ -18,13 +18,15 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "ioredis": "^5.4.1",
     "next": "15.4.6",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "tailwindcss": "4.1.12"
+  "tailwindcss": "3.4.13"
   },
   "devDependencies": {
     "@playwright/test": "^1.47.2",
+    "@tailwindcss/postcss": "^4.1.12",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^24.3.0",
