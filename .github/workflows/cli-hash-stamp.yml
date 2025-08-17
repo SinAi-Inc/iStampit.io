@@ -23,7 +23,12 @@ jobs:
         working-directory: istampit-cli
         run: |
           python -m pip install --upgrade pip
+          pip uninstall -y istampit-cli || true
           pip install -e .
+      - name: Debug installed CLI
+        working-directory: istampit-cli
+        run: |
+          python -c "import importlib, istampit_cli.stamp_hash as sh;print('stamp_hash file:',sh.__file__);print('Version:',importlib.metadata.version('istampit-cli'));import itertools;print('--- head ---');print('\n'.join(list(itertools.islice((l.rstrip() for l in open(sh.__file__,'r',encoding='utf-8')),20))))"
       - name: Hash stamp (detached)
         working-directory: istampit-cli
         run: |
