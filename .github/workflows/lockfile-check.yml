@@ -15,20 +15,17 @@ jobs:
         run: |
           set -euo pipefail
           echo "Scanning for extra package-lock.json files..."
-          mapfile -t LOCKS < <(git ls-files "**/package-lock.json")
-          ROOT_ONLY=0
-          if [ "${#LOCKS[@]}" -eq 0 ]; then
-            echo "ERROR: No package-lock.json found (expected root lockfile)" >&2
+          ROOT_LOCK=package-lock.json
+          if [ ! -f "$ROOT_LOCK" ]; then
+            echo "ERROR: Root package-lock.json missing" >&2
+            ls -al
             exit 1
           fi
-          for f in "${LOCKS[@]}"; do
-            if [ "$f" != "package-lock.json" ]; then
-              echo "Found disallowed lockfile: $f" >&2
-              ROOT_ONLY=1
-            fi
-          done
-          if [ $ROOT_ONLY -ne 0 ]; then
-            echo "Failing due to disallowed lockfiles above root. Keep only a single root package-lock.json." >&2
+          # Find any nested lockfiles excluding node_modules
+          NESTED=$(find . -type f -name package-lock.json -not -path './package-lock.json' -not -path '*/node_modules/*' || true)
+          if [ -n "$NESTED" ]; then
+            echo "Found disallowed nested lockfiles:" >&2
+            echo "$NESTED" >&2
             exit 2
           fi
           echo "Lockfile check passed (single root package-lock.json)."

@@ -1,0 +1,31 @@
+name: CLI hash-stamp
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  probe-and-stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CLI (editable)
+        working-directory: istampit-cli
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Hash stamp (detached)
+        working-directory: istampit-cli
+        run: |
+          HASH=05c4f616a8e5310d19d938cfd769864d7f4ccdc2ca8b479b10af83564b097af9
+          istampit stamp --hash $HASH --out $HASH.ots --json
+          test -s $HASH.ots
+      - name: Show receipt size
+        working-directory: istampit-cli
+        run: ls -l *.ots || true

@@ -69,7 +69,7 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult, autoVeri
 
 	// Auto-hide toast after delay
 	useEffect(()=>{
-		if(!toast) return; 
+		if(!toast) return;
 		if(toastTimeout.current) window.clearTimeout(toastTimeout.current);
 		toastTimeout.current = window.setTimeout(()=> setToast(null), toast.kind==='info'? 4000 : 5000);
 		return ()=> { if(toastTimeout.current) window.clearTimeout(toastTimeout.current); };

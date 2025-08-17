@@ -1,8 +1,6 @@
-name: Deploy Next.js (static) to GitHub Pages
+name: Deploy Next.js (static) to GitHub Pages (DISABLED)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -16,6 +14,7 @@ concurrency:
 
 jobs:
   build:
+    if: false  # disabled after hybrid deployment switch; kept for reference
     runs-on: ubuntu-latest
     env:
       # Force static export mode so next build emits ./out for GitHub Pages
@@ -36,12 +35,9 @@ jobs:
         working-directory: istampit-web
         run: npm install --no-audit --no-fund
       - name: Build (static export)
+        if: false
         working-directory: istampit-web
-        env:
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://github.com/SinAi-Inc/iStampit.io' }}
-          NEXT_PUBLIC_PAGES_STATIC: '1'
-          STATIC_EXPORT: '1'
-        run: npm run build
+        run: echo "disabled"
       - name: Verify export output
         run: |
           if [ ! -d "istampit-web/out" ] && [ ! -d "istampit-web/dist" ] && [ ! -d "istampit-web/.next" ]; then
@@ -54,6 +50,7 @@ jobs:
         with:
           path: istampit-web/out
   deploy:
+    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

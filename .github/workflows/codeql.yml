@@ -33,15 +33,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: |
-            istampit-web/package-lock.json
-            istampit-action/package-lock.json
-      - name: Install web deps
-        working-directory: istampit-web
-        run: npm ci || npm install
-      - name: Install action deps
-        working-directory: istampit-action
-        run: npm ci || npm install
+          cache-dependency-path: package-lock.json
+      - name: Install dependencies (root workspace)
+        run: npm install --no-audit --no-fund
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
