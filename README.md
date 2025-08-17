@@ -18,9 +18,38 @@
 
 ## Hosting Model
 
-The site is published as a **fully static export** (no server runtime) suitable for GitHub Pages, Cloudflare Pages, Netlify, or any static CDN. All verification and ledger features run entirely client-side; **no login is required or provided in this build**.
+The application now runs in a **hybrid Next.js deployment**: static pages + live API routes (`/api/stamp`, `/api/session`) and middleware. This enables real-time stamping (spawning the `istampit` CLI) while keeping most pages cached statically.
 
-Historic documentation referenced separate `auth.` / `app.` subdomains and cookie-based sessions; that architecture has been retired for the public, read‑only verification experience. Any lingering auth files were removed to prevent ghost UI or unused bundle weight.
+Key points:
+
+- `/api/stamp` requires a Node/Edge environment that allows spawning a subprocess (CLI) or executing child processes. (Standard Vercel Node serverless functions are acceptable; pure static hosts are not.)
+- Rate limiting defaults to in-memory; production deployments should configure Redis (set `ENABLE_REDIS=1` and `REDIS_URL` / `UPSTASH_REDIS_REST_URL`).
+- If deploying to Vercel: add the Python-based CLI to the build (either pre-install via `pip` in a build step or bundle a JS wrapper). Ensure the `istampit` executable is on `PATH` at runtime.
+- For container-based hosts (Fly.io, Render, Docker/Kubernetes): install the CLI in the image and expose port 3000 running `next start`.
+- Fallback static-only mode (former configuration) is no longer default; to disable runtime stamping remove or stub the `/api/stamp` route.
+
+See Hosting Notes below for operational guidance.
+
+### Hosting Notes
+
+| Capability | Requirement | Notes |
+|------------|-------------|-------|
+| Child process (CLI) | Required | Used to invoke `istampit` for hashing/stamping. |
+| Environment Variables | Optional/Recommended | `ENABLE_REDIS`, `REDIS_URL` / `UPSTASH_REDIS_REST_URL`, `NEXTAUTH_URL` (if session proxy used). |
+| Redis (optional) | Improves rate limiting | Without it, in-memory limiter resets on cold start. |
+| Node Version | 20.x | Enforced via `engines` field; avoids runtime drift. |
+| Build Artifacts | `next build` output | Serve with `next start` (not `next export`). |
+| Security | Least privilege | If using Redis, scope credentials to rate limiting only. |
+
+Deployment checklist:
+
+1. Install dependencies + `istampit` CLI (Python virtual env or standalone binary) during build.
+2. Ensure `NODE_ENV=production` and Node 20.x runtime.
+3. (Optional) Provide Redis URL + set `ENABLE_REDIS=1`.
+4. Run `npm run build` then launch with `npx next start` (or process manager).
+5. Monitor `/api/stamp` latency and memory; tune rate limits if necessary.
+
+If a platform forbids spawning processes, consider a lightweight microservice for stamping and adjust the frontend to call that endpoint.
 
 
 <!-- Removed duplicate H1 and repeated badges/mission paragraph -->
