@@ -28,22 +28,22 @@ jobs:
       - name: Debug installed CLI
         working-directory: istampit-cli
         run: |
-      python - <<'PY'
-      import sys, itertools
-      from importlib import import_module
-      sh = import_module('istampit_cli.stamp_hash')
-      try:
-        import importlib.metadata as _im  # Python 3.8+
-      except Exception:
-        import importlib_metadata as _im  # type: ignore
-      print('python', sys.version)
-      print('Version:', _im.version('istampit-cli'))
-      print('stamp_hash file:', sh.__file__)
-      print('--- head ---')
-      with open(sh.__file__, 'r', encoding='utf-8') as f:
-        for i, line in zip(range(20), f):
-          print(f'{i+1:02d}: {line.rstrip()}')
-      PY
+          python - <<'PY'
+          import sys, itertools
+          from importlib import import_module
+          sh = import_module('istampit_cli.stamp_hash')
+          try:
+            import importlib.metadata as _im  # Python 3.8+
+          except Exception:
+            import importlib_metadata as _im  # type: ignore
+          print('python', sys.version)
+          print('Version:', _im.version('istampit-cli'))
+          print('stamp_hash file:', sh.__file__)
+          print('--- head ---')
+          with open(sh.__file__, 'r', encoding='utf-8') as f:
+            for i, line in zip(range(20), f):
+              print(f'{i+1:02d}: {line.rstrip()}')
+          PY
       - name: Hash stamp (detached)
         working-directory: istampit-cli
         run: |
