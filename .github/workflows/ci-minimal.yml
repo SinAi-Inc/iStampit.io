@@ -1,4 +1,4 @@
-name: CI
+name: CI (minimal) HYBRID
 
 on:
   push:
@@ -33,10 +33,8 @@ jobs:
       - name: Install deps (web only)
         working-directory: ./istampit-web
         run: npm install --no-audit --no-fund --workspaces=false
-      - name: Build web (static export)
+      - name: Build web (hybrid)
         working-directory: ./istampit-web
-        env:
-          NEXT_PUBLIC_PAGES_STATIC: '1'
         run: npm run build
 
   e2e:
@@ -53,18 +51,21 @@ jobs:
       - name: Install deps (web only)
         working-directory: ./istampit-web
         run: npm install --no-audit --no-fund --workspaces=false
-      - name: Build web (static export)
+      - name: Build web (hybrid)
         working-directory: ./istampit-web
-        env:
-          NEXT_PUBLIC_PAGES_STATIC: '1'
         run: npm run build
-      - name: Serve static out dir
+      - name: Start Next server
         working-directory: ./istampit-web
         run: |
-          npx serve -l 3000 out &
-          n=0
-          until curl -fsS http://localhost:3000 >/dev/null || [ $n -ge 40 ]; do n=$((n+1)); echo "Waiting for server... ($n)"; sleep 2; done
-          if [ $n -ge 40 ]; then echo "Server failed to start"; ls -R out | head -100; exit 1; fi
+          npm run start &
+          echo "Waiting for server health endpoint..."
+          for i in {1..40}; do
+            if curl -sf http://localhost:3000/api/healthz > /dev/null; then
+              echo "Server is up (healthz)!"; break; fi
+            echo "Waiting for server... ($i)"; sleep 2;
+            if [ "$i" = "40" ]; then echo "Server failed to start"; cat .next/BUILD_ID || true; exit 1; fi
+          done
+          curl -sf http://localhost:3000/verify > /dev/null || { echo "Verify page unreachable"; exit 1; }
       - name: Install Playwright browsers
         working-directory: ./istampit-web
         run: npx playwright install --with-deps
