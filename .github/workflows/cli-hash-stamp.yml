@@ -10,7 +10,11 @@ jobs:
   probe-and-stamp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
