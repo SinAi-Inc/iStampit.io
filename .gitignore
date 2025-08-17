@@ -13,8 +13,11 @@ build/
 # Env & tooling
 .env*
 .DS_Store
+.vscode/
 
 # Coverage
 coverage*
 .coverage
-\n# Ignore external auth example workspace\nistampit-web/external-auth/
+
+# Ignore external auth example workspace
+istampit-web/external-auth/
