@@ -58,9 +58,15 @@ jobs:
         working-directory: ./istampit-web
         run: |
           npm run start &
-          n=0
-          until curl -fsS http://localhost:3000/api/healthz >/dev/null || [ $n -ge 40 ]; do n=$((n+1)); echo "Waiting for server... ($n)"; sleep 2; done
-          if [ $n -ge 40 ]; then echo "Server failed to start"; cat .next/BUILD_ID || true; exit 1; fi
+          echo "Waiting for server health endpoint..."
+          for i in {1..40}; do
+            if curl -sf http://localhost:3000/api/healthz > /dev/null; then
+              echo "Server is up (healthz)!"; break; fi
+            echo "Waiting for server... ($i)"; sleep 2;
+            if [ "$i" = "40" ]; then echo "Server failed to start"; cat .next/BUILD_ID || true; exit 1; fi
+          done
+          echo "Probing a representative static page (/verify)"
+          curl -sf http://localhost:3000/verify > /dev/null || { echo "Verify page unreachable"; exit 1; }
       - name: Install Playwright browsers
         working-directory: ./istampit-web
         run: npx playwright install --with-deps
