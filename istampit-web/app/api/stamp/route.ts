@@ -4,10 +4,6 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { promises as fs } from 'fs';
 import { spawn } from 'child_process';
-// Static export hint: mark this route as force-static so Next's export mode does not attempt
-// to execute dynamic logic at build-time. At runtime (deployed server / edge) the logic executes normally.
-export const dynamic = 'force-static';
-export const revalidate = 0;
 import Redis from 'ioredis';
 
 export const runtime = 'nodejs';
@@ -92,9 +88,6 @@ return 1
 }
 
 export async function POST(req: NextRequest){
-  if (process.env.NEXT_EXPORT === '1') {
-    return json({ error: 'unavailable_in_static_export' }, 503);
-  }
   try {
     const body = await req.json().catch(()=>({}));
     const hash = body.hash;
@@ -115,9 +108,6 @@ export async function POST(req: NextRequest){
 }
 
 export async function GET(req: NextRequest){
-  if (process.env.NEXT_EXPORT === '1') {
-    return json({ error: 'unavailable_in_static_export' }, 503);
-  }
   const url = new URL(req.url);
   const m = url.pathname.match(/\/api\/stamp\/([a-fA-F0-9]{64})\.ots$/);
   if(!m) return json({ error: 'not_found' }, 404);

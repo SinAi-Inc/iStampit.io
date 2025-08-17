@@ -14,8 +14,7 @@
 //
 //  This design keeps the static export build green while still documenting intent.
 
-export const dynamic = 'force-static';
-export const revalidate = 0; // Ensure no ISR caching semantics are introduced.
+// Allow dynamic handling (edge runtime) now that hybrid deployment is enabled.
 
 // Narrow interface (we only inspect env & potentially perform a fetch in dev).
 export async function GET() {

@@ -16,17 +16,16 @@ const isProd = process.env.NODE_ENV === 'production';
 const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '');
 
 /** @type {import('next').NextConfig} */
-const isStaticExport = true; // always exporting static site now
 const baseConfig = {
-  output: 'export',
-  trailingSlash: true,
-  images: { unoptimized: true },
+  // Hybrid deployment: allow dynamic API routes (stamping) + static pages.
+  // Remove forced static export so /api/stamp & middleware run in production.
+  reactStrictMode: true,
   experimental: {},
-  // Hard redirect legacy removed routes to /verify (SEO hygiene)
+  images: { domains: [], unoptimized: false },
+  // Legacy redirects still valid; keep but allow API auth path to fall through if needed.
   redirects: async () => [
     { source: '/auth/google', destination: '/verify', permanent: true },
     { source: '/session-test', destination: '/verify', permanent: true },
-    { source: '/api/auth/:path*', destination: '/verify', permanent: true },
   ],
   webpack: (config) => {
     config.resolve = config.resolve || {};

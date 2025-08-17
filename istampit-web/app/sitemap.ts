@@ -1,6 +1,4 @@
 import type { MetadataRoute } from "next";
-export const dynamic = 'force-static';
-export const revalidate = 3600; // regenerate sitemap at most hourly during dev; ignored in pure static export
 import { SITE_URL } from "../lib/seo/siteMetadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
