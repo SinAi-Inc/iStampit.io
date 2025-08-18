@@ -15,7 +15,7 @@ export default function DemoBanner() {
       Interactive authentication is disabled here. Continue to{' '}
       <a
         href="https://auth.istampit.io/api/auth/signin?callbackUrl=https%3A%2F%2Fistampit.io%2Fverify"
-        className="underline font-semibold hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-amber-500 rounded"
+        className="underline font-semibold hover:text-black dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-amber-500 rounded"
         rel="noopener noreferrer"
       >live app sign‑in</a>.
     </div>

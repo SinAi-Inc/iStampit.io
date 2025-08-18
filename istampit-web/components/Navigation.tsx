@@ -41,7 +41,7 @@ export default function Navigation({ logo }: NavigationProps = {}) {
                 Verify
               </Link>
               <Link href="/ledger" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
-                Innovation Ledger
+                Public Ledger
               </Link>
               <Link href="/embed" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Embed

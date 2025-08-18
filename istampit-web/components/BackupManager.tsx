@@ -95,8 +95,8 @@ export default function BackupManager() {
   };
 
   return (
-    <div className="bg-white border rounded-lg p-4 space-y-4">
-      <h3 className="font-semibold text-gray-800">Backup Management</h3>
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+      <h3 className="font-semibold text-gray-800 dark:text-gray-200">Backup Management</h3>
 
       {/* Status Overview */}
       <div className="grid grid-cols-1 gap-3">
@@ -174,7 +174,7 @@ export default function BackupManager() {
       </div>
 
       {/* Help Text */}
-      <div className="text-xs text-gray-600 space-y-1">
+      <div className="text-xs text-gray-600 dark:text-gray-300 space-y-1">
         <p>• Emergency backups are stored locally and created automatically</p>
         <p>• Export backups to download a file for external storage</p>
         <p>• Import backups to restore from previously exported files</p>

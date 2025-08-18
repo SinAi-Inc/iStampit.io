@@ -80,9 +80,9 @@ export default function ExplorerConfig() {
   const stats = ExplorerManager.getExplorerStats();
 
   return (
-    <div className="bg-white border rounded-lg p-4 space-y-4">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-gray-800">Explorer Configuration</h3>
+        <h3 className="font-semibold text-gray-800 dark:text-gray-200">Explorer Configuration</h3>
         <button
           onClick={() => setIsEditing(!isEditing)}
           className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
@@ -122,7 +122,7 @@ export default function ExplorerConfig() {
                   <button
                     onClick={() => moveExplorerUp(id)}
                     disabled={index === 0 || !isEditing}
-                    className="text-xs text-gray-500 hover:text-gray-700 disabled:opacity-30"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 disabled:opacity-30"
                     title="Move up"
                   >
                     ▲
@@ -138,8 +138,8 @@ export default function ExplorerConfig() {
                       </span>
                     )}
                   </div>
-                  <div className="text-sm text-gray-600">{config.description}</div>
-                  <div className="text-xs text-gray-500 font-mono">{config.baseUrl}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">{config.description}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">{config.baseUrl}</div>
                 </div>
               </div>
 
@@ -169,7 +169,7 @@ export default function ExplorerConfig() {
       {/* Add Custom Explorer */}
       {isEditing && (
         <div className="border-t pt-4 space-y-3">
-          <h4 className="font-medium text-gray-800">Add Custom Explorer</h4>
+          <h4 className="font-medium text-gray-800 dark:text-gray-200">Add Custom Explorer</h4>
 
           <div className="grid grid-cols-2 gap-2 text-sm">
             <input
@@ -234,7 +234,7 @@ export default function ExplorerConfig() {
       )}
 
       {/* Help Text */}
-      <div className="text-xs text-gray-600 space-y-1">
+      <div className="text-xs text-gray-600 dark:text-gray-300 space-y-1">
         <p>• Primary explorer is used for main links, others appear as alternatives</p>
         <p>• Use the arrows to reorder explorers to change priority</p>
         <p>• Custom explorers can be added for specialized blockchain explorers</p>

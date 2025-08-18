@@ -74,7 +74,7 @@ export default function MonitoringDashboard() {
 
       {/* Expanded Dashboard */}
       {isExpanded && (
-        <div className="absolute bottom-full right-0 mb-2 w-96 bg-white border rounded-lg shadow-xl p-4">
+        <div className="absolute bottom-full right-0 mb-2 w-96 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4">
           {/* Tab Navigation */}
           <div className="flex border-b mb-4">
             <button
@@ -82,7 +82,7 @@ export default function MonitoringDashboard() {
               className={`px-3 py-2 text-sm font-medium border-b-2 ${
                 activeTab === 'status'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
               }`}
             >
               System Status
@@ -92,7 +92,7 @@ export default function MonitoringDashboard() {
               className={`px-3 py-2 text-sm font-medium border-b-2 ${
                 activeTab === 'backup'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
               }`}
             >
               Backup
@@ -102,7 +102,7 @@ export default function MonitoringDashboard() {
               className={`px-3 py-2 text-sm font-medium border-b-2 ${
                 activeTab === 'explorer'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
               }`}
             >
               Explorers
@@ -113,7 +113,7 @@ export default function MonitoringDashboard() {
             <div className="space-y-4">
               {/* System Status */}
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">System Status</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">System Status</h3>
                 <div className={`p-3 rounded border ${statusColors[healthStatus]}`}>
                   <div className="flex items-center justify-between">
                     <span className="font-medium">
@@ -129,7 +129,7 @@ export default function MonitoringDashboard() {
               {/* Active Alerts */}
               {activeAlerts.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Active Alerts</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Active Alerts</h3>
                   <div className="space-y-2">
                     {activeAlerts.map(([alertType, alert]) => (
                       <div key={alertType} className="bg-red-50 border border-red-200 rounded p-2">
@@ -151,7 +151,7 @@ export default function MonitoringDashboard() {
               {/* Recent Metrics */}
               {latestMetrics && (
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Latest Metrics</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Latest Metrics</h3>
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="bg-blue-50 border border-blue-200 rounded p-2">
                       <div className="font-medium text-blue-800">Actions</div>
@@ -198,7 +198,7 @@ export default function MonitoringDashboard() {
 
               {/* Quick Actions */}
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Quick Actions</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Quick Actions</h3>
                 <div className="flex gap-2">
                   <button
                     onClick={() => {

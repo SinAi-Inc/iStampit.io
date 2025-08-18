@@ -76,9 +76,9 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
   }, [manual, autoStamp]);
 
   return (
-    <div className="space-y-3 border rounded-md p-4 bg-white">
+    <div className="space-y-3 border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-white dark:bg-gray-700">
       <div className="space-y-2">
-        <label htmlFor="hash-file" className="block text-sm font-medium">Select File</label>
+        <label htmlFor="hash-file" className="block text-sm font-medium text-gray-900 dark:text-white">Select File</label>
         <input
           id="hash-file"
           name="hash-file"
@@ -91,15 +91,15 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
         />
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-xs text-slate-500">OR</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">OR</span>
         <div className="flex-1" />
       </div>
       <div className="space-y-2">
-        <label htmlFor="hash-manual" className="block text-sm font-medium">Paste SHA-256 (hex)</label>
+        <label htmlFor="hash-manual" className="block text-sm font-medium text-gray-900 dark:text-white">Paste SHA-256 (hex)</label>
         <input
           id="hash-manual"
           name="hash-manual"
-          className={`w-full rounded px-2 py-1 text-sm border ${manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual) ? 'border-red-500 focus:border-red-600' : 'border-gray-300 focus:border-blue-600'}`}
+          className={`w-full rounded px-2 py-1 text-sm border bg-white dark:bg-gray-600 text-gray-900 dark:text-white ${manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual) ? 'border-red-500 focus:border-red-600' : 'border-gray-300 dark:border-gray-500 focus:border-blue-600 dark:focus:border-blue-400'}`}
           placeholder="e3b0c442..."
           value={manual}
           aria-invalid={manual.length>0 && !/^[0-9a-fA-F]{64}$/.test(manual)}
@@ -117,21 +117,21 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
           <p id="hash-manual-error" className="text-xs text-red-600" role="alert">Must be 64 hex chars.</p>
         )}
       </div>
-      {busy && <p className="text-xs text-slate-500">Computing hash…</p>}
-      {autoStamp && stampStatus === 'pending' && <p className="text-xs text-blue-600">Stamping hash…</p>}
+      {busy && <p className="text-xs text-gray-500 dark:text-gray-400">Computing hash…</p>}
+      {autoStamp && stampStatus === 'pending' && <p className="text-xs text-blue-600 dark:text-blue-400">Stamping hash…</p>}
       {autoStamp && stampStatus === 'success' && lastMeta && (
-        <div className="text-xs text-green-600 space-y-1" role="status">
+        <div className="text-xs text-green-600 dark:text-green-400 space-y-1" role="status">
           <div>✅ {message} — <button onClick={()=>{
             // Re-offer open dialog
             if(lastMeta){
               // Not storing bytes; user already downloaded. Provide GET link.
               window.open(`/api/stamp/${lastMeta.hash}.ots`, '_blank');
             }
-          }} className="underline text-green-700 hover:text-green-800">Open .ots</button></div>
-          <div className="text-[10px] text-green-700 font-mono break-all">{lastMeta.hash.slice(0,16)}… • {lastMeta.size.toLocaleString()} bytes</div>
+          }} className="underline text-green-700 hover:text-green-800 dark:text-green-300 dark:hover:text-green-200">Open .ots</button></div>
+          <div className="text-[10px] text-green-700 dark:text-green-300 font-mono break-all">{lastMeta.hash.slice(0,16)}… • {lastMeta.size.toLocaleString()} bytes</div>
         </div>
       )}
-      {autoStamp && stampStatus === 'error' && message && <p className="text-xs text-red-600" role="alert">❌ {message}</p>}
+      {autoStamp && stampStatus === 'error' && message && <p className="text-xs text-red-600 dark:text-red-400" role="alert">❌ {message}</p>}
     </div>
   );
 }

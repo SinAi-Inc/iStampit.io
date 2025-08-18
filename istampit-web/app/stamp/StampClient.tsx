@@ -19,7 +19,7 @@ export default function StampClient() {
     const command = `curl -X POST "https://istampit-api.fly.dev/stamp" \\
   -H "Content-Type: application/json" \\
   -d '{"hash":"${hash}"}'`;
-    
+
     navigator.clipboard.writeText(command).then(() => {
       // Could add a toast notification here
       console.log('Curl command copied to clipboard');

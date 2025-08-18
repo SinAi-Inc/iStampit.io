@@ -77,17 +77,17 @@ export default function ApiStatus({ className = '', showDetails = true }: ApiSta
     return (
       <div className={`inline-flex items-center gap-1 text-sm ${className}`}>
         <span>{getStatusIcon()}</span>
-        <span className="text-gray-600">API {getStatusText()}</span>
+        <span className="text-gray-600 dark:text-gray-300">API {getStatusText()}</span>
       </div>
     );
   }
 
   return (
-    <div className={`bg-white border rounded-lg p-3 shadow-sm ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm ${className}`}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className="text-lg">{getStatusIcon()}</span>
-          <span className="font-medium text-gray-900">
+          <span className="font-medium text-gray-900 dark:text-gray-100">
             API Status: {getStatusText()}
           </span>
         </div>
@@ -100,7 +100,7 @@ export default function ApiStatus({ className = '', showDetails = true }: ApiSta
         </button>
       </div>
 
-      <div className="space-y-1 text-sm text-gray-600">
+      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
         <div>
           <strong>Endpoint:</strong> {getApiTypeText()}
         </div>
@@ -127,7 +127,7 @@ export default function ApiStatus({ className = '', showDetails = true }: ApiSta
         )}
 
         {lastChecked && (
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Last checked: {lastChecked.toLocaleTimeString()}
           </div>
         )}

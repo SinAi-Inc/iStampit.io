@@ -34,7 +34,7 @@ function MobileMenu({ isOpen, onClose, logo }: { isOpen: boolean; onClose: () =>
           <nav className="flex-1 px-6 py-8 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm" aria-label="Mobile">
             <div className="space-y-2">
               {['/','/stamp','/verify','/ledger','/embed','/docs'].map((href,i)=>{
-                const labels = ['Home','Create Timestamp','Verify','Innovation Ledger','Embed','Documentation'];
+                const labels = ['Home','Create Timestamp','Verify','Public Ledger','Embed','Documentation'];
                 return (
                   <Link
                     key={href}
