@@ -130,7 +130,7 @@ export async function GET(req: NextRequest){
   return new Response(copy, { status: 200, headers: { 'Content-Type':'application/octet-stream', 'Content-Disposition':`attachment; filename="${hash}.ots"`, 'Cache-Control':'no-store' } });
   } catch(e:any){
     console.error('stamp_failed', e);
-    return json({ error: 'stamp_failed', message: 'An error occurred while stamping.' }, 500);
+    return json({ error: 'stamp_failed', message: STAMP_ERROR_MESSAGE }, 500);
   } finally { await fs.rm(tmp).catch(()=>{}); }
 }
 
