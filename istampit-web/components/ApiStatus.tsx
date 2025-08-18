@@ -104,7 +104,7 @@ export default function ApiStatus({ className = '', showDetails = true }: ApiSta
         <div>
           <strong>Endpoint:</strong> {getApiTypeText()}
         </div>
-        
+
         {health && (
           <>
             {health.cli_version && (

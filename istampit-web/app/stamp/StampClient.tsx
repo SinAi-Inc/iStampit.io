@@ -6,19 +6,38 @@ import ApiStatus from '../../components/ApiStatus';
 export default function StampClient() {
   const [currentHash, setCurrentHash] = useState<string>('');
   const [recentStamps, setRecentStamps] = useState<Array<{hash: string; filename: string; timestamp: number}>>([]);
+  const [showCurlCommand, setShowCurlCommand] = useState(false);
 
   const handleNewStamp = (bytes: Uint8Array, meta: { hash: string; filename: string }) => {
     setRecentStamps(prev => [
       { hash: meta.hash, filename: meta.filename, timestamp: Date.now() },
-      ...prev.slice(0, 4) // Keep last 5
+      ...prev.slice(0, 9) // Keep last 10
     ]);
+  };
+
+  const copyCurlCommand = (hash: string) => {
+    const command = `curl -X POST "https://istampit-api.fly.dev/stamp" \\
+  -H "Content-Type: application/json" \\
+  -d '{"hash":"${hash}"}'`;
+    
+    navigator.clipboard.writeText(command).then(() => {
+      // Could add a toast notification here
+      console.log('Curl command copied to clipboard');
+    });
+  };
+
+  const generateExampleCurl = () => {
+    const exampleHash = currentHash || "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    return `curl -X POST "https://istampit-api.fly.dev/stamp" \\
+  -H "Content-Type: application/json" \\
+  -d '{"hash":"${exampleHash}"}'`;
   };
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-4xl mx-auto">
-          
+
           {/* Hero Section */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
@@ -57,12 +76,12 @@ export default function StampClient() {
                     Upload File or Enter Hash
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    Drop any file to compute its SHA-256 hash and create a timestamp receipt, 
+                    Drop any file to compute its SHA-256 hash and create a timestamp receipt,
                     or paste a precomputed hash directly.
                   </p>
                 </div>
 
-                <HashUploader 
+                <HashUploader
                   onHash={setCurrentHash}
                   autoStamp={true}
                   onReceipt={handleNewStamp}
@@ -151,14 +170,23 @@ export default function StampClient() {
                           <span className="text-xs text-gray-500 dark:text-gray-400">
                             {new Date(stamp.timestamp).toLocaleTimeString()}
                           </span>
-                          <a 
-                            href={`/api/stamp/${stamp.hash}.ots`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                          >
-                            Download
-                          </a>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => copyCurlCommand(stamp.hash)}
+                              className="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+                              title="Copy curl command"
+                            >
+                              curl
+                            </button>
+                            <a
+                              href={`/api/stamp/${stamp.hash}.ots`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              Download
+                            </a>
+                          </div>
                         </div>
                         <p className="font-mono text-xs text-gray-700 dark:text-gray-300 break-all">
                           {stamp.hash.slice(0, 16)}...{stamp.hash.slice(-8)}
@@ -168,6 +196,37 @@ export default function StampClient() {
                   </div>
                 </div>
               )}
+
+              {/* API Developer Tools */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Developer Tools
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      API curl Command
+                    </label>
+                    <div className="relative">
+                      <pre className="bg-gray-100 dark:bg-gray-700 text-xs p-3 rounded-lg overflow-x-auto font-mono text-gray-800 dark:text-gray-200">
+{generateExampleCurl()}
+                      </pre>
+                      <button
+                        onClick={() => navigator.clipboard.writeText(generateExampleCurl())}
+                        className="absolute top-2 right-2 p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                        title="Copy to clipboard"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                      Replace the hash with your SHA-256. Rate limit: 60/min per IP.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               {/* Next Steps */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6">

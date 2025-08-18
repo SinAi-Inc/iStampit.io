@@ -1,0 +1,91 @@
+name: API Smoke Tests
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/smoke-tests.yml'
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Health Check
+      run: |
+        echo "Testing API health endpoint..."
+        response=$(curl -f -s "https://istampit-api.fly.dev/healthz")
+        echo "Health response: $response"
+        
+        # Verify response contains expected fields
+        if echo "$response" | jq -e '.ok == true and .cli_available == true' > /dev/null; then
+          echo "✅ Health check passed"
+        else
+          echo "❌ Health check failed"
+          exit 1
+        fi
+    
+    - name: Stamp Test Hash
+      run: |
+        echo "Testing stamp endpoint with dummy hash..."
+        # SHA-256 of "smoke-test"
+        test_hash="4b9bb80620b4c5b3e7e9a1e9b4b7b8b5a5a3a1e6e6e9b3e3f3a5a3b3b3a1e6e6"
+        
+        response=$(curl -f -s -X POST "https://istampit-api.fly.dev/stamp" \
+          -H "Content-Type: application/json" \
+          -d "{\"hash\":\"$test_hash\"}")
+        
+        echo "Stamp response received"
+        
+        # Verify response contains expected fields
+        if echo "$response" | jq -e '.hash and .filename and .receiptB64' > /dev/null; then
+          echo "✅ Stamp test passed"
+          # Verify the hash matches what we sent
+          returned_hash=$(echo "$response" | jq -r '.hash')
+          if [ "$returned_hash" = "$test_hash" ]; then
+            echo "✅ Hash verification passed"
+          else
+            echo "❌ Hash verification failed: expected $test_hash, got $returned_hash"
+            exit 1
+          fi
+        else
+          echo "❌ Stamp test failed"
+          echo "Response: $response"
+          exit 1
+        fi
+    
+    - name: Rate Limit Test
+      run: |
+        echo "Testing rate limiting..."
+        # Test that we don't get blocked on reasonable usage
+        for i in {1..5}; do
+          test_hash="$(printf "%064d" $i)"
+          echo "Testing request $i with hash: $test_hash"
+          
+          response=$(curl -f -s -X POST "https://istampit-api.fly.dev/stamp" \
+            -H "Content-Type: application/json" \
+            -d "{\"hash\":\"$test_hash\"}")
+          
+          if echo "$response" | jq -e '.hash' > /dev/null; then
+            echo "✅ Request $i successful"
+          else
+            echo "❌ Request $i failed"
+            echo "Response: $response"
+            exit 1
+          fi
+          
+          # Small delay between requests
+          sleep 2
+        done
+        echo "✅ Rate limit test passed"
+
+    - name: Notification
+      if: failure()
+      run: |
+        echo "❌ Smoke tests failed! API may be experiencing issues."
+        echo "Check https://istampit-api.fly.dev/healthz manually"

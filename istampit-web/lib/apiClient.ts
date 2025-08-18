@@ -30,7 +30,7 @@ export async function stampHash(hash: string): Promise<StampResponse> {
   }
 
   const endpoint = API_BASE ? `${API_BASE}/stamp` : '/api/stamp';
-  
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -45,7 +45,7 @@ export async function stampHash(hash: string): Promise<StampResponse> {
   }
 
   const data = await response.json();
-  
+
   if (!data.receiptB64) {
     throw new Error('Invalid response - missing receipt');
   }
@@ -58,7 +58,7 @@ export async function stampHash(hash: string): Promise<StampResponse> {
  */
 export async function healthz(): Promise<HealthResponse> {
   const endpoint = API_BASE ? `${API_BASE}/healthz` : '/api/healthz';
-  
+
   const response = await fetch(endpoint, {
     method: 'GET',
   });
@@ -79,7 +79,7 @@ export async function downloadReceipt(hash: string): Promise<Uint8Array> {
   }
 
   const endpoint = API_BASE ? `${API_BASE}/stamp/${hash}.ots` : `/api/stamp/${hash}.ots`;
-  
+
   const response = await fetch(endpoint, {
     method: 'GET',
   });

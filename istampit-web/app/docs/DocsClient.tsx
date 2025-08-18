@@ -81,7 +81,7 @@ export default function DocsClient() {
               <li><strong>Privacy-first:</strong> Files are hashed locally; only the hash is transmitted</li>
             </ul>
           </div>
-          
+
           <h3 className="text-xl font-medium">API Integration</h3>
           <p className="text-gray-700">For developers integrating timestamping into applications:</p>
           <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
@@ -105,7 +105,7 @@ istampit stamp --hash <sha256> --out receipt.ots`}</code></pre>
               <li><strong>Browser Extension:</strong> One-click stamping for web content</li>
             </ul>
           </div>
-          
+
           <h3 className="text-xl font-medium">Automated Workflows</h3>
           <p className="text-gray-700">Use CI/CD workflows for automated stamping of project milestones.</p>
           <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">{`# Example: Daily stamping workflow
