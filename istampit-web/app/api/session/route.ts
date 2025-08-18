@@ -15,6 +15,8 @@
 //  This design keeps the static export build green while still documenting intent.
 
 // Allow dynamic handling (edge runtime) now that hybrid deployment is enabled.
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 // Narrow interface (we only inspect env & potentially perform a fetch in dev).
 export async function GET() {
