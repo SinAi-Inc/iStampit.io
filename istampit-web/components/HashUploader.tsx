@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { trackStampSuccess, trackStampError } from '../lib/analytics';
 import { sha256Hex } from '../lib/sha256';
+import { stampHash, base64ToBytes } from '../lib/apiClient';
 
 interface Props {
   onHash: (hex: string) => void;
@@ -20,16 +21,6 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
   const lastStampedHash = useRef<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  function base64ToBytes(b64: string){
-    if (typeof window === 'undefined') return new Uint8Array();
-    try {
-      const bin = atob(b64);
-      const out = new Uint8Array(bin.length);
-      for (let i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
-      return out;
-    } catch { return new Uint8Array(); }
-  }
-
   async function autoStampHash(hash: string){
     if(!autoStamp) return;
     if(!/^[0-9a-f]{64}$/.test(hash)) return;
@@ -40,32 +31,26 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
     setStampStatus('pending');
     setMessage('Stamping…');
     try {
-      const res = await fetch('/api/stamp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ hash }), signal: controller.signal });
-      if(!res.ok){
-        const j = await res.json().catch(()=>({error:'unknown'}));
-        throw new Error(j.error || 'stamp_failed');
-      }
-      const data = await res.json();
-      if(!data.receiptB64){ throw new Error('missing_receipt'); }
-  const bytes = base64ToBytes(data.receiptB64);
+      const data = await stampHash(hash);
+      const bytes = base64ToBytes(data.receiptB64);
       if(!bytes.length) throw new Error('decode_failed');
       // Trigger download
-      const blob = new Blob([bytes], { type: 'application/octet-stream' });
+      const blob = new Blob([new Uint8Array(bytes)], { type: 'application/octet-stream' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url; a.download = data.filename || `${hash}.ots`; document.body.appendChild(a); a.click(); a.remove();
       setStampStatus('success');
-  setMessage('Receipt ready');
-  setLastMeta({ hash, size: bytes.length, filename: data.filename || `${hash}.ots` });
+      setMessage('Receipt ready');
+      setLastMeta({ hash, size: bytes.length, filename: data.filename || `${hash}.ots` });
       lastStampedHash.current = hash;
       onReceipt?.(bytes, { hash, filename: data.filename || `${hash}.ots` });
-  trackStampSuccess(bytes.length);
+      trackStampSuccess(bytes.length);
       setTimeout(()=>{ setMessage(''); }, 4000);
     } catch(e:any){
       if(e.name === 'AbortError') return; // ignore
       setStampStatus('error');
-  setMessage('Stamp failed');
-  trackStampError(e?.message || 'stamp_failed');
+      setMessage('Stamp failed');
+      trackStampError(e?.message || 'stamp_failed');
       setTimeout(()=>{ setMessage(''); }, 5000);
     }
   }
