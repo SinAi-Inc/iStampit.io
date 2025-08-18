@@ -38,9 +38,8 @@ jobs:
         working-directory: istampit-web
         run: npm install --no-audit --no-fund
       - name: Build (static export)
-        if: false
         working-directory: istampit-web
-        run: echo "disabled"
+        run: npm run build
       - name: Verify export output
         run: |
           if [ ! -d "istampit-web/out" ] && [ ! -d "istampit-web/dist" ] && [ ! -d "istampit-web/.next" ]; then
@@ -53,7 +52,6 @@ jobs:
         with:
           path: istampit-web/out
   deploy:
-    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

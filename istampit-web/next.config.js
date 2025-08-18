@@ -38,6 +38,17 @@ const baseConfig = {
       tls: false,
       child_process: false,
     };
+    
+    // Exclude test files and API routes during static export
+    if (process.env.STATIC_EXPORT === '1') {
+      config.module = config.module || {};
+      config.module.rules = config.module.rules || [];
+      config.module.rules.push({
+        test: /\.(test|spec)\.(ts|tsx)$/,
+        loader: 'ignore-loader'
+      });
+    }
+    
     return config;
   },
 };

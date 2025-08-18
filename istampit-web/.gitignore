@@ -1,14 +1,26 @@
-# from istampit-web/
-@"
+# Dependencies
 node_modules/
+
+# Next.js build outputs
 .next/
 out/
 dist/
 build/
+
+# Testing
 coverage/
+
+# TypeScript
 *.tsbuildinfo
+
+# Environment variables
 .env*
+
+# Deployment
 .vercel/
+
+# IDE
 .vscode/
+
+# OS
 .DS_Store
-"@ | Out-File -Encoding utf8 .gitignore
