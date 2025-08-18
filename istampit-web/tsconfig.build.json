@@ -3,7 +3,7 @@
   "exclude": [
     "node_modules",
     "tests/**/*",
-    "tests-e2e/**/*", 
+    "tests-e2e/**/*",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",

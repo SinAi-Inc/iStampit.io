@@ -2,6 +2,8 @@ import type { NextRequest } from 'next/server';
 import Redis from 'ioredis';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export async function GET(_req: NextRequest) {
   const enableRedis = /^(1|true|yes)$/i.test(process.env.ENABLE_REDIS || '');

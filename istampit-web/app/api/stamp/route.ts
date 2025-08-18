@@ -7,6 +7,8 @@ import { spawn } from 'child_process';
 import Redis from 'ioredis';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 function run(cmd: string, args: string[]): Promise<{ stdout: string; stderr: string }>{
   return new Promise((resolve, reject) => {
