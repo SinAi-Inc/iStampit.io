@@ -26,7 +26,11 @@ export default function HomeClient() {
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Link href="/verify" className="btn-primary btn-lg">
+              <Link href="/stamp" className="btn-primary btn-lg">
+                <span className="mr-2">🚀</span>
+                Create Timestamp
+              </Link>
+              <Link href="/verify" className="btn-outline btn-lg">
                 <span className="mr-2">🔍</span>
                 Verify Timestamp
               </Link>

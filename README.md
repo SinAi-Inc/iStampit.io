@@ -64,6 +64,13 @@ If a platform forbids spawning processes, consider a lightweight microservice fo
 
 ## Features
 
+### Creating Timestamps
+
+- **Web Interface**: Drag & drop files or paste SHA-256 hashes → instant .ots receipt download
+- **Auto-Stamping**: Files are automatically hashed locally and timestamped upon upload
+- **API Endpoint**: `POST /stamp` for integration into your applications
+- **Privacy-First**: Only cryptographic hashes are transmitted - never file contents
+
 ### Verification System
 
 - **Web Interface**: Drop `.ots` receipt + original file → instant verification

@@ -34,6 +34,9 @@ export default function Navigation({ logo }: NavigationProps = {}) {
               <Link href="/" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Home
               </Link>
+              <Link href="/stamp" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+                Create Timestamp
+              </Link>
               <Link href="/verify" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Verify
               </Link>

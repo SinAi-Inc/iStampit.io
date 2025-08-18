@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 
 export default function DocsClient() {
   return (
@@ -67,19 +68,65 @@ export default function DocsClient() {
       <section id="stamping" className="space-y-6">
         <h2 className="text-3xl font-semibold border-b pb-2">Creating Timestamps</h2>
         <div className="space-y-4">
-          <h3 className="text-xl font-medium">Manual Stamping</h3>
-          <p className="text-gray-700">Currently, iStampit focuses on verification of existing .ots files. To create new timestamps:</p>
+          <h3 className="text-xl font-medium">Web Interface (Recommended)</h3>
+          <p className="text-gray-700">iStampit provides a free, easy-to-use web interface for creating timestamps:</p>
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+            <h4 className="font-medium mb-2 text-blue-800 dark:text-blue-200">
+              <Link href="/stamp" className="hover:underline">Create Timestamp Page</Link>
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-sm text-blue-700 dark:text-blue-300">
+              <li><strong>Upload files:</strong> Drag & drop any file for automatic SHA-256 hashing and stamping</li>
+              <li><strong>Paste hashes:</strong> Enter a 64-character SHA-256 hash directly</li>
+              <li><strong>Instant receipts:</strong> Get your .ots file immediately after stamping</li>
+              <li><strong>Privacy-first:</strong> Files are hashed locally; only the hash is transmitted</li>
+            </ul>
+          </div>
+          
+          <h3 className="text-xl font-medium">API Integration</h3>
+          <p className="text-gray-700">For developers integrating timestamping into applications:</p>
+          <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+            <h4 className="font-medium mb-2">POST /api/stamp</h4>
+            <pre className="text-sm text-gray-700 dark:text-gray-300 mb-2"><code>{`{
+  "hash": "64-character-hex-sha256"
+}`}</code></pre>
+            <p className="text-xs text-gray-600 dark:text-gray-400">Returns a base64-encoded .ots receipt file. Rate limited to 60 requests per minute per IP.</p>
+          </div>
+
+          <h3 className="text-xl font-medium">Command Line Tools</h3>
+          <p className="text-gray-700">For power users and automation workflows:</p>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Recommended Tools:</h4>
+            <h4 className="font-medium mb-2">istampit-cli (Our Package):</h4>
+            <pre className="bg-gray-800 text-green-400 p-3 rounded text-sm overflow-x-auto mb-2"><code>{`pip install istampit-cli
+istampit stamp --hash <sha256> --out receipt.ots`}</code></pre>
+            <h4 className="font-medium mb-2 mt-4">OpenTimestamps Official:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
               <li><strong>OpenTimestamps Client:</strong> Official Python client for creating .ots files</li>
               <li><strong>ots-cli:</strong> Command-line tool for batch operations</li>
               <li><strong>Browser Extension:</strong> One-click stamping for web content</li>
             </ul>
           </div>
+          
           <h3 className="text-xl font-medium">Automated Workflows</h3>
           <p className="text-gray-700">Use CI/CD workflows for automated stamping of project milestones.</p>
-          <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">{`# Example: Daily stamping workflow\nname: Stamp Innovation\non:\n  schedule:\n    - cron: '0 12 * * *'\n\njobs:\n  stamp:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Create timestamp\n        run: |\n          git rev-parse HEAD > current-commit.txt\n          ots stamp current-commit.txt`}</pre>
+          <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">{`# Example: Daily stamping workflow
+name: Stamp Innovation
+on:
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create timestamp
+        run: |
+          git rev-parse HEAD > current-commit.txt
+          # Using iStampit API
+          HASH=$(sha256sum current-commit.txt | cut -d' ' -f1)
+          curl -X POST https://api.istampit.io/stamp \\
+            -H "Content-Type: application/json" \\
+            -d "{\\"hash\\":\\"$HASH\\"}" > receipt.json`}</pre>
         </div>
       </section>
 
