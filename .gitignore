@@ -1,3 +1,15 @@
+# Secrets and sensitive files
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Fly.io CLI binaries (contain embedded keys)
+api/flyctl.exe
+api/flyctl
+api/flyctl.zip
+api/wintun.dll
+
 # Node
 node_modules/
 *.log
