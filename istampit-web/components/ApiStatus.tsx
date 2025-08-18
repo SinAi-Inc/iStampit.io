@@ -52,18 +52,18 @@ export default function ApiStatus({ className = '', showDetails = true }: ApiSta
 
   const getStatusIcon = () => {
     if (loading) return '⏳';
-    if (error) return '🔴';
+    if (error) return '�';
     if (health?.ok && health?.cli_available) return '🟢';
     if (health?.ok) return '🟡';
-    return '🔴';
+    return '�';
   };
 
   const getStatusText = () => {
     if (loading) return 'Checking...';
-    if (error) return 'Unavailable';
+    if (error) return 'Warning';
     if (health?.ok && health?.cli_available) return 'Operational';
     if (health?.ok) return 'Limited';
-    return 'Down';
+    return 'Warning';
   };
 
   const getApiTypeText = () => {

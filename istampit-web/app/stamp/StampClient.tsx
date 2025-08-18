@@ -252,7 +252,7 @@ export default function StampClient() {
                     <span className="text-blue-600 dark:text-blue-400">📋</span>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">Track progress</p>
-                      <p className="text-gray-600 dark:text-gray-300">Check the Innovation Ledger for Bitcoin confirmation</p>
+                      <p className="text-gray-600 dark:text-gray-300">Check the Public Ledger for Bitcoin confirmation</p>
                     </div>
                   </div>
                 </div>

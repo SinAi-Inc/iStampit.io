@@ -80,12 +80,15 @@ jobs:
   #     package-dir: istampit-cli
   #     output-dir: istampit-cli/dist
 
-      - name: Upload bundles to release
+      - name: Upload bundles and signed artifacts to release
         if: github.event_name == 'release' && github.event.action == 'published'
         uses: softprops/action-gh-release@v2
         with:
           files: |
             **/*.bundle
+            istampit-cli/dist/*.whl
+            istampit-cli/dist/*.tar.gz
+            **/*.ots
 
       - uses: actions/upload-artifact@v4
         with:

@@ -20,7 +20,7 @@ export default function EmbedClient() {
           </div>
           <div>
             <h3 className="text-lg font-medium mb-2">2. Container</h3>
-            <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">{`<div data-istampit-verify data-mode="inline" data-theme="light"></div>\n\n<div data-istampit-verify data-mode="modal" data-theme="light">\n  <button>Verify with iStampit</button>\n</div>`}</pre>
+            <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">{`<!-- Light Theme -->\n<div data-istampit-verify data-mode="inline" data-theme="light"></div>\n\n<!-- Dark Theme -->\n<div data-istampit-verify data-mode="inline" data-theme="dark"></div>\n\n<!-- Modal Mode -->\n<div data-istampit-verify data-mode="modal" data-theme="dark">\n  <button>Verify with iStampit</button>\n</div>`}</pre>
           </div>
           <div>
             <h3 className="text-lg font-medium mb-2">3. Listen for Messages (optional)</h3>

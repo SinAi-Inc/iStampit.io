@@ -32,11 +32,11 @@ export default function HomeClient() {
               </Link>
               <Link href="/verify" className="btn-outline btn-lg">
                 <span className="mr-2">🔍</span>
-                Verify Timestamp
+                Verify
               </Link>
               <Link href="/ledger" className="btn-outline btn-lg">
                 <span className="mr-2">📋</span>
-                Browse Ledger
+                Public Ledger
               </Link>
             </div>
 
@@ -228,7 +228,7 @@ export default function HomeClient() {
                 Ready to Start Timestamping?
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Try our verification tool with a sample file, or explore our public Innovation Ledger
+                Try our verification tool with a sample file, or explore our Public Ledger
                 to see how others are using provable timestamps.
               </p>
             </div>

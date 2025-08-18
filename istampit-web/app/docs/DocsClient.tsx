@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import CodeBlock from '../../components/CodeBlock';
 
 export default function DocsClient() {
   return (
@@ -20,7 +21,7 @@ export default function DocsClient() {
             <ul className="space-y-2 text-sm">
               <li><a href="#verification" className="text-blue-600 hover:underline">File Verification</a></li>
               <li><a href="#stamping" className="text-blue-600 hover:underline">Creating Timestamps</a></li>
-              <li><a href="#ledger" className="text-blue-600 hover:underline">Innovation Ledger</a></li>
+              <li><a href="#ledger" className="text-blue-600 hover:underline">Public Ledger</a></li>
               <li><a href="#security" className="text-blue-600 hover:underline">Security & Privacy</a></li>
             </ul>
           </div>
@@ -96,8 +97,8 @@ export default function DocsClient() {
           <p className="text-gray-700">For power users and automation workflows:</p>
           <div className="bg-gray-50 p-4 rounded-lg">
             <h4 className="font-medium mb-2">istampit-cli (Our Package):</h4>
-            <pre className="bg-gray-800 text-green-400 p-3 rounded text-sm overflow-x-auto mb-2"><code>{`pip install istampit-cli
-istampit stamp --hash <sha256> --out receipt.ots`}</code></pre>
+            <CodeBlock language="bash">{`pip install istampit-cli
+istampit stamp --hash <sha256> --out receipt.ots`}</CodeBlock>
             <h4 className="font-medium mb-2 mt-4">OpenTimestamps Official:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
               <li><strong>OpenTimestamps Client:</strong> Official Python client for creating .ots files</li>
@@ -130,12 +131,11 @@ jobs:
         </div>
       </section>
 
-      {/* Innovation Ledger */}
-      <section id="ledger" className="space-y-6">
-        <h2 className="text-3xl font-semibold border-b pb-2">Innovation Ledger</h2>
+      {/* Public Ledger */}
+      <section className="space-y-4">
+        <h2 className="text-3xl font-semibold border-b pb-2">Public Ledger</h2>
         <div className="space-y-4">
-          <h3 className="text-xl font-medium">Public Registry</h3>
-          <p className="text-gray-700">The Innovation Ledger is a public registry of timestamped innovations.</p>
+          <p className="text-gray-700">The Public Ledger is a public registry of timestamped innovations.</p>
           <div className="bg-gray-50 p-4 rounded-lg">
             <h4 className="font-medium mb-2">Ledger Features:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">

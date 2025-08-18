@@ -231,7 +231,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
                   <div className="text-center">
                     <p className="text-gray-500 dark:text-gray-500 text-xs">
-                      © {new Date().getFullYear()} iStampit.io. All rights reserved to{' '}
+                      © {new Date().getFullYear()}{' '}
                       <a
                         href="https://sinai.eihdah.com"
                         className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -240,7 +240,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       >
                         SinAI Inc
                       </a>
-                      . <span className="mx-1" aria-hidden>•</span> <span className="text-gray-400">Open Source (MIT)</span>
+                      . Open Source (MIT)
                     </p>
                     <BuildVersion />
                   </div>
