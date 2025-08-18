@@ -21,7 +21,7 @@ jobs:
       # Force static export mode so next build emits ./out for GitHub Pages
       STATIC_EXPORT: '1'
       # Use external API for stamping
-      NEXT_PUBLIC_API_BASE: 'https://api.istampit.io'
+      NEXT_PUBLIC_API_BASE: 'https://istampit-api.fly.dev'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
