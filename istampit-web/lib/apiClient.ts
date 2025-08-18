@@ -3,8 +3,8 @@
  * Configurable client for stamping operations with external API support
  */
 
-// Get API base URL from environment
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
+// Get API base URL from environment with fallback for static builds
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://istampit-api.fly.dev';
 
 interface StampResponse {
   hash: string;
