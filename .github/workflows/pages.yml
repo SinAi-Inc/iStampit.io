@@ -1,6 +1,8 @@
-name: Deploy Next.js (static) to GitHub Pages (DISABLED)
+name: Deploy Next.js (static) to GitHub Pages
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -14,11 +16,12 @@ concurrency:
 
 jobs:
   build:
-    if: false  # disabled after hybrid deployment switch; kept for reference
     runs-on: ubuntu-latest
     env:
       # Force static export mode so next build emits ./out for GitHub Pages
       STATIC_EXPORT: '1'
+      # Use external API for stamping
+      NEXT_PUBLIC_API_BASE: 'https://api.istampit.io'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

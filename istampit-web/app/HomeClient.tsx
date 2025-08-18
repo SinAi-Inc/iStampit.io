@@ -232,7 +232,7 @@ export default function HomeClient() {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/verify" className="btn-primary btn-lg">
                 <span className="mr-2">🚀</span>
-                Try Verification Now
+                Start Verification Now
               </Link>
               <Link href="/ledger" className="btn-ghost">
                 View Public Ledger →

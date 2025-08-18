@@ -17,11 +17,13 @@ const AUTH_ORIGIN = (process.env.NEXT_PUBLIC_AUTH_ORIGIN || '').replace(/\/$/, '
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
+  // Conditional static export for GitHub Pages
+  output: process.env.STATIC_EXPORT === '1' ? 'export' : undefined,
   // Hybrid deployment: allow dynamic API routes (stamping) + static pages.
   // Remove forced static export so /api/stamp & middleware run in production.
   reactStrictMode: true,
   experimental: {},
-  images: { domains: [], unoptimized: false },
+  images: { domains: [], unoptimized: process.env.STATIC_EXPORT === '1' },
   // Legacy redirects still valid; keep but allow API auth path to fall through if needed.
   redirects: async () => [
     { source: '/auth/google', destination: '/verify', permanent: true },
