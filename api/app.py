@@ -24,10 +24,10 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://istampit.io", "http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_origins=["https://istampit.io", "https://www.istampit.io", "http://localhost:3000"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
+    max_age=86400,
 )
 
 class StampRequest(BaseModel):
