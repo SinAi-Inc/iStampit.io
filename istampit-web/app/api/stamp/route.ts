@@ -100,7 +100,13 @@ export async function POST(req: NextRequest){
     const tmp = join(tmpdir(), `${hash}-${randomUUID()}.ots`);
     try { await run('istampit', ['stamp','--hash', hash, '--out', tmp, '--json']); }
     catch(e:any){ 
-      console.error('stamp_failed', e);
+      console.error(`[stamp_failed]`, {
+        error: e,
+        requestId,
+        timestamp: new Date().toISOString(),
+        hash,
+        ip
+      });
       return json({ error: 'stamp_failed', message: 'An error occurred while stamping.' }, 500); 
     }
     const buf = await fs.readFile(tmp).catch(()=>Buffer.from([]));
