@@ -25,7 +25,7 @@ jobs:
               echo "Removing nested istampit-cli/istampit-cli duplicate";
               rm -rf istampit-cli;
             fi
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - name: Install
