@@ -24,7 +24,7 @@ jobs:
       NEXT_PUBLIC_API_BASE: 'https://istampit-api.fly.dev'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Cache npm
