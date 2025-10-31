@@ -11,6 +11,9 @@ on:
       - 'api/**'
       - '.github/workflows/smoke-tests.yml'
 
+permissions:
+  contents: read
+
 jobs:
   smoke-test:
     runs-on: ubuntu-latest
