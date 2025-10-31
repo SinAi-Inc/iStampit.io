@@ -4,14 +4,39 @@ updates:
     directory: "/"
     schedule: { interval: "weekly" }
     labels: ["dependencies", "npm"]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
+    groups:
+      npm-major-rollup:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+    # Routine minor/patch npm bumps are handled by .github/workflows/auto-deps.yml.
+    # Keep Dependabot focused on actionable major/security updates to avoid dozens
+    # of overlapping PRs that compete with the automation bundle.
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
 
   # Include the web app package (separate package.json) so Dependabot tracks its dependencies too
   - package-ecosystem: "npm"
     directory: "/istampit-web"
     schedule: { interval: "weekly" }
     labels: ["dependencies", "npm", "web"]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
+    groups:
+      web-npm-major-rollup:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
 
 
   # GitHub Action (composite/JS) if any JS dependencies added later (safeguard)
@@ -19,16 +44,32 @@ updates:
     directory: "/istampit-action"
     schedule: { interval: "weekly" }
     labels: ["dependencies", "ci", "action"]
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    groups:
+      action-updates:
+        patterns:
+          - "*"
 
   - package-ecosystem: "pip"
     directory: "/"
     schedule: { interval: "weekly" }
     labels: ["dependencies", "python"]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
+    groups:
+      pip-batch:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule: { interval: "weekly" }
     labels: ["dependencies", "ci"]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
+    groups:
+      workflow-actions:
+        patterns:
+          - "*"
