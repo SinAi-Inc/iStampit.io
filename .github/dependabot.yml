@@ -5,6 +5,12 @@ updates:
     schedule: { interval: "weekly" }
     labels: ["dependencies", "npm"]
     open-pull-requests-limit: 5
+    groups:
+      npm-major-rollup:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     # Routine minor/patch npm bumps are handled by .github/workflows/auto-deps.yml.
     # Keep Dependabot focused on actionable major/security updates to avoid dozens
     # of overlapping PRs that compete with the automation bundle.
