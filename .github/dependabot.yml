@@ -26,12 +26,6 @@ updates:
     schedule: { interval: "weekly" }
     labels: ["dependencies", "npm", "web"]
     open-pull-requests-limit: 5
-    groups:
-      web-npm-major-rollup:
-        patterns:
-          - "*"
-        update-types:
-          - "major"
     ignore:
       - dependency-name: "*"
         update-types:
@@ -60,7 +54,6 @@ updates:
         patterns:
           - "*"
         update-types:
-          - "major"
           - "minor"
           - "patch"
 
