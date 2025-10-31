@@ -17,7 +17,11 @@ jobs:
           set -euo pipefail
           TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName') || exit 0
           echo "Latest release tag: $TAG"
-          [ -n "$TAG" ] || { echo 'No release found; skipping'; exit 0; }
+          if [ -z "$TAG" ]; then
+            echo 'No release found; skipping'
+            exit 0
+          fi
+          echo "LATEST_TAG=$TAG" >> "$GITHUB_ENV"
           gh release download "$TAG" \
             --pattern '*.bundle' \
             --pattern '*.intoto.jsonl' \
@@ -29,8 +33,14 @@ jobs:
       - uses: sigstore/cosign-installer@v3
 
       - name: Verify cosign bundles (keyless, previous release)
+        env:
+          LATEST_TAG: ${{ env.LATEST_TAG }}
         run: |
           set -euo pipefail
+          if [ -z "${LATEST_TAG:-}" ]; then
+            echo 'No release tag exported; skipping bundle verification'
+            exit 0
+          fi
           shopt -s nullglob
           bundles=(*.bundle)
           if [ ${#bundles[@]} -eq 0 ]; then
@@ -44,9 +54,9 @@ jobs:
             cosign verify-blob "$f" \
               --bundle "$b" \
               --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-              --certificate-identity-regexp '^https://github.com/${{ github.repository }}/\.github/workflows/release-sign\.yml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
+              --certificate-identity-regexp '^https://github.com/${{ github.repository }}/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$' \
               --certificate-github-workflow-name 'release-sign' \
-              --certificate-github-workflow-ref 'refs/tags/*' \
+              --certificate-github-workflow-ref "refs/tags/${LATEST_TAG}" \
               --certificate-github-workflow-trigger 'release'
           done
 
@@ -60,7 +70,10 @@ jobs:
             echo "No provenance file found; skipping"
             exit 0
           fi
-          TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName') || true
+          TAG=${LATEST_TAG:-}
+          if [ -z "$TAG" ]; then
+            TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName') || true
+          fi
           if [ -z "$TAG" ]; then echo 'No tag for provenance verify'; exit 0; fi
           echo "Using provenance: $PROV for tag $TAG"
           go install github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@latest
