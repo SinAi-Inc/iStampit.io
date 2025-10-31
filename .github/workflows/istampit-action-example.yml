@@ -1,10 +1,7 @@
 name: iStampit Action Example
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   example:

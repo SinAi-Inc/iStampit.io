@@ -1,8 +1,6 @@
 name: Smoke (API/CORS)
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 */6 * * *'
 jobs:
   smoke:
     runs-on: ubuntu-latest
