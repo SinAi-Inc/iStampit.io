@@ -1,0 +1,86 @@
+name: Dependabot PR Sweeper
+
+on:
+  schedule:
+    - cron: '45 5 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  close-superseded:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close superseded Dependabot updates
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+            const dependabotPRs = prs.filter((pr) => pr.user?.login === 'dependabot[bot]');
+            const buckets = new Map();
+
+            for (const pr of dependabotPRs) {
+              const headParts = pr.head.ref.split('/');
+              const ecosystem = headParts[1] ?? 'unknown';
+
+              let directory = '/';
+              if (headParts.length > 3) {
+                directory = headParts.slice(2, headParts.length - 1).join('/') || '/';
+              } else {
+                const dirMatch = pr.title.match(/ in (.+)$/);
+                if (dirMatch) {
+                  directory = dirMatch[1];
+                }
+              }
+
+              const titleMatch = pr.title.match(/^Bump ([^ ]+) from /);
+              let dependency = titleMatch ? titleMatch[1] : headParts.at(-1) ?? 'unknown';
+              if (!titleMatch) {
+                dependency = dependency.replace(/-[0-9].*$/, '');
+              }
+
+              const bucketKey = `${ecosystem}:${directory}:${dependency}`;
+              if (!buckets.has(bucketKey)) {
+                buckets.set(bucketKey, []);
+              }
+              buckets.get(bucketKey).push(pr);
+            }
+
+            const closedPRs = [];
+            for (const [, bucket] of buckets) {
+              if (bucket.length < 2) continue;
+              bucket.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+              const keep = bucket[0];
+              for (const pr of bucket.slice(1)) {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  body: `Closing in favor of newer Dependabot update #${keep.number} targeting the same dependency.`,
+                });
+                await github.rest.pulls.update({
+                  owner,
+                  repo,
+                  pull_number: pr.number,
+                  state: 'closed',
+                });
+                closedPRs.push(pr.number);
+              }
+            }
+
+            core.summary.addHeading('Dependabot sweep results');
+            if (closedPRs.length === 0) {
+              core.summary.addRaw('No superseded Dependabot pull requests needed closing.');
+            } else {
+              core.summary.addList(closedPRs.map((num) => `Closed #${num}`));
+            }
+            await core.summary.write();
