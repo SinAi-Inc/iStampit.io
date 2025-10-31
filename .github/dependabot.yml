@@ -1,3 +1,6 @@
+# Nightly dependabot triage automation will close superseded PRs and auto-merge
+# approved updates (see .github/workflows/dependabot-*.yml). Keep grouping and
+# labels in sync with those workflows.
 version: 2
 updates:
   - package-ecosystem: "npm"
