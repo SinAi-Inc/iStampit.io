@@ -13,17 +13,17 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "next": "15.4.7",
-  "react": "19.1.1",
-  "react-dom": "19.1.1",
-    "eslint": "^9.33.0",
-    "eslint-config-next": "15.4.6",
-    "postcss": "^8.4.35",
+    "next": "15.5.6",
+  "react": "19.2.0",
+  "react-dom": "19.2.0",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "15.5.6",
+    "postcss": "^8.5.6",
     "postcss-nested": "^7.0.2",
-    "autoprefixer": "^10.4.16"
+    "autoprefixer": "^10.4.21"
   },
   "engines": {
     "node": "20.x"
   },
-  "packageManager": "npm@10.7.0"
+  "packageManager": "npm@10.9.4"
 }
