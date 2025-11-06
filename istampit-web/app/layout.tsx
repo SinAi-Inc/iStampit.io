@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import React from 'react';
-import { Inter } from "next/font/google";
 import Link from "next/link";
 import './globals.css';
 import type { ReactNode } from 'react';
@@ -13,7 +12,6 @@ import { baseMetadata } from '../lib/seo/metadata';
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
 
-const inter = Inter({ subsets: ["latin"], weight: ["400","600","700"] });
 // Explicit static Pages flag for clarity & future regression safety
 const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
 
@@ -53,9 +51,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
   <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -103,7 +98,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
-    <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}>
+    <body className="font-sans min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
   {/* Skip link for keyboard users */}
   <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
   <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
