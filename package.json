@@ -20,10 +20,10 @@
     "eslint-config-next": "16.0.1",
     "postcss": "^8.4.35",
     "postcss-nested": "^7.0.2",
-    "autoprefixer": "^10.4.16"
+    "autoprefixer": "^10.4.21"
   },
   "engines": {
     "node": "20.x"
   },
-  "packageManager": "npm@10.7.0"
+  "packageManager": "npm@10.9.4"
 }
