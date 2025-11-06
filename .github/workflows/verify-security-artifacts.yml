@@ -85,6 +85,7 @@ jobs:
           if [ -z "$TAG" ]; then echo 'No tag for provenance verify'; exit 0; fi
           echo "Using provenance: $PROV for tag $TAG"
           go install github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@latest
+          export PATH="$(go env GOPATH)/bin:$PATH"
           artifacts=( *.whl *.tar.gz )
           set +e
           slsa-verifier verify-artifact \
