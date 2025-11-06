@@ -51,6 +51,11 @@ jobs:
             f="${b%.bundle}"
             if [ ! -f "$f" ]; then echo "Missing signed file $f for bundle $b"; exit 1; fi
 
+            # Legacy CLI artifacts (v0.1.0) were signed with incorrect workflow identity
+            # before the release-sign.yml workflow was properly configured. These signatures
+            # cannot be verified against the current certificate identity requirements.
+            # TODO: Remove this exception after v0.1.0 is deprecated and all users have
+            # migrated to v0.2.0+, or after a sufficient grace period (target: Q2 2026).
             case "$f" in
               istampit_cli-0.1.0-py3-none-any.whl|istampit_cli-0.1.0.tar.gz)
                 echo "Skipping verification for $b (legacy CLI bundle with known bad signature)"
