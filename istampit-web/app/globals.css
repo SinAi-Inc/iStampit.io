@@ -546,6 +546,7 @@
     background-color: rgba(17, 24, 39, 0.95);
     border-color: rgba(75, 85, 99, 0.4);
   }
+}
 
 /* Utilities */
 @layer utilities {
