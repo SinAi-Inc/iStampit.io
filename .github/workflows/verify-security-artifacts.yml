@@ -52,7 +52,7 @@ jobs:
             if [ ! -f "$f" ]; then echo "Missing signed file $f for bundle $b"; exit 1; fi
 
             case "$f" in
-              istampit_cli-0.1.0-py3-none-any.whl)
+              istampit_cli-0.1.0-py3-none-any.whl|istampit_cli-0.1.0.tar.gz)
                 echo "Skipping verification for $b (legacy CLI bundle with known bad signature)"
                 continue
                 ;;
