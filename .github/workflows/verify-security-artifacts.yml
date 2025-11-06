@@ -84,8 +84,18 @@ jobs:
           fi
           if [ -z "$TAG" ]; then echo 'No tag for provenance verify'; exit 0; fi
           echo "Using provenance: $PROV for tag $TAG"
+          BIN_DIR=$(go env GOBIN)
+          if [ -z "$BIN_DIR" ]; then
+            BIN_DIR="$(go env GOPATH)/bin"
+          fi
+          mkdir -p "$BIN_DIR"
+          export PATH="$BIN_DIR:$PATH"
           go install github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@latest
-          export PATH="$(go env GOPATH)/bin:$PATH"
+          if ! command -v slsa-verifier >/dev/null 2>&1; then
+            echo 'slsa-verifier installation failed'
+            ls -al "$BIN_DIR" || true
+            exit 1
+          fi
           artifacts=( *.whl *.tar.gz )
           set +e
           slsa-verifier verify-artifact \
