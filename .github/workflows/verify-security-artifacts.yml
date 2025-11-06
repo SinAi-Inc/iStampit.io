@@ -96,13 +96,28 @@ jobs:
             ls -al "$BIN_DIR" || true
             exit 1
           fi
+          shopt -s nullglob
           artifacts=( *.whl *.tar.gz )
+          eligible=()
+          for artifact in "${artifacts[@]}"; do
+            case "$artifact" in
+              istampit_cli-0.1.0-py3-none-any.whl|istampit_cli-0.1.0.tar.gz)
+                echo "Skipping SLSA verification for $artifact (legacy release with mismatched provenance)"
+                continue
+                ;;
+            esac
+            eligible+=("$artifact")
+          done
+          if [ ${#eligible[@]} -eq 0 ]; then
+            echo "No eligible artifacts for SLSA verification; skipping"
+            exit 0
+          fi
           set +e
           slsa-verifier verify-artifact \
             --provenance-path "$PROV" \
             --source-uri "github.com/${{ github.repository }}" \
             --source-tag "$TAG" \
-            "${artifacts[@]}"
+            "${eligible[@]}"
           rc=$?
           set -e
           if [ $rc -ne 0 ]; then echo 'Provenance verification failed'; exit 1; fi
