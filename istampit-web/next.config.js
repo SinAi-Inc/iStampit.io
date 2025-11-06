@@ -24,6 +24,11 @@ const baseConfig = {
   reactStrictMode: true,
   experimental: {},
   images: { domains: [], unoptimized: process.env.STATIC_EXPORT === '1' },
+  // Provide an explicit Turbopack config so Next.js 16+ doesn't error when it
+  // detects the custom webpack() hook. We intentionally keep Turbopack using
+  // its defaults for now; the webpack fallback below still applies when
+  // building with webpack (Next.js <16 or when forcing webpack).
+  turbopack: {},
   // Legacy redirects still valid; keep but allow API auth path to fall through if needed.
   redirects: async () => [
     { source: '/auth/google', destination: '/verify', permanent: true },
