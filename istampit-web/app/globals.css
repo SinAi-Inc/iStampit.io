@@ -1,4 +1,4 @@
-/* Removed external Google Fonts imports; fonts are loaded via next/font for optimized preloading */
+/* Removed external Google Fonts imports to keep builds offline-friendly */
 
 @tailwind base;
 @tailwind components;
