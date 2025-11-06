@@ -98,6 +98,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
+    {/* 
+      NOTE: The Tailwind config sets 'Inter' as the primary font for 'font-sans'.
+      This layout does NOT load Inter from Google Fonts or bundle it locally.
+      For 'Inter' to be used, it must be installed on the user's system or loaded elsewhere.
+      Otherwise, the site will fall back to 'system-ui' or 'sans-serif'.
+      If consistent typography is required, ensure Inter is loaded or update the Tailwind config.
+    */}
     <body className="font-sans min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
   {/* Skip link for keyboard users */}
   <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
