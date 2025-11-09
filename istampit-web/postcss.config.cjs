@@ -1,8 +1,9 @@
 const path = require('node:path');
 
 module.exports = {
-  plugins: {
-    '@tailwindcss/postcss': {},
-    autoprefixer: {},
-  },
+  plugins: [
+    require('@tailwindcss/postcss'),
+    require('./postcss-media-range-fallback.cjs'),
+    require('autoprefixer'),
+  ],
 };
