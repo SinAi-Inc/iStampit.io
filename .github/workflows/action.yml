@@ -4,6 +4,9 @@ on:
     paths: ["istampit-action/**", ".github/workflows/action.yml"]
   pull_request:
     paths: ["istampit-action/**", ".github/workflows/action.yml"]
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest

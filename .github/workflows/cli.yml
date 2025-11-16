@@ -4,6 +4,9 @@ on:
     paths: ["istampit-cli/**", ".github/workflows/cli.yml"]
   pull_request:
     paths: ["istampit-cli/**", ".github/workflows/cli.yml"]
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
