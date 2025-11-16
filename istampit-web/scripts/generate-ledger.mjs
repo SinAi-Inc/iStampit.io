@@ -50,6 +50,13 @@ async function generate() {
   }
 
   const nowISO = new Date().toISOString();
+
+  // Always create a file for the current month (even if empty)
+  const currentMonth = monthKey(nowISO);
+  if (currentMonth && !groups.has(currentMonth)) {
+    groups.set(currentMonth, []);
+  }
+
   for (const [key, group] of groups.entries()) {
     const [year, month] = key.split('-');
     const confirmed = group.filter(e => e.status === 'confirmed').length;
@@ -65,9 +72,16 @@ async function generate() {
         month: Number(month)
       }
     };
-    const outPath = resolve(ledgerOutDir, year, month, 'index.json');
-    await writeJSON(outPath, data);
-    console.log(`[generate-ledger] Wrote ${outPath} (${group.length} entries)`);
+
+    // Write nested format: /ledger/YYYY/MM/index.json
+    const nestedPath = resolve(ledgerOutDir, year, month, 'index.json');
+    await writeJSON(nestedPath, data);
+
+    // Write flat format: /ledger/YYYY-MM.json
+    const flatPath = resolve(ledgerOutDir, `${key}.json`);
+    await writeJSON(flatPath, data);
+
+    console.log(`[generate-ledger] Wrote ${nestedPath} and ${flatPath} (${group.length} entries)`);
   }
   console.log(`[generate-ledger] Complete. Months: ${[...groups.keys()].sort().join(', ')}`);
 }

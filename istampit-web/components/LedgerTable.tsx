@@ -81,15 +81,16 @@ export default function LedgerTable({ entries }: Props) {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm border rounded overflow-hidden">
-          <thead className="bg-slate-100 text-left">
+          <thead className="bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-700 text-left">
             <tr>
-              <th className="p-3">Title</th>
-              <th className="p-3">SHA-256</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Bitcoin</th>
-              <th className="p-3">Tags</th>
-              <th className="p-3">Stamped</th>
-              <th className="p-3">Receipt</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Title</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">SHA-256</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Status</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Verification</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Bitcoin</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Tags</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Stamped</th>
+              <th className="p-3 font-semibold text-gray-700 dark:text-gray-200">Receipt</th>
             </tr>
           </thead>
           <tbody>
@@ -99,20 +100,56 @@ export default function LedgerTable({ entries }: Props) {
                 <td className="p-3">
                   <button
                     onClick={() => handleCopyHash(entry.sha256)}
-                    className="font-mono text-xs text-blue-600 hover:text-blue-800 cursor-pointer"
+                    className="font-mono text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer transition-colors inline-flex items-center gap-1 group"
                     title="Click to copy full hash"
+                    aria-label="Copy SHA-256 hash"
                   >
                     {truncateHash(entry.sha256)}
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400" aria-hidden="true">📋</span>
                   </button>
                 </td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    entry.status === 'confirmed'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {entry.status}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      entry.status === 'confirmed'
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-700'
+                        : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700'
+                    }`}>
+                      <span className="text-base" role="img" aria-label={entry.status === 'confirmed' ? 'confirmed' : 'pending'}>
+                        {entry.status === 'confirmed' ? '✓' : '⏳'}
+                      </span>
+                      {entry.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                    </span>
+                    {entry.status === 'pending' && (
+                      <span className="text-xs text-gray-500 dark:text-gray-400" title="Waiting for Bitcoin block confirmation">
+                        (awaiting block)
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className="p-3">
+                  {entry.verified ? (
+                    <div className="space-y-1">
+                      <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-700">
+                        <span className="text-base">🔍</span>
+                        Verified
+                      </div>
+                      {entry.verifiedAt && (
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          {new Date(entry.verifiedAt).toLocaleDateString()}
+                        </div>
+                      )}
+                      {entry.verificationCount && entry.verificationCount > 1 && (
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          {entry.verificationCount}× verified
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-xs text-gray-400 dark:text-gray-500" title="Not yet verified by users">
+                      <span className="opacity-60">—</span>
+                    </div>
+                  )}
                 </td>
                 <td className="p-3">
                   {entry.status === 'confirmed' && entry.blockHeight && entry.txid ? (
@@ -153,10 +190,12 @@ export default function LedgerTable({ entries }: Props) {
                 <td className="p-3">
                   <a
                     href={entry.receiptUrl}
-                    className="text-blue-600 hover:text-blue-800 text-xs"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors shadow-sm hover:shadow-md"
                     target="_blank"
                     rel="noopener noreferrer"
+                    download
                   >
+                    <span role="img" aria-hidden="true">⬇️</span>
                     Download .ots
                   </a>
                 </td>

@@ -9,6 +9,10 @@ export interface LedgerEntry {
   blockTime: number | null;
   stampedAt: string;
   tags: string[];
+  // Verification tracking (optional, populated by user verification events)
+  verified?: boolean;
+  verifiedAt?: string;
+  verificationCount?: number;
 }
 
 export interface LedgerData {
