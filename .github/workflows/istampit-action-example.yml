@@ -3,6 +3,9 @@ name: iStampit Action Example
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   example:
     runs-on: ubuntu-latest
