@@ -37,6 +37,14 @@ jobs:
       - name: Install
         working-directory: istampit-web
         run: npm install --no-audit --no-fund
+      - name: Temporarily remove dynamic API routes for static export
+        run: |
+          # Move /api/stamp route outside app directory during static build
+          # It requires force-dynamic which is incompatible with output: 'export'
+          if [ -d "istampit-web/app/api/stamp" ]; then
+            mv istampit-web/app/api/stamp ./stamp-route-backup
+            echo "Moved dynamic API route outside app directory for static export"
+          fi
       - name: Build (static export)
         working-directory: istampit-web
         run: npm run build

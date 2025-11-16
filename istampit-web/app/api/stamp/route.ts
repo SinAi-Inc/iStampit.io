@@ -7,7 +7,10 @@ import { spawn } from 'child_process';
 import Redis from 'ioredis';
 
 export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic'; // Changed from force-static to allow dynamic subprocess operations
+// Note: This route is incompatible with static export (STATIC_EXPORT=1)
+// For GitHub Pages deployment, the workflow should use the external API instead
+// For dynamic deployments (Vercel, etc), this route provides local stamping
+export const dynamic = 'force-dynamic';
 export const revalidate = false;
 
 function run(cmd: string, args: string[]): Promise<{ stdout: string; stderr: string }>{
