@@ -6,6 +6,7 @@ on:
     paths: ["istampit-cli/**", ".github/workflows/cli.yml"]
 permissions:
   contents: read
+  # Note: SUBMODULES_TOKEN is a PAT secret, not affected by GITHUB_TOKEN permissions
 
 jobs:
   test:
