@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.SUBMODULES_TOKEN }}
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
       - name: Remove nested duplicate directory (if present)
         run: |
             if [ -d istampit-cli ]; then

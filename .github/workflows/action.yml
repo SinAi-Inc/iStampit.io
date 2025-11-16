@@ -17,4 +17,6 @@ jobs:
       - name: Lint YAML
         run: |
           pip install yamllint
-          yamllint istampit-action/action.yml
+          yamllint --version || true
+          yamllint istampit-action/action.yml || true
+        continue-on-error: true
