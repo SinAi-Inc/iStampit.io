@@ -1,7 +1,7 @@
 # AI Agent Context & Project State
 
-**Last Updated:** November 16, 2025  
-**Project:** iStampit.io - Blockchain-based Digital Timestamping Platform  
+**Last Updated:** November 16, 2025
+**Project:** iStampit.io - Blockchain-based Digital Timestamping Platform
 **Status:** Production Ready (v1.0+)
 
 ---
@@ -53,9 +53,9 @@ iStampit.io/
 ## ✅ Recent Fixes Applied (Nov 2025)
 
 ### Fix #1: API Route Configuration
-**File:** `istampit-web/app/api/stamp/route.ts`  
-**Change:** `export const dynamic = 'force-dynamic'` (was `'force-static'`)  
-**Reason:** Route spawns CLI subprocess; requires dynamic execution  
+**File:** `istampit-web/app/api/stamp/route.ts`
+**Change:** `export const dynamic = 'force-dynamic'` (was `'force-static'`)
+**Reason:** Route spawns CLI subprocess; requires dynamic execution
 **Status:** ✅ Fixed and tested
 
 ### Validation Completed

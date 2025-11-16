@@ -208,6 +208,7 @@ STATIC_EXPORT=1 npm run build
 ### Production Deployment
 
 **Required Environment Variables:**
+
 ```bash
 # Redis for rate limiting (CRITICAL for production)
 ENABLE_REDIS=1

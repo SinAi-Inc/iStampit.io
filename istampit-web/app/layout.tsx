@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "intellectual property protection",
     "SinAI Inc"
   ],
-  authors: [{ name: "SinAI Inc", url: "https://istampit.io" }],
+  authors: [{ name: "SinAI Inc", url: "https://sinai-inc.com" }],
   creator: "SinAI Inc",
   publisher: "SinAI Inc",
 };
@@ -231,7 +231,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <p className="text-gray-500 dark:text-gray-500 text-xs">
                       © {new Date().getFullYear()}{' '}
                       <a
-                        href="https://sinai.eihdah.com"
+                        href="https://sinai-inc.com"
                         className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
