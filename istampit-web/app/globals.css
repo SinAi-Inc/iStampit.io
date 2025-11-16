@@ -459,6 +459,7 @@
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.85);
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     transition: opacity 0.3s ease-in-out;
   }
@@ -471,6 +472,7 @@
     max-width: 24rem;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
     border-left: 4px solid rgb(59 130 246);
@@ -526,6 +528,7 @@
   /* Glass morphism effect for better visual separation */
   .glass-panel {
     background-color: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 25px 45px rgba(15, 23, 42, 0.25);
@@ -538,6 +541,7 @@
 
   .glass-strong {
     background-color: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(32px);
     backdrop-filter: blur(32px);
     border: 2px solid rgba(255, 255, 255, 0.3);
   }
@@ -556,6 +560,7 @@
 
   .glass {
     background-color: rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
@@ -567,8 +572,8 @@
 
   .gradient-text {
     background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }

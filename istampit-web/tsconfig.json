@@ -12,10 +12,11 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
     "types": [
       "vitest/globals",
       "@testing-library/jest-dom"

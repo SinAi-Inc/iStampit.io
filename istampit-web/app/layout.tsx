@@ -1,6 +1,8 @@
+/// <reference types="next" />
 import type { Metadata, Viewport } from "next";
 import React from 'react';
 import Link from "next/link";
+// @ts-ignore - CSS import handled by Next.js
 import './globals.css';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
@@ -35,6 +37,23 @@ export const metadata: Metadata = {
   authors: [{ name: "SinAI Inc", url: "https://sinai-inc.com" }],
   creator: "SinAI Inc",
   publisher: "SinAI Inc",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icons/favicon_64.png', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/icons/appicon_180.png', sizes: '180x180', type: 'image/png' }
+    ]
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'iStampit.io'
+  },
+  other: {
+    'apple-touch-icon': '/icons/appicon_180.png'
+  },
 };
 
 export const viewport: Viewport = {
@@ -62,14 +81,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="application-name" content="iStampit.io" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" href="/icons/favicon_64.png" />
-  {/* PWA & iOS install assets */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/appicon_180.png" />
         {/* Include manifest only on dynamic (non-GitHub Pages static) builds */}
         {!IS_PAGES_STATIC && (
           <link rel="manifest" href="/site.webmanifest" />
         )}
+        <link rel="apple-touch-icon" href="/icons/appicon_180.png" />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"

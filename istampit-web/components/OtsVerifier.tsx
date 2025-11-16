@@ -100,6 +100,7 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult, autoVeri
 				<div
 					className={`text-xs px-3 py-2 rounded border max-w-xs shadow-sm ${toast.kind==='error'?'bg-red-50 border-red-200 text-red-700': toast.kind==='success' ? 'bg-green-50 border-green-200 text-green-700': toast.kind==='warn' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' : 'bg-blue-50 border-blue-200 text-blue-700'}`}
 					role={toast.kind==='error' ? 'alert':'status'}
+					aria-live="polite"
 				>
 					{toast.msg}
 				</div>
