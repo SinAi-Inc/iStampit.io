@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "node scripts/prebuild.mjs",
     "build": "next build",
-  "start": "next start",
+    "start": "next start",
     "export": "echo 'use build only; output:export handles static generation'",
     "build:static": "npm run build && npm run export",
     "vercel-build": "next build",
@@ -22,8 +22,7 @@
     "ioredis": "^5.4.1",
     "next": "16.0.1",
     "react": "19.1.1",
-    "react-dom": "19.1.1",
-  "tailwindcss": "4.1.16"
+    "react-dom": "19.1.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
@@ -32,11 +31,11 @@
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
-    "@tailwindcss/postcss": "4.1.16",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.33.0",
     "eslint-config-next": "16.0.1",
     "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.18",
     "typescript": "^5.5.4",
     "vitest": "^4.0.8"
   },
