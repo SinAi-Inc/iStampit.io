@@ -7,7 +7,7 @@ import { spawn } from 'child_process';
 import Redis from 'ioredis';
 
 export const runtime = 'nodejs';
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic'; // Changed from force-static to allow dynamic subprocess operations
 export const revalidate = false;
 
 function run(cmd: string, args: string[]): Promise<{ stdout: string; stderr: string }>{

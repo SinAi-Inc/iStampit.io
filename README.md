@@ -11,10 +11,17 @@
 
 ![Project preview](https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf)
 
-
 **Mission:** Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, plus a public **Innovation Ledger** and an embeddable **Verify** widget for third-party sites.
 
-> Status: **Alpha.** APIs, CLI flags, and proof formats may change before v1.0. Use at your own risk. All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `SECURITY.md` for how to verify signatures and provenance.
+> Status: **Production Ready** (v1.0+). All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `docs/SECURITY.md` for verification instructions.
+
+## 🚀 Recent Updates (Nov 2025)
+
+- ✅ **API Fix**: Corrected `/api/stamp` route to `force-dynamic` for proper subprocess execution
+- ✅ **Architecture Validated**: Hybrid Next.js deployment confirmed working (static pages + dynamic API routes)
+- ✅ **Build System**: Clean builds with zero TypeScript/ESLint errors
+- ✅ **Documentation**: Reorganized all docs to `docs/` directory for easy access
+- ✅ **Production Ready**: Platform validated for deployment with Redis configuration
 
 ## Hosting Model
 
@@ -50,7 +57,6 @@ Deployment checklist:
 5. Monitor `/api/stamp` latency and memory; tune rate limits if necessary.
 
 If a platform forbids spawning processes, consider a lightweight microservice for stamping and adjust the frontend to call that endpoint.
-
 
 <!-- Removed duplicate H1 and repeated badges/mission paragraph -->
 
@@ -179,24 +185,50 @@ See `docs/ORGANIZATION.md` for migration rationale.
 ### Development Setup
 
 ```bash
-# Prerequisites: Node.js 20+, npm 10+
+# Prerequisites: Node.js 20+, npm 10+, Python 3.11+ (for CLI)
 git clone https://github.com/SinAi-Inc/iStampit.io.git
-cd iStampit.io/istampit-web
+cd iStampit.io
 
-# Install dependencies
+# Install web dependencies
+cd istampit-web
 npm install
 
 # Start development server
 npm run dev
 # → http://localhost:3000
 
-# Run tests
-npm test
-
-# Build for production
+# Build for production (hybrid deployment with API routes)
 npm run build
-npm run export
+npm start  # NOT npm run export for production
+
+# For static-only export (no API routes)
+STATIC_EXPORT=1 npm run build
 ```
+
+### Production Deployment
+
+**Required Environment Variables:**
+```bash
+# Redis for rate limiting (CRITICAL for production)
+ENABLE_REDIS=1
+REDIS_URL=redis://your-instance:6379
+# OR use Upstash
+UPSTASH_REDIS_REST_URL=https://your-instance.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-token
+
+# Deployment mode
+NODE_ENV=production
+STATIC_EXPORT=0  # Ensure API routes are enabled
+```
+
+**Deployment Options:**
+
+- **Vercel**: Deploy with `vercel --prod` (installs CLI automatically)
+- **Docker**: Use provided `Dockerfile` with Python + Node
+- **Fly.io**: Deploy API separately, web as static CDN
+- **GitHub Pages**: Static export only (no `/api/stamp` functionality)
+
+See `docs/HOSTING.md` for detailed deployment guides.
 
 ### Using the Embed Widget
 

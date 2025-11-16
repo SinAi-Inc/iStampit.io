@@ -1,7 +1,3 @@
-# (Moved) Navigation & Design System Improvements
+# Navigation & Design System (Moved)
 
-Canonical copy moved from root.
-
-````markdown
-<original content relocated>
-````
+Moved to `docs/NAVIGATION_IMPROVEMENTS.md`.

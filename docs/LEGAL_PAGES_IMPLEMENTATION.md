@@ -1,7 +1,3 @@
-# (Moved) Legal Pages Implementation Summary
+# Legal Pages Implementation (Moved)
 
-Canonical copy moved from root.
-
-````markdown
-<original content relocated>
-````
+Moved to `docs/LEGAL_PAGES_IMPLEMENTATION.md`.

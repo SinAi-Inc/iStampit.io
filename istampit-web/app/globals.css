@@ -177,7 +177,7 @@
     color: rgb(var(--ds-text-inverse));
     box-shadow: var(--ds-shadow-sm);
   }
-  
+
   .btn-primary:hover {
     background-color: var(--brand-primary-dark);
     box-shadow: var(--ds-shadow-md);
@@ -198,7 +198,7 @@
     color: rgb(var(--ds-text-primary));
     border: 1px solid rgb(var(--ds-border-primary));
   }
-  
+
   .btn-secondary:hover {
     background: rgb(var(--ds-surface-elevated));
     border-color: rgb(var(--ds-border-secondary));
@@ -218,7 +218,7 @@
     color: rgb(var(--ds-text-primary));
     border: 1px solid rgb(var(--ds-border-primary));
   }
-  
+
   .btn-outline:hover {
     background: rgb(var(--ds-surface-tertiary));
     border-color: rgb(var(--ds-border-secondary));
@@ -238,7 +238,7 @@
     color: rgb(var(--ds-text-secondary));
     border: none;
   }
-  
+
   .btn-ghost:hover {
     background: rgb(var(--ds-surface-tertiary));
     color: rgb(var(--ds-text-primary));

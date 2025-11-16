@@ -1,7 +1,3 @@
-# (Moved) Enhanced Mobile Menu Transparency & Blur Effects
+# Mobile Menu Blur Enhancements (Moved)
 
-Canonical copy moved from root.
-
-````markdown
-<original content relocated>
-````
+Moved to `docs/MOBILE_MENU_BLUR_ENHANCEMENTS.md`.
