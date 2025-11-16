@@ -25,29 +25,9 @@ export default function OtsVerifier({ fileHash, receiptBytes, onResult, autoVeri
 
 	useEffect(() => {
 		onResult?.(res);
-		// Track verification result to API
-		if (res.status === 'complete' || res.status === 'pending') {
-			trackVerification(fileHash, res);
-		}
-	}, [res, onResult, fileHash]);
-
-	const trackVerification = async (hash: string | null, result: VerificationResult) => {
-		if (!hash || result.status === 'idle') return;
-		try {
-			await fetch('/api/ledger/verify', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					hash,
-					status: result.status === 'complete' ? 'confirmed' : 'pending',
-					blockHeight: result.bitcoin?.blockHeight,
-				}),
-			});
-		} catch (error) {
-			// Silent fail - tracking shouldn't break UX
-			console.debug('Verification tracking failed:', error);
-		}
-	};
+		// Note: Verification tracking removed for static site deployment
+		// Analytics can be added via client-side tracking if needed
+	}, [res, onResult]);
 
 	useEffect(() => {
 		if (!fileHash || !receiptBytes) return;
