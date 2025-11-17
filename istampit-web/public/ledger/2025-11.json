@@ -1,10 +1,59 @@
 {
-  "entries": [],
+  "entries": [
+    {
+      "id": "istampit-nov-2025",
+      "title": "iStampit",
+      "sha256": "0455a93eb53c6716a34e40f69d6e821eb83659dbd9ffd0ed9f0b382a2f8fdd02",
+      "receiptUrl": "/timestamps/iStampit.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-11-16T19:55:50Z",
+      "tags": [
+        "brand",
+        "identity",
+        "proof-of-concept"
+      ]
+    },
+    {
+      "id": "eihdah-nov-2025",
+      "title": "EihDah",
+      "sha256": "6a19f23de6f087f10b3df78c68ec826b6178b8c61833af40b2c21c4017a82b0b",
+      "receiptUrl": "/timestamps/EihDah.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-11-16T19:56:54Z",
+      "tags": [
+        "brand",
+        "identity",
+        "proof-of-concept"
+      ]
+    },
+    {
+      "id": "edaai-nov-2025",
+      "title": "EDAAI",
+      "sha256": "ccd47edcc457bc4efd23698d459d159fa4f9f8af5ab24e9983525539970502a3",
+      "receiptUrl": "/timestamps/EDAAI.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2025-11-16T19:57:11Z",
+      "tags": [
+        "brand",
+        "identity",
+        "proof-of-concept"
+      ]
+    }
+  ],
   "metadata": {
-    "lastUpdated": "2025-11-16T19:20:43.110Z",
-    "totalEntries": 0,
+    "lastUpdated": "2025-11-17T04:26:39.486Z",
+    "totalEntries": 3,
     "confirmedEntries": 0,
-    "pendingEntries": 0,
+    "pendingEntries": 3,
     "year": 2025,
     "month": 11
   }
