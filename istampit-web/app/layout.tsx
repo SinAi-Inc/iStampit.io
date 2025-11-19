@@ -11,6 +11,7 @@ import { ThemeProvider } from '../components/ThemeProvider';
 import Navigation from '../components/Navigation';
 import BuildVersion from '../components/BuildVersion';
 import { baseMetadata } from '../lib/seo/metadata';
+import { GA_MEASUREMENT_ID } from "../lib/analytics";
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
 
@@ -73,6 +74,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
   <html lang="en" suppressHydrationWarning>
       <head>
+        {GA_MEASUREMENT_ID && (
+          <>
+            {/* Google tag (gtag.js) */}
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', '${GA_MEASUREMENT_ID}');
+                `
+              }}
+            />
+          </>
+        )}
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
