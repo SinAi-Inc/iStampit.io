@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
   <html lang="en" suppressHydrationWarning>
       <head>
-        {GA_MEASUREMENT_ID && (
+        {!IS_PAGES_STATIC && GA_MEASUREMENT_ID && (
           <>
             {/* Google tag (gtag.js) */}
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
