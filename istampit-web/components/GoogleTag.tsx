@@ -4,13 +4,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { GA_MEASUREMENT_ID } from "../lib/analytics";
 
-/** GA4 Measurement ID */
-export const GA_ID = GA_MEASUREMENT_ID;
-
 /** Track a page view (used on route changes) */
 export function pageview(url: string) {
-  if (!GA_ID || typeof window === "undefined") return;
-  (window as any).gtag?.("config", GA_ID, { page_path: url });
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined") return;
+  (window as any).gtag?.("config", GA_MEASUREMENT_ID, { page_path: url });
 }
 
 /** Fire a custom GA event anywhere in the app */
@@ -21,7 +18,7 @@ export function gaEvent(params: {
   value?: number;
   [key: string]: unknown;
 }) {
-  if (!GA_ID || typeof window === "undefined") return;
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined") return;
   const { action, ...rest } = params;
   (window as any).gtag?.("event", action, rest);
 }
@@ -42,14 +39,7 @@ export default function GoogleTag() {
 
   // Track client-side navigations
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production" || !GA_ID) return;
-    
-    // Skip the first mount since layout.tsx already tracked it
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return;
-    }
-    
+    if (process.env.NODE_ENV !== "production" || !GA_MEASUREMENT_ID) return;
     const qs = searchParams ? searchParams.toString() : '';
     const url = qs ? `${pathname}?${qs}` : pathname;
     pageview(url);
