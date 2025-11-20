@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { GA_MEASUREMENT_ID } from "../lib/analytics";
 
 /** Track a page view (used on route changes) */
@@ -35,6 +35,7 @@ export function gaEvent(params: {
 export default function GoogleTag() {
   const pathname = usePathname() || '/';
   const searchParams = useSearchParams();
+  const isFirstMount = useRef(true);
 
   // Track client-side navigations
   useEffect(() => {
