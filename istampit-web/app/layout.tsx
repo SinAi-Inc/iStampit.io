@@ -2,6 +2,7 @@
 import type { Metadata, Viewport } from "next";
 import React from 'react';
 import Link from "next/link";
+import Script from "next/script";
 // @ts-ignore - CSS import handled by Next.js
 import './globals.css';
 import type { ReactNode } from 'react';
@@ -136,6 +137,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
     <body className="font-sans min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+  {/* Google Analytics */}
+  {GA_MEASUREMENT_ID && (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `}
+      </Script>
+    </>
+  )}
   {/* Skip link for keyboard users */}
   <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
   <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
