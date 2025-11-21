@@ -2,6 +2,7 @@
 import type { Metadata, Viewport } from "next";
 import React from 'react';
 import Link from "next/link";
+import Script from "next/script";
 // @ts-ignore - CSS import handled by Next.js
 import './globals.css';
 import type { ReactNode } from 'react';
@@ -11,6 +12,7 @@ import { ThemeProvider } from '../components/ThemeProvider';
 import Navigation from '../components/Navigation';
 import BuildVersion from '../components/BuildVersion';
 import { baseMetadata } from '../lib/seo/metadata';
+import { GA_MEASUREMENT_ID } from "../lib/analytics";
 import BrandLogo from '../components/BrandLogo';
 import GoogleTag from '../components/GoogleTag';
 
@@ -73,6 +75,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
   <html lang="en" suppressHydrationWarning>
       <head>
+        {!IS_PAGES_STATIC && GA_MEASUREMENT_ID && (
+          <>
+            {/* Google tag (gtag.js) */}
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', '${GA_MEASUREMENT_ID}');
+                `
+              }}
+            />
+          </>
+        )}
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -118,6 +137,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
     <body className="font-sans min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+  {/* Google Analytics */}
+  {GA_MEASUREMENT_ID && (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `}
+      </Script>
+    </>
+  )}
   {/* Skip link for keyboard users */}
   <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
   <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
