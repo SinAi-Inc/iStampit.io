@@ -1,16 +1,13 @@
 "use client";
 
-import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-
-/** GA4 Measurement ID (e.g., G-XXXXXXXXXX) */
-export const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+import { useEffect, useRef } from "react";
+import { GA_MEASUREMENT_ID } from "../lib/analytics";
 
 /** Track a page view (used on route changes) */
 export function pageview(url: string) {
-  if (!GA_ID || typeof window === "undefined") return;
-  (window as any).gtag?.("config", GA_ID, { page_path: url });
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined") return;
+  (window as any).gtag?.("config", GA_MEASUREMENT_ID, { page_path: url });
 }
 
 /** Fire a custom GA event anywhere in the app */
@@ -21,16 +18,14 @@ export function gaEvent(params: {
   value?: number;
   [key: string]: unknown;
 }) {
-  if (!GA_ID || typeof window === "undefined") return;
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined") return;
   const { action, ...rest } = params;
   (window as any).gtag?.("event", action, rest);
 }
 
 /**
  * GoogleTag component
- * - Loads gtag.js only in production and when GA_ID is set
  * - Tracks page views on App Router navigations
- * - Includes a Consent Mode default (ads denied; analytics granted)
  *
  * Usage:
  *   import GoogleTag from "@/components/GoogleTag";
@@ -40,56 +35,15 @@ export function gaEvent(params: {
 export default function GoogleTag() {
   const pathname = usePathname() || '/';
   const searchParams = useSearchParams();
+  const isFirstMount = useRef(true);
 
   // Track client-side navigations
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production" || !GA_ID) return;
-  const qs = searchParams ? searchParams.toString() : '';
-  const url = qs ? `${pathname}?${qs}` : pathname;
-  pageview(url);
+    if (process.env.NODE_ENV !== "production" || !GA_MEASUREMENT_ID) return;
+    const qs = searchParams ? searchParams.toString() : '';
+    const url = qs ? `${pathname}?${qs}` : pathname;
+    pageview(url);
   }, [pathname, searchParams]);
 
-  // Skip script injection if not prod, missing ID, or static export build
-  if (process.env.NODE_ENV !== "production" || !GA_ID || process.env.NEXT_PUBLIC_PAGES_STATIC === '1') {
-    return null;
-  }
-
-  return (
-    <>
-      {/* Consent Mode: default to analytics allowed, ads denied. Tie to your consent UI as needed. */}
-      <Script id="consent-default" strategy="afterInteractive">
-        {`window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('consent', 'default', {
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied',
-            'analytics_storage': 'granted'
-          });`}
-      </Script>
-
-      {/* gtag.js loader */}
-      {/* Loader script via inline tag to avoid type issues in some build contexts */}
-      <Script id="gtag-loader" strategy="afterInteractive">
-        {`(function(){
-          var gtagScript=document.createElement('script');
-          gtagScript.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
-          gtagScript.async=true;document.head.appendChild(gtagScript);
-        })();`}
-      </Script>
-
-      {/* GA config */}
-      <Script id="gtag-config" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_ID}', {
-            send_page_view: true,
-            page_path: window.location.pathname
-          });
-        `}
-      </Script>
-    </>
-  );
+  return null;
 }

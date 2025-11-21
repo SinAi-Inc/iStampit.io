@@ -1,6 +1,8 @@
 // Privacy-first analytics for iStampit
 // Only tracks events, no PII or hashes
 
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-QHHM60C9ZJ";
+
 interface AnalyticsEvent {
   event: string;
   properties?: Record<string, string | number>;
