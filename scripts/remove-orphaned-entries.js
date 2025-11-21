@@ -22,7 +22,7 @@ const kept = [];
 ledger.entries.forEach(entry => {
   // Convert receiptUrl to filesystem path
   const filepath = path.join(__dirname, '..', 'istampit-web', 'public', entry.receiptUrl);
-  
+
   if (!fs.existsSync(filepath)) {
     console.log(`❌ Removing orphaned entry: ${entry.id}`);
     console.log(`   File not found: ${entry.receiptUrl}`);

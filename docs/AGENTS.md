@@ -1,8 +1,8 @@
 # AI Agent Context & Project State
 
-**Last Updated:** November 16, 2025
-**Project:** iStampit.io - Blockchain-based Digital Timestamping Platform
-**Status:** Production Ready (v1.0+)
+**Last Updated:** November 21, 2025  
+**Project:** iStampit.io - Blockchain Timestamping Platform  
+**Status:** Production Ready (v1.0+) | Live: istampit.io | API: istampit-api.fly.dev
 
 ---
 
@@ -15,11 +15,35 @@ This document helps AI agents quickly understand the project state and continue 
 A **privacy-first timestamping platform** using OpenTimestamps protocol to anchor cryptographic hashes of digital artifacts to Bitcoin blockchain. Users get immutable proof-of-existence without revealing file contents.
 
 **Core Functionality:**
-- Create timestamps: Upload file → SHA-256 hash → Bitcoin anchor → .ots receipt
-- Verify timestamps: Upload .ots + file → verify hash → check blockchain confirmation
-- Public ledger: Browse all timestamped artifacts (metadata only)
-- Embeddable widget: One-line integration for third-party sites
-- API: Programmatic access for developers
+- **Stamp**: Upload file → SHA-256 hash → Bitcoin anchor → .ots receipt
+- **Verify**: Upload .ots + file → verify hash → check blockchain confirmation
+- **Ledger**: Browse public registry of all timestamps (metadata only)
+- **Widget**: One-line embeddable verification for third-party sites
+- **API**: RESTful endpoints for automation (/stamp, /verify, /stamp-file)
+
+### Recent Major Updates (Nov 21, 2025)
+
+✅ **Ledger Automation Fixed**
+- Resolved nightly workflow failures (monorepo path issues)
+- Cleaned 6,510 duplicate nested .ots.bak entries
+- Removed 48 orphaned references from deleted Aug-Sept files
+- Status: 18 clean entries (12 confirmed, 6 pending)
+
+✅ **API Enhanced**
+- Added POST /verify endpoint with Bitcoin confirmation detection
+- Added POST /stamp-file for direct file uploads
+- Bitcoin attestation detection (0x05 0x88 marker)
+- Block height extraction from receipts
+- Comprehensive documentation and usage examples
+
+✅ **Security Fixed**
+- Patched glob vulnerability (10.4.5 → 10.5.0)
+- Current status: 0 vulnerabilities
+
+✅ **Documentation Organized**
+- All docs moved to docs/ directory
+- Created API_QUICK_REFERENCE.md for easy integration
+- Clean project root with only README.md and AGENTS.md
 
 ---
 
@@ -27,26 +51,41 @@ A **privacy-first timestamping platform** using OpenTimestamps protocol to ancho
 
 ```
 iStampit.io/
-├── istampit-web/           # Next.js 15 App Router (primary frontend)
-│   ├── app/                # Routes: /, /stamp, /verify, /ledger, /embed
-│   │   ├── api/            # API routes (stamp, session, healthz)
-│   │   ├── components/     # React components
-│   │   └── lib/            # Utilities, OTS verification, analytics
-│   ├── styles/             # TailwindCSS + Design System
-│   └── public/             # Static assets, widget bundles
-├── istampit-cli/           # Python CLI for command-line operations
-├── istampit-action/        # GitHub Action for automated stamping
-├── api/                    # Standalone Python API (Fly.io deployment)
-├── docs/                   # ALL documentation (consolidated here)
-├── artifacts/              # Daily stamped artifacts + receipts
-└── ledger.json            # Innovation ledger database
+├── istampit-web/              # Next.js 15 frontend + API routes
+│   ├── app/                   # Pages: /, /stamp, /verify, /ledger, /embed
+│   │   ├── api/               # Node.js API routes (stamp, session, healthz)
+│   │   ├── components/        # React components
+│   │   └── lib/               # Utilities, OTS verification, analytics
+│   ├── styles/                # TailwindCSS + Design System
+│   └── public/                # Static assets, embed widget, artifacts
+├── istampit-cli/              # Python CLI tool (pip installable)
+├── istampit-action/           # GitHub Action for CI/CD
+├── api/                       # Standalone FastAPI service (Fly.io)
+│   ├── app.py                 # FastAPI app with /stamp, /verify, /stamp-file
+│   ├── README.md              # API endpoint documentation
+│   ├── USAGE_EXAMPLES.md      # Real-world integration patterns
+│   └── test_api.py            # Test suite
+├── docs/                      # ALL documentation (organized)
+│   ├── API_QUICK_REFERENCE.md # Common commands and examples
+│   ├── SECURITY.md            # Security practices
+│   ├── CONTRIBUTING.md        # Contribution guidelines
+│   ├── HOSTING.md             # Deployment guide
+│   └── [other docs...]
+├── scripts/                   # Automation utilities
+│   ├── update-ledger-status.js    # Bitcoin confirmation checker
+│   ├── cleanup-ledger.js          # Remove nested chains
+│   └── remove-orphaned-entries.js # Clean dead references
+├── artifacts/                 # Stamped artifacts (only recent Nov 17-21)
+├── ledger.json                # Public innovation ledger (18 entries)
+└── README.md                  # Main project README (clean & focused)
 ```
 
 **Tech Stack:**
 - Frontend: Next.js 15.4.6, React 19, TypeScript, TailwindCSS
-- Backend: Node.js API routes, Python CLI
-- Blockchain: Bitcoin (via OpenTimestamps calendars)
-- Deployment: Hybrid (static pages + dynamic API routes)
+- API: FastAPI (Python 3.11+) + Node.js API routes
+- Blockchain: Bitcoin via OpenTimestamps calendars
+- Deployment: Vercel (web) + Fly.io (API)
+- Automation: GitHub Actions (workflows every 6 hours)
 
 ---
 

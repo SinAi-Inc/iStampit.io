@@ -1,99 +1,133 @@
-<!-- Consolidated title -->
-# iStampit.io — Innovation Timestamping & Public Ledger
+# iStampit.io — Blockchain Timestamping Platform
 
- [![CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml)
- [![Pages](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml)
+[![CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/ci.yml)
+[![Pages](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml/badge.svg)](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/pages.yml)
 ![CLI CI](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/cli.yml/badge.svg)
 ![CodeQL](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/codeql.yml/badge.svg)
-![Scorecard](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/scorecard.yml/badge.svg)
-![Release Sign](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/release-sign.yml/badge.svg)
-![Verify Security Artifacts](https://github.com/SinAi-Inc/iStampit.io/actions/workflows/verify-security-artifacts.yml/badge.svg)
 
 ![Project preview](https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf)
 
-**Mission:** Verifiable proof-of-existence for research & creative artifacts using the OpenTimestamps (OTS) protocol on Bitcoin, plus a public **Innovation Ledger** and an embeddable **Verify** widget for third-party sites.
+**Privacy-first blockchain timestamping using OpenTimestamps protocol.** Create immutable proof-of-existence for digital artifacts anchored to Bitcoin blockchain - without revealing file contents.
 
-> Status: **Production Ready** (v1.0+). All releases are signed with Sigstore Cosign (keyless) and include SLSA v3 provenance. See `docs/SECURITY.md` for verification instructions.
+> **Status:** Production Ready (v1.0+) | **Live:** [istampit.io](https://istampit.io) | **API:** [istampit-api.fly.dev](https://istampit-api.fly.dev)
 
-## 🚀 Recent Updates (Nov 2025)
+## ✨ What is iStampit?
 
-- ✅ **API Fix**: Corrected `/api/stamp` route to `force-dynamic` for proper subprocess execution
-- ✅ **Architecture Validated**: Hybrid Next.js deployment confirmed working (static pages + dynamic API routes)
-- ✅ **Build System**: Clean builds with zero TypeScript/ESLint errors
-- ✅ **Documentation**: Reorganized all docs to `docs/` directory for easy access
-- ✅ **Production Ready**: Platform validated for deployment with Redis configuration
+iStampit provides cryptographic proof that a digital file existed at a specific point in time:
 
-## Hosting Model
+1. **Hash** your file locally (SHA-256) - never uploading content
+2. **Anchor** the hash to Bitcoin blockchain via OpenTimestamps
+3. **Generate** a .ots receipt file as proof
+4. **Verify** timestamps independently at any time
 
-The application now runs in a **hybrid Next.js deployment**: static pages + live API routes (`/api/stamp`, `/api/session`) and middleware. This enables real-time stamping (spawning the `istampit` CLI) while keeping most pages cached statically.
+**Use Cases:**
+- Prove when code was written (commit timestamps)
+- Timestamp research papers and datasets
+- Verify document authenticity
+- Create audit trails for compliance
+- Protect intellectual property
 
-Key points:
+## 🚀 Quick Start
 
-- `/api/stamp` requires a Node/Edge environment that allows spawning a subprocess (CLI) or executing child processes. (Standard Vercel Node serverless functions are acceptable; pure static hosts are not.)
-- Rate limiting defaults to in-memory; production deployments should configure Redis (set `ENABLE_REDIS=1` and `REDIS_URL` / `UPSTASH_REDIS_REST_URL`).
-- If deploying to Vercel: add the Python-based CLI to the build (either pre-install via `pip` in a build step or bundle a JS wrapper). Ensure the `istampit` executable is on `PATH` at runtime.
-- For container-based hosts (Fly.io, Render, Docker/Kubernetes): install the CLI in the image and expose port 3000 running `next start`.
-- Fallback static-only mode (former configuration) is no longer default; to disable runtime stamping remove or stub the `/api/stamp` route.
+### Web Interface
 
-See Hosting Notes below for operational guidance.
+Visit **[istampit.io](https://istampit.io)** to:
+- Drag & drop files for instant timestamping
+- Verify existing timestamps with .ots receipts
+- Browse the public Innovation Ledger
+- Generate embeddable verification widgets
 
-### Hosting Notes
+### API Access
 
-| Capability | Requirement | Notes |
-|------------|-------------|-------|
-| Child process (CLI) | Required | Used to invoke `istampit` for hashing/stamping. |
-| Environment Variables | Optional/Recommended | `ENABLE_REDIS`, `REDIS_URL` / `UPSTASH_REDIS_REST_URL`, `NEXTAUTH_URL` (if session proxy used). |
-| Redis (optional) | Improves rate limiting | Without it, in-memory limiter resets on cold start. |
-| Node Version | 20.x | Enforced via `engines` field; avoids runtime drift. |
-| Build Artifacts | `next build` output | Serve with `next start` (not `next export`). |
-| Security | Least privilege | If using Redis, scope credentials to rate limiting only. |
+```bash
+# Stamp a hash
+curl -X POST https://istampit-api.fly.dev/stamp \
+  -H "Content-Type: application/json" \
+  -d '{"hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}'
 
-Deployment checklist:
+# Stamp a file directly
+curl -X POST https://istampit-api.fly.dev/stamp-file \
+  -F "file=@document.pdf"
 
-1. Install dependencies + `istampit` CLI (Python virtual env or standalone binary) during build.
-2. Ensure `NODE_ENV=production` and Node 20.x runtime.
-3. (Optional) Provide Redis URL + set `ENABLE_REDIS=1`.
-4. Run `npm run build` then launch with `npx next start` (or process manager).
-5. Monitor `/api/stamp` latency and memory; tune rate limits if necessary.
+# Verify a timestamp
+curl -X POST https://istampit-api.fly.dev/verify \
+  -H "Content-Type: application/json" \
+  -d '{"hash": "e3b0c44...", "receiptB64": "AE9wZW5UaW1lc3RhbXBzAA..."}'
+```
 
-If a platform forbids spawning processes, consider a lightweight microservice for stamping and adjust the frontend to call that endpoint.
+See **[API_QUICK_REFERENCE.md](./docs/API_QUICK_REFERENCE.md)** for complete API documentation.
 
-<!-- Removed duplicate H1 and repeated badges/mission paragraph -->
+### Command Line
 
-## What's New in v1.0
+```bash
+# Install CLI
+pip install istampit-cli
 
-✅ **Innovation Ledger**: Public registry of stamped artifacts with status tracking
-✅ **Embed Widget**: One-line script for third-party verification
-✅ **Automated Stamping**: Daily GitHub Actions workflow for continuous innovation proof
-✅ **Enhanced Security**: Cosign signatures, SLSA provenance, and security scanning
-✅ **Mobile-First Design**: Responsive UI with accessibility standards
+# Stamp a file
+istampit stamp document.pdf
 
-## Features
+# Verify timestamp
+istampit verify document.pdf document.pdf.ots
+```
 
-### Creating Timestamps
+### CI/CD Integration
 
-- **Web Interface**: Drag & drop files or paste SHA-256 hashes → instant .ots receipt download
-- **Auto-Stamping**: Files are automatically hashed locally and timestamped upon upload
-- **API Endpoint**: `POST /stamp` for integration into your applications
-- **Privacy-First**: Only cryptographic hashes are transmitted - never file contents
+```yaml
+# GitHub Actions example
+- name: Timestamp Release
+  run: |
+    HASH=$(git rev-parse HEAD)
+    curl -X POST https://istampit-api.fly.dev/stamp \
+      -H "Content-Type: application/json" \
+      -d "{\"hash\": \"$HASH\"}" > timestamp.json
+```
 
-### Verification System
+## 🏗️ Architecture
 
-- **Web Interface**: Drop `.ots` receipt + original file → instant verification
-- **Hash-Only Mode**: Verify using SHA-256 hash when files are sensitive
-- **Status Tracking**: Real-time Bitcoin confirmation status
-- **Error Handling**: Clear messaging for invalid or incomplete proofs
+```text
+iStampit.io/
+├── istampit-web/        # Next.js frontend + API routes
+│   ├── app/             # Pages: /, /stamp, /verify, /ledger
+│   ├── components/      # React components
+│   └── public/          # Static assets + embed widget
+├── istampit-cli/        # Python CLI tool
+├── istampit-action/     # GitHub Action
+├── api/                 # Standalone FastAPI service
+│   ├── app.py           # Endpoints: /stamp, /verify, /stamp-file
+│   └── USAGE_EXAMPLES.md
+├── docs/                # All documentation
+├── scripts/             # Automation scripts
+└── ledger.json          # Public innovation ledger
+```
+
+**Stack:**
+- Frontend: Next.js 15, React 19, TypeScript, TailwindCSS
+- API: FastAPI (Python) + Node.js API routes
+- Blockchain: Bitcoin via OpenTimestamps
+- Deployment: Vercel (web) + Fly.io (API)
+
+## 📚 Features
+
+### Timestamping
+- **Web Interface**: Drag & drop files or paste hashes
+- **API**: RESTful endpoints for automation
+- **CLI**: Command-line tool for scripts
+- **Privacy**: Only hashes transmitted, never file contents
+- **Free**: No account required, open source
+
+### Verification
+- **Instant**: Upload .ots receipt + file for verification
+- **Bitcoin Confirmed**: See blockchain confirmation status
+- **Independent**: Verify locally without trusting third parties
+- **Hash-only**: Verify using SHA-256 when files are sensitive
 
 ### Innovation Ledger
-
-- **Public Registry**: Transparent log of all stamped innovations
-- **Filtering & Search**: Find entries by status, date, or content type
-- **Copy Functions**: Easy sharing of hashes and transaction IDs
-- **Privacy First**: Only hashes stored, never file contents
-- **Statistics Dashboard**: Track confirmed vs pending stamps
+- **Public Registry**: Transparent log of all timestamps
+- **Searchable**: Filter by status, date, content type
+- **Statistics**: Track confirmed vs pending
+- **Automated**: Daily workflow stamps repository state
 
 ### Embed Widget
-
 Drop-in verification for any website:
 
 ```html
@@ -101,261 +135,120 @@ Drop-in verification for any website:
 <div data-istampit-verify data-mode="inline" data-theme="light"></div>
 ```
 
-**Features:**
+### Automation
+- **GitHub Action**: `SinAi-Inc/istampit-action`
+- **Daily Stamping**: Automated artifact timestamping
+- **CI/CD Ready**: Integrate into build pipelines
+- **Rate Limited**: Fair use for all users
 
-- **Inline Mode**: Direct embedding with auto-resize
-- **Modal Mode**: Click-to-open overlay with focus management
-- **Theme Support**: Light/dark modes with custom styling
-- **Event Communication**: PostMessage API for verification results
-- **Security**: Sandboxed iframe prevents XSS attacks
+## 📖 Documentation
 
-### Automation & Infrastructure
+### Getting Started
+- **[Quick Reference](./docs/API_QUICK_REFERENCE.md)** - Common commands and examples
+- **[Usage Examples](./api/USAGE_EXAMPLES.md)** - Real-world integration patterns
+- **[API Documentation](./api/README.md)** - Complete endpoint reference
 
-- **Daily Stamping**: Automated workflow stamps repository state
-- **CI/CD Pipeline**: Comprehensive testing and deployment
-- **Static Export**: CDN-ready deployment with global distribution
-- **Type Safety**: Full TypeScript coverage with strict typing
+### For Developers
+- **[Contributing](./docs/CONTRIBUTING.md)** - How to contribute
+- **[Architecture](./docs/AGENTS.md)** - System design and context
+- **[Security](./docs/SECURITY.md)** - Security practices and policies
+- **[Hosting](./docs/HOSTING.md)** - Deployment guide
 
-### Hash Stamping API (Experimental)
+### Project Info
+- **[Changelog](./docs/CHANGELOG.md)** - Version history
+- **[Project Status](./docs/PROJECT_STATUS.md)** - Current state
+- **[Release Notes](./docs/RELEASE.md)** - Release process
+- **[Code of Conduct](./docs/CODE_OF_CONDUCT.md)** - Community guidelines
 
-Client-side UX calls a lightweight stamping endpoint to obtain an OpenTimestamps receipt from a precomputed SHA-256 hash (your file never uploads):
-
-POST `/api/stamp`
-
-Request body:
-
-```json
-{ "hash": "<64 hex sha256>" }
-```
-
-Successful response:
-
-```json
-{
-  "hash": "abcd...",            // normalized lowercase hash
-  "filename": "abcd....ots",     // suggested receipt filename
-  "size": 1234,                   // bytes
-  "receiptB64": "BASE64..."      // binary .ots file encoded in base64
-}
-```
-
-Errors return HTTP 4xx/5xx with `{ "error": "code" }` (e.g. `invalid_hash`, `rate_limited`, `stamp_failed`).
-
-GET `/api/stamp/{hash}.ots`
-
-Streaming binary receipt download for the given hash. Same rate limits as POST. Returns `application/octet-stream` with `Content-Disposition: attachment`.
-
-Rate limiting: sliding window (60/min, max 15 / 10s burst) per IP (in-memory demo implementation). For production deploy, back with Redis / durable KV and tighten thresholds.
-
-## Architecture
-
-```text
-repo-root/
-├── istampit-web/             # Web frontend (Next.js static export)
-│   ├── app/                  # App Router routes (verify, ledger, embed, etc.)
-│   ├── components/           # UI components
-│   ├── public/widget/        # Embed widget bundle(s)
-│   └── types/                # Shared TS types
-├── istampit-cli/             # Python CLI (packaging + src + tests)
-├── istampit-action/          # GitHub Action for automated stamping
-├── artifacts/                # Daily stamped artifacts + OTS receipts
-├── docs/                     # Centralized documentation (policies, guides, status)
-├── ledger.json               # Innovation ledger data
-├── ledger-entry.schema.json  # JSON Schema for ledger entries
-└── scripts/                  # Utility / verification scripts
-```
-
-## Documentation Index
-
-All non-README docs have been consolidated under `docs/`.
-
-Key documents:
-
-- Security: [`docs/SECURITY.md`](./docs/SECURITY.md) / [`docs/SECURITY_NOTES.md`](./docs/SECURITY_NOTES.md)
-- Policies: [`docs/CODE_OF_CONDUCT.md`](./docs/CODE_OF_CONDUCT.md), [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md), [`docs/COOKIE_POLICY.md`](./docs/COOKIE_POLICY.md)
-- Operations: [`docs/HOSTING.md`](./docs/HOSTING.md), [`docs/RELEASE.md`](./docs/RELEASE.md)
-- Status & Releases: [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), [`docs/PRODUCTION-TEST-COMPLETE.md`](./docs/PRODUCTION-TEST-COMPLETE.md)
-- Security Deep Dive: [`docs/SECURITY_NOTES.md`](./docs/SECURITY_NOTES.md)
-- UX / Implementation Notes: [`docs/NAVIGATION_IMPROVEMENTS.md`](./docs/NAVIGATION_IMPROVEMENTS.md), [`docs/MOBILE_MENU_BLUR_ENHANCEMENTS.md`](./docs/MOBILE_MENU_BLUR_ENHANCEMENTS.md), [`docs/LEGAL_PAGES_IMPLEMENTATION.md`](./docs/LEGAL_PAGES_IMPLEMENTATION.md)
-
-See `docs/ORGANIZATION.md` for migration rationale.
-
-## Quick Start
-
-### Development Setup
+## 🛠️ Development
 
 ```bash
-# Prerequisites: Node.js 20+, npm 10+, Python 3.11+ (for CLI)
+# Clone repository
 git clone https://github.com/SinAi-Inc/iStampit.io.git
 cd iStampit.io
 
-# Install web dependencies
-cd istampit-web
+# Install dependencies
 npm install
 
-# Start development server
+# Run development server
+cd istampit-web
 npm run dev
-# → http://localhost:3000
 
-# Build for production (hybrid deployment with API routes)
+# Build for production
 npm run build
-npm start  # NOT npm run export for production
 
-# For static-only export (no API routes)
-STATIC_EXPORT=1 npm run build
+# Run tests
+npm test
+
+# Update ledger status
+node scripts/update-ledger-status.js
 ```
 
-### Production Deployment
+### Prerequisites
+- Node.js 20+
+- npm 10+
+- Python 3.11+ (for CLI)
 
-**Required Environment Variables:**
+### Monorepo Structure
+This is an npm workspaces monorepo:
+- `istampit-web` - Web frontend
+- `istampit-cli` - Python CLI
+- `istampit-action` - GitHub Action
 
-```bash
-# Redis for rate limiting (CRITICAL for production)
-ENABLE_REDIS=1
-REDIS_URL=redis://your-instance:6379
-# OR use Upstash
-UPSTASH_REDIS_REST_URL=https://your-instance.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your-token
+## 🔐 Security
 
-# Deployment mode
-NODE_ENV=production
-STATIC_EXPORT=0  # Ensure API routes are enabled
-```
+All releases are signed with Sigstore Cosign and include SLSA v3 provenance.
 
-**Deployment Options:**
+**Security Features:**
+- Zero vulnerabilities (verified with npm audit)
+- Content Security Policy (CSP) headers
+- CORS protection on API endpoints
+- Rate limiting on all endpoints
+- Sandboxed embed widget (iframe isolation)
+- No file uploads (hash-only transmission)
 
-- **Vercel**: Deploy with `vercel --prod` (installs CLI automatically)
-- **Docker**: Use provided `Dockerfile` with Python + Node
-- **Fly.io**: Deploy API separately, web as static CDN
-- **GitHub Pages**: Static export only (no `/api/stamp` functionality)
+Report security issues to: security@istampit.io
 
-See `docs/HOSTING.md` for detailed deployment guides.
+See **[SECURITY.md](./docs/SECURITY.md)** for verification instructions.
 
-### Using the Embed Widget
+## 📊 Current Status
 
-#### Basic Integration
+- **Ledger**: 18 entries (12 confirmed, 6 pending)
+- **Automation**: Fixed and running (every 6 hours)
+- **API**: Enhanced with verification endpoints
+- **Security**: 0 vulnerabilities
+- **Build**: Clean (0 errors, 0 warnings)
 
-```html
-<script src="https://istampit.io/widget/v1.js" async></script>
-<div data-istampit-verify data-mode="inline" data-theme="light"></div>
-```
+## 🤝 Contributing
 
-#### Modal Mode
+We welcome contributions! See **[CONTRIBUTING.md](./docs/CONTRIBUTING.md)** for guidelines.
 
-```html
-<div data-istampit-verify data-mode="modal" data-theme="dark">
-  <button>🔍 Verify with iStampit</button>
-</div>
-```
+**Quick Contributions:**
+- 🐛 Report bugs via GitHub Issues
+- 💡 Suggest features or improvements
+- 📝 Improve documentation
+- 🔧 Submit pull requests
 
-#### Listen for Results
+## 📄 License
 
-```javascript
-window.addEventListener('istampit-verified', (event) => {
-  const {status, txid, blockHeight, hash} = event.detail;
-  console.log(`Verification ${status}:`, {txid, blockHeight});
-});
-```
+MIT License - see [LICENSE](./LICENSE) for details.
 
-## Security & Verification
+## 🙏 Acknowledgments
 
-### Release Verification (Cosign)
+Built with:
+- [OpenTimestamps](https://opentimestamps.org/) - Bitcoin timestamping protocol
+- [Next.js](https://nextjs.org/) - React framework
+- [FastAPI](https://fastapi.tiangolo.com/) - Python API framework
+- [Bitcoin](https://bitcoin.org/) - Blockchain infrastructure
 
-All releases are signed using Sigstore Cosign in keyless mode:
+## 📞 Support
 
-```bash
-# Verify release artifact
-cosign verify-blob ./artifact.tar.gz \
-  --bundle ./artifact.tar.gz.bundle \
-  --certificate-identity-regexp '^https://github.com/SinAi-Inc/iStampit.io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$' \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com
-```
-
-### Security Features
-
-- **Sandboxed Widgets**: iframe isolation prevents XSS
-- **Content Security Policy**: Strict CSP headers in production
-- **Input Validation**: All user inputs sanitized and validated
-- **No File Storage**: Only cryptographic hashes processed
-- **Audit Trail**: All operations logged for transparency
-
-## Tech Stack
-
-- **Frontend**: Next.js 14, TypeScript, TailwindCSS
-- **Verification**: OpenTimestamps JavaScript library
-- **Deployment**: Static export with CDN distribution
-- **CI/CD**: GitHub Actions with automated testing
-- **Security**: Cosign signatures, SLSA provenance, CodeQL scanning
-
-## Contributing
-
-We welcome contributions! Please see:
-
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md) - Development guidelines
-- [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) - Community standards
-- [`SECURITY.md`](./SECURITY.md) - Security policy and reporting
-
-### Development Workflow
-
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Run tests: `npm test`
-4. Commit changes: `git commit -m 'Add amazing feature'`
-5. Push branch: `git push origin feature/amazing-feature`
-6. Open Pull Request
-
-## License & Attribution
-
-- **Code**: MIT License - see [`LICENSE`](./LICENSE)
-- **OpenTimestamps**: Uses LGPL-licensed libraries
-- **Dependencies**: See individual package licenses
+- **Website**: [istampit.io](https://istampit.io)
+- **API**: [istampit-api.fly.dev](https://istampit-api.fly.dev)
+- **GitHub**: [SinAi-Inc/iStampit.io](https://github.com/SinAi-Inc/iStampit.io)
+- **Issues**: [GitHub Issues](https://github.com/SinAi-Inc/iStampit.io/issues)
+- **Documentation**: [docs/](./docs/)
 
 ---
 
-Made with ❤️ for the global innovation community
-
-*Empowering creators, researchers, and innovators with cryptographic proof of their work since 2024.*
-
-### Ledger Data
-
-The build produces both an aggregated ledger JSON and per‑month segment files for efficient loading:
-
-- `public/ledger/index.json` – full aggregated ledger (legacy path, kept for compatibility)
-- `public/ledger/YYYY/MM/index.json` – month-specific slices generated at build time
-
-Generation happens automatically via the `prebuild` script (invoked before `next build`). You can run it explicitly:
-
-```bash
-cd istampit-web
-npm run prebuild
-```
-
-Source scripts:
-
-- `scripts/prebuild.mjs` – cleans `.next/` and `out/`, then triggers generation
-- `scripts/generate-ledger.mjs` – splits `../../ledger.json` into monthly JSON outputs
-
-This approach keeps the static bundle lean as the ledger grows while preserving a single file endpoint for existing consumers.
-
-<!-- Stack section folded into Tech Stack earlier; removed duplicate -->
-
-## Client Libraries
-
-- **JS OTS lib:** `opentimestamps` (NPM) for in-browser operations.
-
-> Workflows use a fallback expression: `${{ secrets.SUBMODULES_TOKEN || github.token }}` so they still function if the PAT is absent (for public repos).
-
-## Verifying Release Artifacts & Receipts (Cosign Keyless)
-
-After a published release, artifacts (CLI wheels/tarballs and any *.ots receipts) are signed using Sigstore Cosign in keyless mode. Each signed file has a corresponding `.bundle` containing signature + certificate.
-
-Example: verify a sample file (replace path as needed):
-
-```bash
-cosign verify-blob ./sample.txt \
-  --bundle ./sample.txt.bundle \
-  --certificate-identity-regexp '^https://github.com/SinAi-Inc/iStampit.io/\\.github/workflows/release-sign\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$' \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com
-```
-
-Successful verification proves the file originated from a GitHub Actions workflow in this repository at the time of signing.
+Made with ❤️ by [SinAI Inc](https://github.com/SinAi-Inc) | Powered by Bitcoin & OpenTimestamps
