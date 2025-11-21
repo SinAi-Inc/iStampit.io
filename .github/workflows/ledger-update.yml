@@ -34,12 +34,12 @@ jobs:
           echo "Checking pending OpenTimestamps entries for Bitcoin confirmations..."
           PENDING_COUNT=$(node -e "const fs=require('fs'); const ledger=JSON.parse(fs.readFileSync('ledger.json','utf8')); console.log(ledger.entries.filter(e=>e.status==='pending').length);")
           echo "Pending entries: $PENDING_COUNT"
-          
+
           if [ "$PENDING_COUNT" -eq 0 ]; then
             echo "✅ No pending entries to check"
             exit 0
           fi
-          
+
           echo "Note: Automated confirmation checking requires blockchain API integration"
           echo "Pending timestamps will be confirmed once their Bitcoin blocks are mined"
 
