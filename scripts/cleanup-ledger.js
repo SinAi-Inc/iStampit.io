@@ -25,22 +25,22 @@ ledger.entries = ledger.entries.filter(entry => {
   if (!entry.id.startsWith('auto-')) {
     return true;
   }
-  
+
   // For auto entries, keep only primary .ots files
   const url = entry.receiptUrl;
-  
+
   // Exclude if it has nested backup patterns
   if (url.includes('.ots.bak') || url.includes('.ots.ots')) {
     console.log(`   ❌ Removing nested backup: ${entry.id}`);
     return false;
   }
-  
+
   // Exclude if it's a .bak.ots (only first-level backup)
   if (url.endsWith('.bak.ots')) {
     console.log(`   ⚠️  Removing backup: ${entry.id}`);
     return false;
   }
-  
+
   return true;
 });
 

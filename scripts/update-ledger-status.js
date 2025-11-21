@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Update Ledger Status Script
- * 
+ *
  * Scans all .ots files referenced in ledger.json and updates their status
  * based on whether they contain Bitcoin block attestations.
  */
@@ -40,20 +40,20 @@ for (const entry of ledger.entries) {
   if (entry.status !== 'pending') {
     continue;
   }
-  
+
   checked++;
-  
+
   // Convert receiptUrl to file path
   const otsPath = entry.receiptUrl.startsWith('/')
     ? path.join(__dirname, '..', 'istampit-web', 'public', entry.receiptUrl)
     : path.join(__dirname, '..', entry.receiptUrl);
-  
+
   if (!fs.existsSync(otsPath)) {
     console.log(`   ⚠️  ${entry.id}: Receipt file not found at ${otsPath}`);
     errors++;
     continue;
   }
-  
+
   if (hasBitcoinAttestation(otsPath)) {
     console.log(`   ✅ ${entry.id}: Bitcoin confirmation found!`);
     entry.status = 'confirmed';
