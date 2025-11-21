@@ -27,27 +27,24 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: istampit-web
-        run: npm ci
+        run: npm ci --workspaces
 
-      - name: Build ledger updater
-        working-directory: istampit-web
-        run: npm run build
-
-      - name: Run ledger update check
-        working-directory: istampit-web
+      - name: Check ledger status
         run: |
-          # Call the API endpoint to update ledger
-          # In production, this would be a real HTTP call or direct script execution
-          echo "Ledger update triggered"
-          echo "Checking pending entries for Bitcoin confirmations..."
-          # For now, this is a placeholder for the actual update logic
-          # Real implementation would:
-          # 1. Call /api/ledger/update endpoint
-          # 2. Or run a Node script that updates ledger.json
-          # 3. Commit changes if any entries were confirmed
+          echo "Checking pending OpenTimestamps entries for Bitcoin confirmations..."
+          PENDING_COUNT=$(node -e "const fs=require('fs'); const ledger=JSON.parse(fs.readFileSync('ledger.json','utf8')); console.log(ledger.entries.filter(e=>e.status==='pending').length);")
+          echo "Pending entries: $PENDING_COUNT"
+          
+          if [ "$PENDING_COUNT" -eq 0 ]; then
+            echo "✅ No pending entries to check"
+            exit 0
+          fi
+          
+          echo "Note: Automated confirmation checking requires blockchain API integration"
+          echo "Pending timestamps will be confirmed once their Bitcoin blocks are mined"
 
       - name: Display results
         run: |
           echo "✅ Ledger update check completed"
-          echo "Pending entries will be automatically confirmed when Bitcoin blocks arrive"
+          echo "Current ledger statistics:"
+          node -e "const fs=require('fs'); const ledger=JSON.parse(fs.readFileSync('ledger.json','utf8')); console.log('Total entries:', ledger.metadata.totalEntries); console.log('Confirmed:', ledger.metadata.confirmedEntries); console.log('Pending:', ledger.metadata.pendingEntries);"
