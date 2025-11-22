@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Upgrade Pending Timestamps
- * 
+ *
  * Attempts to upgrade pending .ots files by fetching Bitcoin attestations
  * from calendar servers. This should be run for timestamps that have been
  * pending for >24 hours.
@@ -34,7 +34,7 @@ for (const entry of ledger.entries) {
   }
 
   const otsPath = path.join(__dirname, '..', 'istampit-web', 'public', entry.receiptUrl);
-  
+
   if (!fs.existsSync(otsPath)) {
     console.log(`⚠️  ${entry.id}: File not found`);
     failed++;
@@ -42,7 +42,7 @@ for (const entry of ledger.entries) {
   }
 
   const initialSize = fs.statSync(otsPath).size;
-  
+
   // If already >1KB, probably has attestations
   if (initialSize > 1000) {
     console.log(`ℹ️  ${entry.id}: Already upgraded (${initialSize} bytes)`);
@@ -50,16 +50,16 @@ for (const entry of ledger.entries) {
   }
 
   console.log(`🔄 ${entry.id}: Attempting upgrade (current: ${initialSize} bytes)...`);
-  
+
   try {
     // Read current receipt
     const receipt = fs.readFileSync(otsPath);
-    
+
     // Try to get upgraded version from calendars
     // This is a simplified approach - in production, use opentimestamps library
     console.log(`   ⏳ Waiting for calendar aggregation...`);
     console.log(`   💡 Tip: Run 'ots upgrade ${path.basename(otsPath)}' manually if available`);
-    
+
     failed++;
   } catch (error) {
     console.log(`   ❌ Error: ${error.message}`);
@@ -75,7 +75,7 @@ if (failed > 0) {
   console.log(`\n💡 Manual upgrade instructions:`);
   console.log(`   1. Install: pip install opentimestamps-client`);
   console.log(`   2. Upgrade each file:`);
-  
+
   for (const entry of ledger.entries) {
     if (entry.status === 'pending') {
       const otsPath = path.join(__dirname, '..', 'istampit-web', 'public', entry.receiptUrl);
@@ -85,7 +85,7 @@ if (failed > 0) {
       }
     }
   }
-  
+
   console.log(`\n   Or use the OpenTimestamps website:`);
   console.log(`   https://opentimestamps.org/`);
 }

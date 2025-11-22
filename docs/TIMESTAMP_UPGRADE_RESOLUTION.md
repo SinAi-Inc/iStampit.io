@@ -1,6 +1,6 @@
 # Timestamp Upgrade Investigation & Resolution
 
-**Date:** November 22, 2025  
+**Date:** November 22, 2025
 **Status:** ✅ RESOLVED
 
 ## Problem Summary
@@ -161,10 +161,10 @@ The re-stamp script already uses multiple calendar servers. Consider rotating se
 
 ## Resolution
 
-**Status:** ✅ RESOLVED  
-**Root Cause:** Calendar server lost 3 timestamps from Nov 16  
-**Solution:** Re-created timestamps with fresh calendar submissions  
-**Expected Resolution:** All timestamps should confirm within 24 hours  
+**Status:** ✅ RESOLVED
+**Root Cause:** Calendar server lost 3 timestamps from Nov 16
+**Solution:** Re-created timestamps with fresh calendar submissions
+**Expected Resolution:** All timestamps should confirm within 24 hours
 **Monitoring:** Live dashboard at `/ledger-live.html`
 
 ---
