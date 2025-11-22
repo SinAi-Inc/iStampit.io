@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iStampit Live Ledger Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .label {
+            color: #718096;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .value {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .stat-card.confirmed .value {
+            color: #48bb78;
+        }
+        
+        .stat-card.pending .value {
+            color: #ed8936;
+        }
+        
+        .entries {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .entry {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .entry:hover {
+            background: #f7fafc;
+        }
+        
+        .entry:last-child {
+            border-bottom: none;
+        }
+        
+        .entry-info h3 {
+            color: #2d3748;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .entry-info .meta {
+            color: #718096;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.confirmed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status-badge.pending {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .refresh-info {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .auto-refresh {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 iStampit Live Ledger</h1>
+            <p>Real-time status of blockchain timestamps</p>
+        </div>
+        
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="label">Total Entries</div>
+                <div class="value">-</div>
+            </div>
+            <div class="stat-card confirmed">
+                <div class="label">✅ Confirmed</div>
+                <div class="value">-</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="label">⏳ Pending</div>
+                <div class="value">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Last Updated</div>
+                <div class="value" style="font-size: 14px;">-</div>
+            </div>
+        </div>
+        
+        <div class="entries" id="entries">
+            <div class="loading">Loading ledger data...</div>
+        </div>
+        
+        <div class="refresh-info">
+            <span class="auto-refresh">●</span> Auto-refreshing every 30 seconds
+        </div>
+    </div>
+    
+    <script>
+        let refreshInterval;
+        
+        async function loadLedger() {
+            try {
+                const response = await fetch('/ledger.json');
+                if (!response.ok) throw new Error('Failed to fetch ledger');
+                
+                const data = await response.json();
+                updateStats(data);
+                updateEntries(data);
+            } catch (error) {
+                document.getElementById('entries').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading ledger:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function updateStats(data) {
+            const stats = document.getElementById('stats');
+            const total = data.metadata.totalEntries || data.entries.length;
+            const confirmed = data.metadata.confirmedEntries || 
+                data.entries.filter(e => e.status === 'confirmed').length;
+            const pending = data.metadata.pendingEntries || 
+                data.entries.filter(e => e.status === 'pending').length;
+            
+            const lastUpdated = new Date(data.metadata.lastUpdated || Date.now());
+            const timeAgo = getTimeAgo(lastUpdated);
+            
+            stats.innerHTML = `
+                <div class="stat-card">
+                    <div class="label">Total Entries</div>
+                    <div class="value">${total}</div>
+                </div>
+                <div class="stat-card confirmed">
+                    <div class="label">✅ Confirmed</div>
+                    <div class="value">${confirmed}</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="label">⏳ Pending</div>
+                    <div class="value">${pending}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Last Updated</div>
+                    <div class="value" style="font-size: 14px;">${timeAgo}</div>
+                </div>
+            `;
+        }
+        
+        function updateEntries(data) {
+            const container = document.getElementById('entries');
+            
+            if (!data.entries || data.entries.length === 0) {
+                container.innerHTML = '<div class="loading">No entries found</div>';
+                return;
+            }
+            
+            // Sort: pending first, then by date
+            const sorted = [...data.entries].sort((a, b) => {
+                if (a.status !== b.status) {
+                    return a.status === 'pending' ? -1 : 1;
+                }
+                return new Date(b.stampedAt) - new Date(a.stampedAt);
+            });
+            
+            container.innerHTML = sorted.map(entry => {
+                const date = new Date(entry.stampedAt);
+                const age = getTimeAgo(date);
+                
+                return `
+                    <div class="entry">
+                        <div class="entry-info">
+                            <h3>${escapeHtml(entry.title || entry.id)}</h3>
+                            <div class="meta">
+                                Stamped ${age} • Hash: ${entry.sha256.substring(0, 16)}...
+                            </div>
+                        </div>
+                        <span class="status-badge ${entry.status}">
+                            ${entry.status}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getTimeAgo(date) {
+            const seconds = Math.floor((Date.now() - date) / 1000);
+            
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            return `${Math.floor(seconds / 86400)}d ago`;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Initial load
+        loadLedger();
+        
+        // Auto-refresh every 30 seconds
+        refreshInterval = setInterval(loadLedger, 30000);
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            clearInterval(refreshInterval);
+        });
+    </script>
+</body>
+</html>

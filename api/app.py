@@ -223,7 +223,7 @@ def verify(req: VerifyRequest):
                         if receipt_data[i] == 0x05 and receipt_data[i + 1] == 0x88:
                             bitcoin_confirmed = True
                             message = "Bitcoin attestation found - timestamp confirmed on blockchain"
-                            
+
                             # Try to extract block height (simplified parsing)
                             try:
                                 # Block height is stored after the 0x05 0x88 marker
@@ -232,14 +232,14 @@ def verify(req: VerifyRequest):
                                     block_height = int.from_bytes(block_bytes, byteorder='big')
                             except:
                                 pass
-                            
+
                             attestations.append({
                                 "type": "bitcoin",
                                 "blockHeight": block_height,
                                 "confirmed": True
                             })
                             break
-                
+
                 if not bitcoin_confirmed:
                     message = "Timestamp verified but not yet confirmed on Bitcoin blockchain"
                     attestations.append({
@@ -281,7 +281,7 @@ async def stamp_file(file: UploadFile = File(...)):
         # Read file and calculate hash
         content = await file.read()
         hash_hex = hashlib.sha256(content).hexdigest()
-        
+
         logger.info(f"File {file.filename} has hash: {hash_hex}")
 
         # Create stamp request

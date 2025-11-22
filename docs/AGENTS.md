@@ -1,7 +1,7 @@
 # AI Agent Context & Project State
 
-**Last Updated:** November 21, 2025  
-**Project:** iStampit.io - Blockchain Timestamping Platform  
+**Last Updated:** November 21, 2025
+**Project:** iStampit.io - Blockchain Timestamping Platform
 **Status:** Production Ready (v1.0+) | Live: istampit.io | API: istampit-api.fly.dev
 
 ---

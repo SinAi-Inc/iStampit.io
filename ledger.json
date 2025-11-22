@@ -9,7 +9,7 @@
       "txid": null,
       "blockHeight": null,
       "blockTime": null,
-      "stampedAt": "2025-11-16T19:55:50Z",
+      "stampedAt": "2025-11-22T06:33:09.595Z",
       "tags": [
         "brand",
         "identity",
@@ -25,7 +25,7 @@
       "txid": null,
       "blockHeight": null,
       "blockTime": null,
-      "stampedAt": "2025-11-16T19:56:54Z",
+      "stampedAt": "2025-11-22T06:33:10.548Z",
       "tags": [
         "brand",
         "identity",
@@ -41,7 +41,7 @@
       "txid": null,
       "blockHeight": null,
       "blockTime": null,
-      "stampedAt": "2025-11-16T19:57:11Z",
+      "stampedAt": "2025-11-22T06:33:11.553Z",
       "tags": [
         "brand",
         "identity",
@@ -275,7 +275,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2025-11-21T17:54:40.278Z",
+    "lastUpdated": "2025-11-22T06:33:16.208Z",
     "totalEntries": 18,
     "confirmedEntries": 12,
     "pendingEntries": 6

@@ -84,23 +84,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Calculate hash
         id: hash
         run: |
           HASH=$(git rev-parse HEAD)
           echo "hash=$HASH" >> $GITHUB_OUTPUT
-      
+
       - name: Create timestamp
         run: |
           curl -X POST https://istampit-api.fly.dev/stamp \
             -H "Content-Type: application/json" \
             -d "{\"hash\": \"${{ steps.hash.outputs.hash }}\"}" \
             -o timestamp.json
-          
+
           # Extract and save receipt
           jq -r '.receiptB64' timestamp.json | base64 -d > release.ots
-      
+
       - name: Upload timestamp to release
         uses: actions/upload-release-asset@v1
         env:
@@ -123,7 +123,7 @@ import json
 class IStampitClient:
     def __init__(self, base_url="https://istampit-api.fly.dev"):
         self.base_url = base_url
-    
+
     def stamp_hash(self, hash_hex):
         """Create timestamp for a hash"""
         response = requests.post(
@@ -132,7 +132,7 @@ class IStampitClient:
         )
         response.raise_for_status()
         return response.json()
-    
+
     def stamp_file(self, file_path):
         """Stamp a file directly"""
         with open(file_path, 'rb') as f:
@@ -142,7 +142,7 @@ class IStampitClient:
             )
         response.raise_for_status()
         return response.json()
-    
+
     def verify(self, hash_hex, receipt_b64):
         """Verify a timestamp"""
         response = requests.post(
@@ -151,7 +151,7 @@ class IStampitClient:
         )
         response.raise_for_status()
         return response.json()
-    
+
     def save_receipt(self, receipt_b64, output_path):
         """Save base64 receipt to file"""
         receipt_bytes = base64.b64decode(receipt_b64)
@@ -188,17 +188,17 @@ Automatically stamp documentation updates:
 
 for file in docs/**/*.md; do
     echo "Stamping $file..."
-    
+
     # Calculate hash
     HASH=$(sha256sum "$file" | cut -d' ' -f1)
-    
+
     # Create timestamp
     curl -s -X POST https://istampit-api.fly.dev/stamp \
         -H "Content-Type: application/json" \
         -d "{\"hash\": \"$HASH\"}" \
         | jq -r '.receiptB64' \
         | base64 -d > "${file}.ots"
-    
+
     echo "Created ${file}.ots"
 done
 
