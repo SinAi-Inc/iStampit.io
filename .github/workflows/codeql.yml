@@ -24,12 +24,12 @@ jobs:
         language: [ 'javascript-typescript' ]
     steps:
       - name: Checkout repository with submodules
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
           submodules: recursive
       - name: Use Node 20
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -37,9 +37,9 @@ jobs:
       - name: Install dependencies (root workspace)
         run: npm install --no-audit --no-fund
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/init@fdbfb4d2750291e159f0156def62b853c2798ca2 # v4
         with:
           languages: ${{ matrix.language }}
           config-file: codeql-config.yml
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/analyze@fdbfb4d2750291e159f0156def62b853c2798ca2 # v4
