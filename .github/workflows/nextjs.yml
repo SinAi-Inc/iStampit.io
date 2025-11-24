@@ -24,8 +24,8 @@ jobs:
       run:
         working-directory: istampit-web
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: 'npm'
@@ -43,7 +43,7 @@ jobs:
             exit 1
           fi
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: istampit-web/out
   deploy:

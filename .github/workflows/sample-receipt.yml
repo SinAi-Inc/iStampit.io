@@ -9,8 +9,8 @@ jobs:
   make-receipt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with: { python-version: '3.11' }
       - run: pip install --upgrade pip opentimestamps-client
       - name: Generate sample + receipt
@@ -18,7 +18,7 @@ jobs:
           echo "iStampit canonical sample" > sample.txt
           ots stamp sample.txt
           ots upgrade sample.txt.ots || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ots-sample
           path: |
