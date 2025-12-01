@@ -23,7 +23,7 @@ jobs:
       # Use external API for stamping
       NEXT_PUBLIC_API_BASE: 'https://istampit-api.fly.dev'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@c2d88d3ecc89a9ef08eebf45d9637801dcee7eb5 # v4
       - uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
         with:
           node-version: '20'
