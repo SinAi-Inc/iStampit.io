@@ -23,12 +23,12 @@ jobs:
       # Use external API for stamping
       NEXT_PUBLIC_API_BASE: 'https://istampit-api.fly.dev'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
       - uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
         with:
           node-version: '20'
       - name: Cache npm
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
