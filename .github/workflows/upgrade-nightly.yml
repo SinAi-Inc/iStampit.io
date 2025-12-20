@@ -10,7 +10,7 @@ jobs:
   upgrade:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
@@ -21,7 +21,7 @@ jobs:
         run: |
           istampit upgrade-all . --json > upgrade-report.json || true
       - name: Upload report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: upgrade-report
           path: upgrade-report.json
