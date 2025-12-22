@@ -12,7 +12,7 @@ jobs:
       NEXT_PUBLIC_AUTH_ORIGIN: https://auth.istampit.io
     steps:
       - name: Checkout (root only)
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4.2.2
         with:
           fetch-depth: 0
       - name: Fetch submodules (with PAT if available)
@@ -35,7 +35,7 @@ jobs:
       - name: List receipts
         run: ls -l sample.txt.ots || stat sample.txt.ots
       - name: Upload receipt artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: sample-receipt
           path: sample.txt.ots
