@@ -35,7 +35,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install
-        working-directory: istampit-web
         run: npm install --no-audit --no-fund
       - name: Temporarily remove dynamic API routes for static export
         run: |
@@ -46,8 +45,7 @@ jobs:
             echo "Moved dynamic API route outside app directory for static export"
           fi
       - name: Build (static export)
-        working-directory: istampit-web
-        run: npm run build
+        run: npm --workspace istampit-web run build
       - name: Verify export output
         run: |
           if [ ! -d "istampit-web/out" ] && [ ! -d "istampit-web/dist" ] && [ ! -d "istampit-web/.next" ]; then

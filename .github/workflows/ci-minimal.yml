@@ -32,12 +32,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Install deps (web only)
-        working-directory: ./istampit-web
-        run: npm install --no-audit --no-fund --workspaces=false
+      - name: Install deps (workspace)
+        run: npm install --no-audit --no-fund
       - name: Build web (hybrid)
-        working-directory: ./istampit-web
-        run: npm run build
+        run: npm --workspace istampit-web run build
 
   e2e:
     runs-on: ubuntu-latest
@@ -50,16 +48,13 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Install deps (web only)
-        working-directory: ./istampit-web
-        run: npm install --no-audit --no-fund --workspaces=false
+      - name: Install deps (workspace)
+        run: npm install --no-audit --no-fund
       - name: Build web (hybrid)
-        working-directory: ./istampit-web
-        run: npm run build
+        run: npm --workspace istampit-web run build
       - name: Start Next server
-        working-directory: ./istampit-web
         run: |
-          npm run start &
+          npm --workspace istampit-web run start &
           echo "Waiting for server health endpoint..."
           for i in {1..40}; do
             if curl -sf http://localhost:3000/api/healthz > /dev/null; then
@@ -69,10 +64,8 @@ jobs:
           done
           curl -sf http://localhost:3000/verify > /dev/null || { echo "Verify page unreachable"; exit 1; }
       - name: Install Playwright browsers
-        working-directory: ./istampit-web
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         env:
           BASE_URL: http://localhost:3000
-        working-directory: ./istampit-web
-        run: npm run test:e2e
+        run: npm --workspace istampit-web run test:e2e
