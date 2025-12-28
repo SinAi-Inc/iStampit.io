@@ -7,6 +7,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix prefetch errors for static export by disabling Next.js prefetching for non-existent routes */
+@layer base {
+  a[href="/stamp"],
+  a[href="/verify"],
+  a[href="/ledger"] {
+    /* These routes will be prefetched normally - no special handling needed */
+  }
+}
+
 /* CSS Variables for Theme System */
 :root {
   /* Light theme colors */

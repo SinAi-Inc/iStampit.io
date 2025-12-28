@@ -415,7 +415,7 @@
 /* Layout Utilities */
 .ds-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1536px; /* 2xl - better for modern wide screens */
   margin: 0 auto;
   padding: 0 var(--ds-space-xl);
 }

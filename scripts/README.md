@@ -5,8 +5,8 @@ Robust automation for iStampit ledger maintenance and timestamp verification.
 ## Core Scripts
 
 ### 🔍 `validate-ledger.js`
-**Purpose**: Validates ledger integrity and removes corrupt entries  
-**When to run**: Every workflow run (automated), or manually after issues  
+**Purpose**: Validates ledger integrity and removes corrupt entries
+**When to run**: Every workflow run (automated), or manually after issues
 **What it does**:
 - Removes entries for backup/nested `.ots` files (`.ots.bak`, `.ots.ots`)
 - Removes entries for missing `.ots` files
@@ -25,8 +25,8 @@ node scripts/validate-ledger.js
 ---
 
 ### 📊 `update-ledger-status.js`
-**Purpose**: Scans `.ots` files for Bitcoin attestations and updates status  
-**When to run**: After timestamp upgrades, every 6 hours (automated)  
+**Purpose**: Scans `.ots` files for Bitcoin attestations and updates status
+**When to run**: After timestamp upgrades, every 6 hours (automated)
 **What it does**:
 - Reads all entries from `ledger.json`
 - Checks each `.ots` file for Bitcoin attestation marker (`0x05 0x88`)
@@ -40,8 +40,8 @@ node scripts/update-ledger-status.js
 ---
 
 ### 🔄 `upgrade-pending-timestamps.js`
-**Purpose**: Fetches Bitcoin attestations from OpenTimestamps calendar servers  
-**When to run**: Every 6 hours (automated), or manually when timestamps are pending  
+**Purpose**: Fetches Bitcoin attestations from OpenTimestamps calendar servers
+**When to run**: Every 6 hours (automated), or manually when timestamps are pending
 **What it does**:
 - Queries 5 major OpenTimestamps calendar servers
 - Downloads upgraded `.ots` files with Bitcoin attestations
@@ -62,8 +62,8 @@ node scripts/upgrade-pending-timestamps.js
 ---
 
 ### 🔄 `restamp-lost-timestamps.js`
-**Purpose**: Re-creates timestamps that calendar servers lost (>3 days old, <200 bytes)  
-**When to run**: Manually when timestamps don't upgrade after 3+ days  
+**Purpose**: Re-creates timestamps that calendar servers lost (>3 days old, <200 bytes)
+**When to run**: Manually when timestamps don't upgrade after 3+ days
 **What it does**:
 - Identifies timestamps >3 days old without Bitcoin attestations
 - Backs up original `.ots` files as `.ots.lost`
@@ -82,15 +82,15 @@ node scripts/restamp-lost-timestamps.js
 ---
 
 ### 🧹 `cleanup-ledger.js`
-**Purpose**: Removes specific entries by ID (legacy script)  
-**When to run**: Manually to remove known bad entries  
+**Purpose**: Removes specific entries by ID (legacy script)
+**When to run**: Manually to remove known bad entries
 **Status**: Deprecated - use `validate-ledger.js` instead
 
 ---
 
 ### 🗑️ `remove-orphaned-entries.js`
-**Purpose**: Removes ledger entries for deleted `.ots` files (legacy script)  
-**When to run**: Manually after deleting `.ots` files  
+**Purpose**: Removes ledger entries for deleted `.ots` files (legacy script)
+**When to run**: Manually after deleting `.ots` files
 **Status**: Deprecated - use `validate-ledger.js` instead
 
 ---
@@ -230,6 +230,6 @@ cat ledger.json | jq -r '.entries[].sha256' | sort | uniq -d
 
 ---
 
-**Last Updated**: 2025-11-22  
-**Maintainer**: SinAI Inc  
+**Last Updated**: 2025-11-22
+**Maintainer**: SinAI Inc
 **Status**: Production-ready

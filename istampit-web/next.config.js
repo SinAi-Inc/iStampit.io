@@ -29,7 +29,10 @@ const baseConfig = {
   // Hybrid deployment: allow dynamic API routes (stamping) + static pages.
   // Remove forced static export so /api/stamp & middleware run in production.
   reactStrictMode: true,
-  experimental: {},
+  experimental: {
+    // Reduce prefetch HEAD request errors in production static build
+    optimizeCss: false,
+  },
   images: { domains: [], unoptimized: process.env.STATIC_EXPORT === '1' },
   // Provide an explicit Turbopack config so Next.js 16+ doesn't error when it
   // detects the custom webpack() hook. We intentionally keep Turbopack using

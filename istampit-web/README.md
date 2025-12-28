@@ -48,7 +48,7 @@ This project supports two distinct deployment targets:
 - Workflow sets `STATIC_EXPORT=1` and `NEXT_PUBLIC_PAGES_STATIC=1`.
 - Auth-related UI & network calls are gated off to avoid 404 spam (no API routes exist on Pages).
 - `NEXT_PUBLIC_AUTH_ORIGIN` intentionally omitted to prevent cross-origin fetch attempts.
-- Users see no auth badge (optional fallback text can be enabled – see below).
+- Users see no auth badge (optional fallback text can be enabled - see below).
 
 ### Environment Flags
 

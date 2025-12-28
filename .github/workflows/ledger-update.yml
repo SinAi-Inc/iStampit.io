@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "🧹 Validating ledger integrity..."
           node scripts/validate-ledger.js
-          
+
           # Remove any backup .ots files that may have appeared
           find istampit-web/public -name "*.ots.bak*" -type f -delete 2>/dev/null || true
           find istampit-web/public -name "*.ots.ots*" -type f -delete 2>/dev/null || true
@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "🔄 Attempting to upgrade pending timestamps..."
           node scripts/upgrade-pending-timestamps.js || true
-          
+
           # Update ledger status after upgrades
           node scripts/update-ledger-status.js
 

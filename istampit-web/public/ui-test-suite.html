@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iStampit.io UI Test Suite - No-Code Edition</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .test-section {
+      margin-bottom: 40px;
+      padding: 25px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    .test-section:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+    }
+
+    .test-section h2 {
+      color: #2d3748;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .test-section h3 {
+      color: #4a5568;
+      margin: 20px 0 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .test-item {
+      padding: 15px;
+      margin: 10px 0;
+      background: white;
+      border-radius: 6px;
+      border-left: 4px solid #cbd5e0;
+      transition: all 0.2s ease;
+    }
+
+    .test-item:hover {
+      border-left-color: #667eea;
+      transform: translateX(5px);
+    }
+
+    .test-item.pass {
+      border-left-color: #48bb78;
+      background: #f0fff4;
+    }
+
+    .test-item.fail {
+      border-left-color: #f56565;
+      background: #fff5f5;
+    }
+
+    .test-item.pending {
+      border-left-color: #ed8936;
+      background: #fffaf0;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
+
+    .button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px 10px 10px 0;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button.secondary {
+      background: #718096;
+    }
+
+    .button.success {
+      background: #48bb78;
+    }
+
+    .button.danger {
+      background: #f56565;
+    }
+
+    .instructions {
+      background: #edf2f7;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4299e1;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    .instructions li {
+      margin: 8px 0;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .status-badge.pass {
+      background: #48bb78;
+      color: white;
+    }
+
+    .status-badge.fail {
+      background: #f56565;
+      color: white;
+    }
+
+    .status-badge.pending {
+      background: #ed8936;
+      color: white;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 30px;
+      background: #e2e8f0;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 15px 0;
+    }
+
+    .checklist li {
+      padding: 10px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checklist input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .link:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .note {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      background: #2d3748;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .footer p {
+      margin: 5px 0;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .test-section {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧪 iStampit.io UI Test Suite</h1>
+      <p>No-Code Edition - Test Like a Pro Without Writing Code!</p>
+    </div>
+
+    <div class="content">
+      <!-- Quick Start -->
+      <div class="test-section">
+        <h2><span class="icon">🚀</span> Quick Start Guide</h2>
+        <div class="instructions">
+          <p><strong>Welcome to the iStampit.io testing suite!</strong></p>
+          <p>This tool helps you verify that all platform features work correctly without any coding knowledge.</p>
+          <ol>
+            <li>Open <a href="https://istampit.io/" target="_blank" class="link">https://istampit.io/</a> in a new tab</li>
+            <li>Follow the test scenarios below</li>
+            <li>Check each item as you complete it</li>
+            <li>Report any failures using the notes section</li>
+          </ol>
+        </div>
+        <button class="button" onclick="window.open('https://istampit.io/', '_blank')">
+          🌐 Open iStampit.io
+        </button>
+        <button class="button secondary" onclick="startTests()">
+          ▶️ Start Testing
+        </button>
+      </div>
+
+      <!-- Progress Tracker -->
+      <div class="test-section" id="progress-section" style="display: none;">
+        <h2><span class="icon">📊</span> Overall Progress</h2>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 0%;">0%</div>
+        </div>
+        <p id="progress-text">0 of 0 tests completed</p>
+      </div>
+
+      <!-- Test 1: Visual & Responsive Design -->
+      <div class="test-section">
+        <h2><span class="icon">🎨</span> Test 1: Visual & Responsive Design</h2>
+        <p><strong>Objective:</strong> Verify the site looks professional on all screen sizes</p>
+
+        <h3>Desktop Testing (Wide Screen)</h3>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Open site on desktop browser (1920x1080 or larger)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Content fills the screen width appropriately (not stuck in narrow column)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigation menu is visible and functional</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Hero section displays with gradient background</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Feature cards are laid out in grid (2-3 columns)</span>
+          </li>
+        </ul>
+
+        <h3>Mobile Testing (Small Screen)</h3>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Open DevTools (F12) → Toggle device toolbar (Ctrl+Shift+M)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Select "iPhone 12 Pro" or similar mobile device</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigation collapses to hamburger menu (☰)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Buttons stack vertically and fill width</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Text is readable without horizontal scrolling</span>
+          </li>
+        </ul>
+
+        <div class="note">
+          <strong>⚠️ Common Issue:</strong> If wide screens show narrow content like a mobile view, 
+          this indicates a responsive design bug that needs fixing.
+        </div>
+      </div>
+
+      <!-- Test 2: Homepage Functionality -->
+      <div class="test-section">
+        <h2><span class="icon">🏠</span> Test 2: Homepage Navigation & Links</h2>
+        <p><strong>Objective:</strong> Ensure all homepage elements are interactive</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click "Create Timestamp" button → Should navigate to /stamp</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click "Verify" button → Should navigate to /verify</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click "Public Ledger" button → Should navigate to /ledger</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click logo in header → Should return to homepage</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Dark mode toggle works (if present)</span>
+          </li>
+        </ul>
+
+        <div class="note">
+          <strong>💡 Note:</strong> Some routes may show 404 errors. This is expected for static builds 
+          and will be addressed in upcoming updates.
+        </div>
+      </div>
+
+      <!-- Test 3: Timestamp Creation -->
+      <div class="test-section">
+        <h2><span class="icon">⏱️</span> Test 3: Timestamp Creation Flow</h2>
+        <p><strong>Objective:</strong> Create a timestamp for a test file</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigate to /stamp page</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Page loads without errors</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>File upload area is visible ("Drop files here or click to browse")</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Create test file: Right-click desktop → New → Text Document → "test.txt"</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Drag test.txt to upload area OR click to browse and select it</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>File appears in upload list with size</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click "Create Timestamp" button</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Processing indicator appears (spinner or progress bar)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Success message appears with timestamp details</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Download links for .ots receipt files are provided</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Test 4: Verification Flow -->
+      <div class="test-section">
+        <h2><span class="icon">✅</span> Test 4: Timestamp Verification</h2>
+        <p><strong>Objective:</strong> Verify a timestamp receipt</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigate to /verify page</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Upload area for .ots file is visible</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Upload a .ots receipt file (from Test 3)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Upload original file that was timestamped</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Click "Verify Timestamp" button</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Verification result displays (pending/confirmed)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Timestamp date/time is shown</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Bitcoin block information displays (if confirmed)</span>
+          </li>
+        </ul>
+
+        <div class="note">
+          <strong>⏳ Note:</strong> New timestamps show as "Pending" until they're anchored to 
+          Bitcoin blockchain (can take hours). This is normal behavior.
+        </div>
+      </div>
+
+      <!-- Test 5: Public Ledger -->
+      <div class="test-section">
+        <h2><span class="icon">📋</span> Test 5: Public Ledger Browsing</h2>
+        <p><strong>Objective:</strong> Browse and search public timestamp records</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigate to /ledger page</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>List of timestamps loads and displays</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Each entry shows: hash, date, status (pending/confirmed)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Pagination controls work (if multiple pages)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Search functionality works (if available)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Filter by status works (pending/confirmed)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Test 6: Performance & Console -->
+      <div class="test-section">
+        <h2><span class="icon">⚡</span> Test 6: Performance & Browser Console</h2>
+        <p><strong>Objective:</strong> Check for errors and performance issues</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Open browser DevTools (Press F12)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Go to "Console" tab</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Refresh page and check for RED errors (warnings in yellow are OK)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Navigate between pages → Check console after each navigation</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>No critical errors blocking functionality</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Pages load within 3 seconds</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Interactions feel responsive (no lag when clicking buttons)</span>
+          </li>
+        </ul>
+
+        <div class="note">
+          <strong>🔍 Expected Warnings:</strong> Google Analytics fetch failures and HEAD request 
+          errors for /stamp, /verify, /ledger are known issues and won't affect functionality.
+        </div>
+      </div>
+
+      <!-- Test 7: Accessibility -->
+      <div class="test-section">
+        <h2><span class="icon">♿</span> Test 7: Accessibility Testing</h2>
+        <p><strong>Objective:</strong> Ensure site is usable by everyone</p>
+
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Tab key navigation works through all interactive elements</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Focused elements have visible outline/highlight</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Enter key can activate buttons (when focused)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Text contrast is readable (no light gray on white)</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Images have alt text (right-click → Inspect → check alt="")</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Forms have labels for input fields</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Error messages are clear and helpful</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Test 8: Browser Compatibility -->
+      <div class="test-section">
+        <h2><span class="icon">🌐</span> Test 8: Cross-Browser Testing</h2>
+        <p><strong>Objective:</strong> Works on major browsers</p>
+
+        <h3>Chrome/Edge (Chromium)</h3>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>All pages load correctly</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Timestamp creation works</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>No layout breaking issues</span>
+          </li>
+        </ul>
+
+        <h3>Firefox</h3>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>All pages load correctly</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Timestamp creation works</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>No layout breaking issues</span>
+          </li>
+        </ul>
+
+        <h3>Safari (macOS/iOS)</h3>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>All pages load correctly</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>Timestamp creation works</span>
+          </li>
+          <li>
+            <input type="checkbox" onchange="updateProgress()">
+            <span>No layout breaking issues</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Results Summary -->
+      <div class="test-section" id="results-section" style="display: none;">
+        <h2><span class="icon">📝</span> Test Results Summary</h2>
+        <div id="results-summary"></div>
+        <button class="button success" onclick="generateReport()">
+          📄 Generate Test Report
+        </button>
+        <button class="button" onclick="copyResults()">
+          📋 Copy to Clipboard
+        </button>
+        <button class="button secondary" onclick="resetTests()">
+          🔄 Reset All Tests
+        </button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong>iStampit.io Test Suite v1.0</strong></p>
+      <p>Created December 27, 2025 | SinAI Inc</p>
+      <p>Questions? Issues? Report to GitHub: <a href="https://github.com/SinAi-Inc/iStampit.io/issues" class="link" style="color: #90cdf4;">github.com/SinAi-Inc/iStampit.io</a></p>
+    </div>
+  </div>
+
+  <script>
+    let totalTests = 0;
+    let testsStarted = false;
+
+    function startTests() {
+      testsStarted = true;
+      document.getElementById('progress-section').style.display = 'block';
+      document.getElementById('results-section').style.display = 'block';
+      countTests();
+      updateProgress();
+      
+      // Smooth scroll to first test
+      document.querySelector('.test-section').scrollIntoView({ behavior: 'smooth' });
+      
+      alert('✅ Testing mode activated! Work through each section and check off completed items.');
+    }
+
+    function countTests() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      totalTests = checkboxes.length;
+    }
+
+    function updateProgress() {
+      if (!testsStarted) return;
+
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      const percentage = totalTests > 0 ? Math.round((checked / totalTests) * 100) : 0;
+
+      const progressFill = document.getElementById('progress-fill');
+      const progressText = document.getElementById('progress-text');
+
+      progressFill.style.width = percentage + '%';
+      progressFill.textContent = percentage + '%';
+      progressText.textContent = `${checked} of ${totalTests} tests completed`;
+
+      // Show results section when tests are started
+      if (checked > 0) {
+        updateResultsSummary();
+      }
+    }
+
+    function updateResultsSummary() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      const percentage = Math.round((checked / totalTests) * 100);
+
+      let status = 'In Progress';
+      let statusClass = 'pending';
+      
+      if (percentage === 100) {
+        status = 'Complete';
+        statusClass = 'pass';
+      } else if (percentage >= 75) {
+        status = 'Nearly Complete';
+        statusClass = 'pass';
+      }
+
+      const summary = document.getElementById('results-summary');
+      summary.innerHTML = `
+        <div style="padding: 20px; background: white; border-radius: 8px; margin: 15px 0;">
+          <h3>Test Completion: <span class="status-badge ${statusClass}">${status}</span></h3>
+          <p style="margin: 10px 0;"><strong>${checked} / ${totalTests}</strong> tests passed (${percentage}%)</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${percentage}%;">${percentage}%</div>
+          </div>
+          ${percentage === 100 ? '<p style="color: #48bb78; font-weight: 600; margin-top: 15px;">🎉 All tests completed! Great work!</p>' : ''}
+        </div>
+      `;
+    }
+
+    function generateReport() {
+      const timestamp = new Date().toISOString();
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      const percentage = Math.round((checked / totalTests) * 100);
+
+      const report = `
+═══════════════════════════════════════
+    iStampit.io UI Test Report
+═══════════════════════════════════════
+
+Generated: ${new Date().toLocaleString()}
+Platform: iStampit.io
+Test Suite Version: 1.0
+
+SUMMARY
+─────────────────────────────────────
+Total Tests: ${totalTests}
+Passed: ${checked}
+Completion Rate: ${percentage}%
+Status: ${percentage === 100 ? 'ALL TESTS PASSED ✅' : 'IN PROGRESS ⏳'}
+
+TEST CATEGORIES
+─────────────────────────────────────
+${getTestCategorySummary()}
+
+RECOMMENDATIONS
+─────────────────────────────────────
+${getRecommendations(percentage)}
+
+═══════════════════════════════════════
+Generated by iStampit.io Test Suite
+For support: github.com/SinAi-Inc/iStampit.io
+═══════════════════════════════════════
+      `.trim();
+
+      // Display in modal
+      const blob = new Blob([report], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `istampit-test-report-${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      alert('✅ Test report generated and downloaded!');
+    }
+
+    function getTestCategorySummary() {
+      const sections = document.querySelectorAll('.test-section');
+      let summary = '';
+      
+      sections.forEach((section, index) => {
+        const title = section.querySelector('h2')?.textContent.trim();
+        if (!title || title.includes('Quick Start') || title.includes('Progress') || title.includes('Results')) return;
+        
+        const sectionCheckboxes = section.querySelectorAll('input[type="checkbox"]');
+        const sectionChecked = section.querySelectorAll('input[type="checkbox"]:checked').length;
+        const sectionPercentage = sectionCheckboxes.length > 0 
+          ? Math.round((sectionChecked / sectionCheckboxes.length) * 100) 
+          : 0;
+        
+        summary += `${title}\n`;
+        summary += `  Completed: ${sectionChecked}/${sectionCheckboxes.length} (${sectionPercentage}%)\n\n`;
+      });
+      
+      return summary;
+    }
+
+    function getRecommendations(percentage) {
+      if (percentage === 100) {
+        return `✅ All tests passed! The platform is functioning correctly.
+   Consider running these tests periodically to catch regressions.`;
+      } else if (percentage >= 75) {
+        return `⚠️ Most tests passed, but some remain incomplete.
+   Review unchecked items and verify functionality.
+   Document any issues found in GitHub Issues.`;
+      } else if (percentage >= 50) {
+        return `⚠️ Significant testing remains. Continue working through test scenarios.
+   Focus on core functionality tests (Timestamp Creation & Verification).`;
+      } else {
+        return `❌ Testing incomplete. Please complete more test scenarios.
+   Start with visual design and homepage navigation tests.`;
+      }
+    }
+
+    function copyResults() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      const percentage = Math.round((checked / totalTests) * 100);
+
+      const text = `iStampit.io Test Results: ${checked}/${totalTests} tests passed (${percentage}%)`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Results copied to clipboard!');
+      });
+    }
+
+    function resetTests() {
+      if (confirm('Are you sure you want to reset all test checkboxes?')) {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        updateProgress();
+        alert('✅ All tests reset. Start testing again!');
+      }
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      countTests();
+    });
+  </script>
+</body>
+</html>

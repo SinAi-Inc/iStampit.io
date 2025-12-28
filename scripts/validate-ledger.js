@@ -2,7 +2,7 @@
 
 /**
  * Validate and Clean Ledger
- * 
+ *
  * - Validates all ledger entries have corresponding .ots files
  * - Removes entries for backup/nested .ots files
  * - Keeps only legitimate .ots file entries
@@ -17,23 +17,23 @@ const BITCOIN_MARKER = Buffer.from([0x05, 0x88]);
 
 function isLegitimateOtsPath(receiptUrl) {
   const filename = path.basename(receiptUrl);
-  
+
   // Must end with .ots
   if (!filename.endsWith('.ots')) return false;
-  
+
   // Check for backup/nested patterns
   const parts = filename.split('.');
   const otsCount = parts.filter(p => p === 'ots').length;
-  
+
   // More than one .ots extension = nested
   if (otsCount > 1) return false;
-  
+
   // Contains .bak = backup
   if (filename.includes('.bak')) return false;
-  
+
   // Contains .lost = backup
   if (filename.includes('.lost')) return false;
-  
+
   return true;
 }
 
@@ -54,11 +54,11 @@ function fileExists(receiptUrl) {
 
 async function main() {
   console.log('🔍 Validating and Cleaning Ledger\n');
-  
+
   // Read current ledger
   const ledger = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
   console.log(`Current ledger: ${ledger.entries.length} entries\n`);
-  
+
   // Statistics
   const stats = {
     total: ledger.entries.length,
@@ -68,11 +68,11 @@ async function main() {
     duplicates: 0,
     statusUpdated: 0
   };
-  
+
   // Track seen SHA256 hashes
   const seenHashes = new Set();
   const cleanEntries = [];
-  
+
   for (const entry of ledger.entries) {
     // Check if duplicate SHA256
     if (seenHashes.has(entry.sha256)) {
@@ -80,25 +80,25 @@ async function main() {
       stats.duplicates++;
       continue;
     }
-    
+
     // Check if file exists
     if (!fileExists(entry.receiptUrl)) {
       console.log(`❌ Missing file: ${entry.id} (${entry.receiptUrl})`);
       stats.missing++;
       continue;
     }
-    
+
     // Check if legitimate .ots file (not backup/nested)
     if (!isLegitimateOtsPath(entry.receiptUrl)) {
       console.log(`❌ Backup/nested file: ${entry.id} (${path.basename(entry.receiptUrl)})`);
       stats.backup++;
       continue;
     }
-    
+
     // Check and update Bitcoin confirmation status
     const hasBitcoin = checkBitcoinAttestation(entry.receiptUrl);
     const shouldBeConfirmed = hasBitcoin && entry.status !== 'confirmed';
-    
+
     if (shouldBeConfirmed) {
       entry.status = 'confirmed';
       console.log(`✅ Updated to confirmed: ${entry.id}`);
@@ -108,12 +108,12 @@ async function main() {
     } else {
       console.log(`⏳ Pending: ${entry.id}`);
     }
-    
+
     seenHashes.add(entry.sha256);
     cleanEntries.push(entry);
     stats.legitimate++;
   }
-  
+
   // Update metadata
   const cleanLedger = {
     entries: cleanEntries,
@@ -124,10 +124,10 @@ async function main() {
       pendingEntries: cleanEntries.filter(e => e.status === 'pending').length
     }
   };
-  
+
   // Write clean ledger
   fs.writeFileSync(LEDGER_PATH, JSON.stringify(cleanLedger, null, 2));
-  
+
   // Summary
   console.log('\n' + '='.repeat(60));
   console.log('📊 VALIDATION SUMMARY');
@@ -143,7 +143,7 @@ async function main() {
   console.log(`   ✅ Confirmed:         ${cleanLedger.metadata.confirmedEntries}`);
   console.log(`   ⏳ Pending:           ${cleanLedger.metadata.pendingEntries}`);
   console.log(`   📝 Status updated:    ${stats.statusUpdated}`);
-  
+
   console.log('\n✅ Ledger validation and cleanup completed!');
 }
 

@@ -2,7 +2,7 @@
 
 /**
  * Robust Ledger Cleanup and Validation
- * 
+ *
  * This script:
  * 1. Removes all .ots.bak and nested .ots files from artifacts
  * 2. Rebuilds ledger.json from legitimate .ots files only
@@ -27,19 +27,19 @@ function isNestedOrBackupOts(filename) {
   // - *.ots.ots
   // - *.ots.bak
   // - *.ots.ots.ots (any chain)
-  
+
   const parts = filename.split('.');
   const otsIndices = [];
-  
+
   parts.forEach((part, idx) => {
     if (part === 'ots') otsIndices.push(idx);
   });
-  
+
   // If more than one .ots, or if .bak exists, it's a backup/nested file
   if (otsIndices.length > 1) return true;
   if (filename.includes('.bak')) return true;
   if (filename.includes('.lost')) return true;
-  
+
   return false;
 }
 
@@ -49,30 +49,30 @@ function isLegitimateOts(filename) {
   // - research-doc-20251117.txt.ots
   // - security-audit-20251117.pdf.ots
   // - iStampit.txt.ots
-  
+
   // Must end with .ots
   if (!filename.endsWith('.ots')) return false;
-  
+
   // Must NOT be a nested or backup file
   if (isNestedOrBackupOts(filename)) return false;
-  
+
   return true;
 }
 
 function scanDirectory(dirPath) {
   const files = [];
-  
+
   if (!fs.existsSync(dirPath)) {
     console.log(`⚠️  Directory not found: ${dirPath}`);
     return files;
   }
-  
+
   function scan(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
-    
+
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
-      
+
       if (entry.isDirectory()) {
         scan(fullPath);
       } else if (entry.name.endsWith('.ots')) {
@@ -84,7 +84,7 @@ function scanDirectory(dirPath) {
       }
     }
   }
-  
+
   scan(dirPath);
   return files;
 }
@@ -101,36 +101,36 @@ function checkBitcoinAttestation(otsPath) {
 function calculateHash(filePath) {
   // Try to find the original file by removing .ots extension
   const originalPath = filePath.replace(/\.ots$/, '');
-  
+
   if (fs.existsSync(originalPath)) {
     const content = fs.readFileSync(originalPath);
     return crypto.createHash('sha256').update(content).digest('hex');
   }
-  
+
   return null;
 }
 
 async function main() {
   console.log('🧹 Robust Ledger Cleanup & Validation\n');
-  
+
   // Step 1: Scan all directories
   console.log('📂 Scanning for .ots files...');
   const artifactFiles = scanDirectory(ARTIFACTS_DIR);
   const timestampFiles = scanDirectory(TIMESTAMPS_DIR);
   const allFiles = [...artifactFiles, ...timestampFiles];
-  
+
   console.log(`   Found ${allFiles.length} total .ots files\n`);
-  
+
   // Step 2: Identify legitimate vs backup files
   const legitimate = allFiles.filter(f => isLegitimateOts(f.name));
   const backups = allFiles.filter(f => !isLegitimateOts(f.name));
-  
+
   console.log(`✅ Legitimate files: ${legitimate.length}`);
   console.log(`❌ Backup/nested files: ${backups.length}\n`);
-  
+
   if (backups.length > 0) {
     console.log('🗑️  Removing backup and nested .ots files:\n');
-    
+
     let removed = 0;
     for (const backup of backups) {
       try {
@@ -141,50 +141,50 @@ async function main() {
         console.log(`   ✗ Failed to remove ${backup.name}: ${error.message}`);
       }
     }
-    
+
     console.log(`\n💾 Removed ${removed} backup/nested files\n`);
   }
-  
+
   // Step 3: Build clean ledger from legitimate files
   console.log('📝 Rebuilding ledger from legitimate files...\n');
-  
+
   const entries = [];
   const seenHashes = new Set();
-  
+
   for (const file of legitimate) {
     const relativePath = '/' + file.dir.replace(/\\/g, '/') + '/' + file.name;
     const hasBitcoin = checkBitcoinAttestation(file.path);
     const status = hasBitcoin ? 'confirmed' : 'pending';
-    
+
     // Extract date and type from filename
     const dateMatch = file.name.match(/(\d{8})/);
     const date = dateMatch ? dateMatch[1] : null;
-    
+
     // Create ID from filename
     const baseName = file.name.replace(/\.ots$/, '');
     const id = baseName.replace(/\d{8}/g, '').replace(/[^a-zA-Z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
     const fullId = date ? `${id}-${date}` : id;
-    
+
     // Get file stats
     const stats = fs.statSync(file.path);
     const stampedAt = stats.birthtime.toISOString();
-    
+
     // Try to calculate hash from original file
     const sha256 = calculateHash(file.path);
-    
+
     if (!sha256) {
       console.log(`   ⚠️  No original file found for ${file.name}, skipping`);
       continue;
     }
-    
+
     // Skip if we've already added this hash
     if (seenHashes.has(sha256)) {
       console.log(`   ⚠️  Duplicate hash detected for ${file.name}, skipping`);
       continue;
     }
-    
+
     seenHashes.add(sha256);
-    
+
     entries.push({
       id: fullId,
       title: baseName,
@@ -197,10 +197,10 @@ async function main() {
       stampedAt,
       tags: ['automated', 'ledger-cleanup']
     });
-    
+
     console.log(`   ${status === 'confirmed' ? '✅' : '⏳'} ${file.name} (${status})`);
   }
-  
+
   // Step 4: Write clean ledger
   const ledger = {
     entries,
@@ -211,9 +211,9 @@ async function main() {
       pendingEntries: entries.filter(e => e.status === 'pending').length
     }
   };
-  
+
   fs.writeFileSync(LEDGER_PATH, JSON.stringify(ledger, null, 2));
-  
+
   // Summary
   console.log('\n' + '='.repeat(60));
   console.log('📊 CLEANUP SUMMARY');
@@ -224,7 +224,7 @@ async function main() {
   console.log(`  ✅ Confirmed:        ${ledger.metadata.confirmedEntries}`);
   console.log(`  ⏳ Pending:          ${ledger.metadata.pendingEntries}`);
   console.log(`Duplicates prevented:  ${legitimate.length - entries.length}`);
-  
+
   console.log('\n✅ Ledger cleanup completed successfully!');
 }
 
