@@ -370,7 +370,7 @@
         </ul>
 
         <div class="note">
-          <strong>⚠️ Common Issue:</strong> If wide screens show narrow content like a mobile view, 
+          <strong>⚠️ Common Issue:</strong> If wide screens show narrow content like a mobile view,
           this indicates a responsive design bug that needs fixing.
         </div>
       </div>
@@ -404,7 +404,7 @@
         </ul>
 
         <div class="note">
-          <strong>💡 Note:</strong> Some routes may show 404 errors. This is expected for static builds 
+          <strong>💡 Note:</strong> Some routes may show 404 errors. This is expected for static builds
           and will be addressed in upcoming updates.
         </div>
       </div>
@@ -499,7 +499,7 @@
         </ul>
 
         <div class="note">
-          <strong>⏳ Note:</strong> New timestamps show as "Pending" until they're anchored to 
+          <strong>⏳ Note:</strong> New timestamps show as "Pending" until they're anchored to
           Bitcoin blockchain (can take hours). This is normal behavior.
         </div>
       </div>
@@ -574,7 +574,7 @@
         </ul>
 
         <div class="note">
-          <strong>🔍 Expected Warnings:</strong> Google Analytics fetch failures and HEAD request 
+          <strong>🔍 Expected Warnings:</strong> Google Analytics fetch failures and HEAD request
           errors for /stamp, /verify, /ledger are known issues and won't affect functionality.
         </div>
       </div>
@@ -703,10 +703,10 @@
       document.getElementById('results-section').style.display = 'block';
       countTests();
       updateProgress();
-      
+
       // Smooth scroll to first test
       document.querySelector('.test-section').scrollIntoView({ behavior: 'smooth' });
-      
+
       alert('✅ Testing mode activated! Work through each section and check off completed items.');
     }
 
@@ -742,7 +742,7 @@
 
       let status = 'In Progress';
       let statusClass = 'pending';
-      
+
       if (percentage === 100) {
         status = 'Complete';
         statusClass = 'pass';
@@ -815,21 +815,21 @@ For support: github.com/SinAi-Inc/iStampit.io
     function getTestCategorySummary() {
       const sections = document.querySelectorAll('.test-section');
       let summary = '';
-      
+
       sections.forEach((section, index) => {
         const title = section.querySelector('h2')?.textContent.trim();
         if (!title || title.includes('Quick Start') || title.includes('Progress') || title.includes('Results')) return;
-        
+
         const sectionCheckboxes = section.querySelectorAll('input[type="checkbox"]');
         const sectionChecked = section.querySelectorAll('input[type="checkbox"]:checked').length;
-        const sectionPercentage = sectionCheckboxes.length > 0 
-          ? Math.round((sectionChecked / sectionCheckboxes.length) * 100) 
+        const sectionPercentage = sectionCheckboxes.length > 0
+          ? Math.round((sectionChecked / sectionCheckboxes.length) * 100)
           : 0;
-        
+
         summary += `${title}\n`;
         summary += `  Completed: ${sectionChecked}/${sectionCheckboxes.length} (${sectionPercentage}%)\n\n`;
       });
-      
+
       return summary;
     }
 
