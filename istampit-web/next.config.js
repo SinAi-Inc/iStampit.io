@@ -28,7 +28,10 @@ const baseConfig = {
   // detects the custom webpack() hook. We intentionally keep Turbopack using
   // its defaults for now; the webpack fallback below still applies when
   // building with webpack (Next.js <16 or when forcing webpack).
-  turbopack: {},
+  turbopack: {
+    // Set explicit root to resolve multiple lockfile warning
+    root: process.cwd(),
+  },
   // Legacy redirects still valid; keep but allow API auth path to fall through if needed.
   redirects: async () => [
     { source: '/auth/google', destination: '/verify', permanent: true },
