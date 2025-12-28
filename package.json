@@ -6,21 +6,20 @@
     "istampit-cli"
   ],
   "scripts": {
-  "vercel-build": "npm --workspace istampit-web run build",
+    "vercel-build": "npm --workspace istampit-web run build",
     "lint:upgrade-check": "npm outdated --workspaces || node -e \"process.exit(0)\"",
-  "lint:upgrade-eslint": "npm install -D eslint@latest @eslint/config-array @eslint/object-schema && npm --workspace istampit-web install -D eslint@latest",
+    "lint:upgrade-eslint": "npm install -D eslint@latest @eslint/config-array @eslint/object-schema && npm --workspace istampit-web install -D eslint@latest",
     "deps:audit-fix": "npm audit fix --workspaces || node -e \"process.exit(0)\""
   },
-  "dependencies": {},
   "devDependencies": {
-    "next": "16.0.3",
-  "react": "19.2.0",
-  "react-dom": "19.2.0",
+    "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.3",
+    "next": "^16.1.1",
     "postcss": "^8.5.6",
     "postcss-nested": "^7.0.2",
-    "autoprefixer": "^10.4.22"
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "engines": {
     "node": "20.x"
