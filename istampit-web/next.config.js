@@ -1,9 +1,16 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Optional bundle analyzer (only if installed and ANALYZE=true)
 let withBundleAnalyzer = (cfg) => cfg;
 try {
   if (process.env.ANALYZE === 'true') {
     // eslint-disable-next-line
-    withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: true });
+    const analyzer = await import('@next/bundle-analyzer');
+    withBundleAnalyzer = analyzer.default({ enabled: true });
   }
 } catch (_) {
   // analyzer not installed; ignore
@@ -29,8 +36,8 @@ const baseConfig = {
   // its defaults for now; the webpack fallback below still applies when
   // building with webpack (Next.js <16 or when forcing webpack).
   turbopack: {
-    // Set explicit root to resolve multiple lockfile warning
-    root: process.cwd(),
+    // Point to monorepo root where node_modules with Next.js is installed
+    root: path.resolve(__dirname, '..'),
   },
   // Legacy redirects still valid; keep but allow API auth path to fall through if needed.
   redirects: async () => [
