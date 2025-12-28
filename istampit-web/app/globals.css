@@ -7,47 +7,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Responsive Container Max-Width Fix */
-@layer components {
+/* Responsive Container Max-Width Fix - Applied in utilities layer for higher specificity */
+@layer utilities {
   .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
-  
+
   @media (min-width: 640px) {
     .container {
-      max-width: 640px;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+      max-width: 640px !important;
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
     }
   }
-  
+
   @media (min-width: 768px) {
     .container {
-      max-width: 768px;
+      max-width: 768px !important;
     }
   }
-  
+
   @media (min-width: 1024px) {
     .container {
-      max-width: 1024px;
-      padding-left: 2rem;
-      padding-right: 2rem;
+      max-width: 1024px !important;
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
     }
   }
-  
+
   @media (min-width: 1280px) {
     .container {
-      max-width: 1280px;
+      max-width: 1280px !important;
     }
   }
-  
+
   @media (min-width: 1536px) {
     .container {
-      max-width: 1536px;
+      max-width: 1536px !important;
     }
   }
 }

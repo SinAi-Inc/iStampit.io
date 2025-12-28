@@ -5,6 +5,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   darkMode: 'class',
+  corePlugins: {
+    container: false, // Disable default container, using custom @layer components CSS instead
+  },
   theme: {
     container: {
       center: true,
