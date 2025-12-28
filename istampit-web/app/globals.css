@@ -50,6 +50,41 @@
       max-width: 1536px !important;
     }
   }
+
+  /* Responsive Navigation Classes - Forced to prevent Lightningcss purging */
+  .hidden {
+    display: none !important;
+  }
+
+  .flex {
+    display: flex !important;
+  }
+
+  .items-center {
+    align-items: center !important;
+  }
+
+  .space-x-8 > * + * {
+    margin-left: 2rem !important;
+  }
+
+  .space-x-4 > * + * {
+    margin-left: 1rem !important;
+  }
+
+  @media (min-width: 1024px) {
+    .lg\:hidden {
+      display: none !important;
+    }
+
+    .lg\:flex {
+      display: flex !important;
+    }
+
+    .lg\:block {
+      display: block !important;
+    }
+  }
 }
 
 /* Fix prefetch errors for static export by disabling Next.js prefetching for non-existent routes */

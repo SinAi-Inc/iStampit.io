@@ -5,15 +5,16 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   safelist: [
-    // Critical responsive navigation classes that must not be purged
-    'hidden',
-    'flex',
-    'lg:hidden',
-    'lg:flex',
-    'lg:block',
-    'space-x-8',
-    'space-x-4',
-    'items-center',
+    // Pattern-based safelist for responsive utilities (Next.js 16 + Lightningcss)
+    {
+      pattern: /^(hidden|flex|inline-flex|block|inline-block|inline|items-center)$/,
+    },
+    {
+      pattern: /^lg:(hidden|flex|block|inline-flex)$/,
+    },
+    {
+      pattern: /^space-x-(4|8)$/,
+    },
   ],
   darkMode: 'class',
   corePlugins: {
