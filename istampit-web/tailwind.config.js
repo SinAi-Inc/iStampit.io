@@ -4,6 +4,17 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: [
+    // Critical responsive navigation classes that must not be purged
+    'hidden',
+    'flex',
+    'lg:hidden',
+    'lg:flex',
+    'lg:block',
+    'space-x-8',
+    'space-x-4',
+    'items-center',
+  ],
   darkMode: 'class',
   corePlugins: {
     container: false, // Disable default container, using custom @layer components CSS instead
