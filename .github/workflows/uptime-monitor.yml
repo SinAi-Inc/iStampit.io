@@ -18,7 +18,7 @@ jobs:
         id: fetch
         run: |
           set -euo pipefail
-          URL="https://istampit.io/verify/"
+          URL="https://istampit.io/verify"
           echo "Requesting $URL" >&2
           STATUS=$(curl -L -s -o /tmp/body -w '%{http_code}' "$URL")
           echo "Status: $STATUS" >&2
