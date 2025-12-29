@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
           submodules: recursive
       - name: Use Node 20
-        uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
+        uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5 # v4
         with:
           node-version: '20'
           cache: 'npm'
