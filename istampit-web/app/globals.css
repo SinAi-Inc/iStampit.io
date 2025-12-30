@@ -73,6 +73,35 @@
     margin-left: 1rem !important;
   }
 
+  /* Max-width utilities - explicitly defined for static export builds */
+  .max-w-2xl {
+    max-width: 42rem !important; /* 672px */
+  }
+
+  .max-w-3xl {
+    max-width: 48rem !important; /* 768px */
+  }
+
+  .max-w-4xl {
+    max-width: 56rem !important; /* 896px */
+  }
+
+  .max-w-5xl {
+    max-width: 64rem !important; /* 1024px */
+  }
+
+  .max-w-6xl {
+    max-width: 72rem !important; /* 1152px */
+  }
+
+  .max-w-7xl {
+    max-width: 80rem !important; /* 1280px */
+  }
+
+  .max-w-full {
+    max-width: 100% !important;
+  }
+
   @media (min-width: 1024px) {
     .lg\:hidden {
       display: none !important;
