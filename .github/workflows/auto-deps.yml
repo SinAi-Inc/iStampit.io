@@ -71,6 +71,7 @@ jobs:
         if: steps.git_diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'chore(deps): automated minor & patch dependency updates'
           branch: chore/deps-auto
           title: 'chore(deps): automated minor & patch dependency updates'

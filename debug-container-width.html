@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Width Debug Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+            margin-top: 0;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 4px solid #2563eb;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .instruction {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 3px solid #10b981;
+        }
+        .warning {
+            background: #fef3c7;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            border-left: 4px solid #f59e0b;
+        }
+        .result {
+            background: #eff6ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            border-left: 4px solid #3b82f6;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 10px 10px 0;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .copy-btn {
+            background: #10b981;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        .copy-btn:hover {
+            background: #059669;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Container Width Debug Tool</h1>
+        <p>This tool helps diagnose why the production container is rendering at 1600px instead of the expected 1536px max-width.</p>
+
+        <div class="section">
+            <h2>📋 Step 1: Open Production Site</h2>
+            <div class="instruction">
+                <strong>1.</strong> Open <a href="https://istampit.io/" target="_blank">https://istampit.io/</a> in a new tab<br>
+                <strong>2.</strong> Press <kbd>F12</kbd> to open DevTools<br>
+                <strong>3.</strong> Make sure window is maximized (viewport width ≥ 1920px)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Step 2: Run Diagnostic Script</h2>
+            <div class="instruction">
+                <strong>1.</strong> Click the "Console" tab in DevTools<br>
+                <strong>2.</strong> Copy the script below<br>
+                <strong>3.</strong> Paste it into the console and press Enter
+            </div>
+
+            <button class="copy-btn" onclick="copyScript('productionScript')">📋 Copy Script</button>
+            <div class="code-block" id="productionScript">
+<pre>// Container Width Diagnostic Script for Production
+(function() {
+    console.clear();
+    console.log('🔍 Container Width Diagnostic Report');
+    console.log('=====================================\n');
+
+    // Get the hero section
+    const hero = document.querySelector('section[aria-labelledby="hero-heading"]');
+    if (!hero) {
+        console.error('❌ Hero section not found!');
+        return;
+    }
+
+    // Get the container
+    const container = hero.querySelector('.container');
+    if (!container) {
+        console.error('❌ Container not found in hero section!');
+        return;
+    }
+
+    // Get computed styles
+    const heroStyles = window.getComputedStyle(hero);
+    const containerStyles = window.getComputedStyle(container);
+    const containerRect = container.getBoundingClientRect();
+
+    console.log('📏 VIEWPORT INFO:');
+    console.log(`   Window Inner Width: ${window.innerWidth}px`);
+    console.log(`   Window Inner Height: ${window.innerHeight}px`);
+    console.log(`   Document Width: ${document.documentElement.clientWidth}px\n`);
+
+    console.log('🎯 HERO SECTION:');
+    console.log(`   Width: ${hero.offsetWidth}px`);
+    console.log(`   Padding Left: ${heroStyles.paddingLeft}`);
+    console.log(`   Padding Right: ${heroStyles.paddingRight}`);
+    console.log(`   Margin Left: ${heroStyles.marginLeft}`);
+    console.log(`   Margin Right: ${heroStyles.marginRight}`);
+    console.log(`   Box Sizing: ${heroStyles.boxSizing}\n`);
+
+    console.log('📦 CONTAINER:');
+    console.log(`   Offset Width: ${container.offsetWidth}px`);
+    console.log(`   Client Width: ${container.clientWidth}px`);
+    console.log(`   Scroll Width: ${container.scrollWidth}px`);
+    console.log(`   BoundingRect Width: ${containerRect.width}px`);
+    console.log(`   BoundingRect Left: ${containerRect.left}px`);
+    console.log(`   BoundingRect Right: ${containerRect.right}px\n`);
+
+    console.log('🎨 CONTAINER COMPUTED STYLES:');
+    console.log(`   Width: ${containerStyles.width}`);
+    console.log(`   Max-Width: ${containerStyles.maxWidth}`);
+    console.log(`   Min-Width: ${containerStyles.minWidth}`);
+    console.log(`   Margin Left: ${containerStyles.marginLeft}`);
+    console.log(`   Margin Right: ${containerStyles.marginRight}`);
+    console.log(`   Padding Left: ${containerStyles.paddingLeft}`);
+    console.log(`   Padding Right: ${containerStyles.paddingRight}`);
+    console.log(`   Box Sizing: ${containerStyles.boxSizing}\n`);
+
+    console.log('🔍 INLINE STYLES:');
+    console.log(`   Hero: ${hero.getAttribute('style') || 'none'}`);
+    console.log(`   Container: ${container.getAttribute('style') || 'none'}\n`);
+
+    console.log('📝 CLASSES:');
+    console.log(`   Hero: ${hero.className}`);
+    console.log(`   Container: ${container.className}\n`);
+
+    console.log('🎭 CSS RULES APPLYING TO CONTAINER:');
+    const rules = [];
+    for (let sheet of document.styleSheets) {
+        try {
+            for (let rule of sheet.cssRules || []) {
+                if (rule.selectorText && rule.selectorText.includes('container')) {
+                    if (container.matches(rule.selectorText)) {
+                        rules.push({
+                            selector: rule.selectorText,
+                            maxWidth: rule.style.maxWidth || 'not set',
+                            width: rule.style.width || 'not set',
+                            href: sheet.href || 'inline'
+                        });
+                    }
+                }
+            }
+        } catch (e) {
+            // Skip CORS-blocked stylesheets
+        }
+    }
+
+    if (rules.length > 0) {
+        console.table(rules);
+    } else {
+        console.log('   No matching .container rules found in stylesheets\n');
+    }
+
+    console.log('⚠️ DISCREPANCIES:');
+    const expectedMaxWidth = 1536;
+    const actualWidth = container.offsetWidth;
+
+    if (actualWidth > expectedMaxWidth) {
+        console.log(`   ❌ Container is ${actualWidth - expectedMaxWidth}px WIDER than max-width!`);
+        console.log(`   Expected: ≤${expectedMaxWidth}px`);
+        console.log(`   Actual: ${actualWidth}px`);
+    } else {
+        console.log(`   ✅ Container width within max-width constraint`);
+    }
+
+    if (containerStyles.maxWidth !== '1536px') {
+        console.log(`   ❌ Max-width is not 1536px: ${containerStyles.maxWidth}`);
+    }
+
+    const leftMargin = parseFloat(containerStyles.marginLeft);
+    const rightMargin = parseFloat(containerStyles.marginRight);
+    if (leftMargin > 0 || rightMargin > 0) {
+        console.log(`   ⚠️ Container has margins: Left ${leftMargin}px, Right ${rightMargin}px`);
+    }
+
+    console.log('\n=====================================');
+    console.log('💾 Copy this entire output and send to developer');
+
+})();</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏠 Step 3: Run on Localhost</h2>
+            <div class="instruction">
+                <strong>1.</strong> Open <a href="http://istampit.localhost/" target="_blank">http://istampit.localhost/</a> in a new tab<br>
+                <strong>2.</strong> Press <kbd>F12</kbd> to open DevTools<br>
+                <strong>3.</strong> Click the "Console" tab<br>
+                <strong>4.</strong> Run the SAME script from Step 2
+            </div>
+            <div class="warning">
+                <strong>⚠️ Important:</strong> Make sure both windows (production and localhost) have the same viewport size (maximize both windows)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔎 Step 4: Inspect Element Directly</h2>
+            <div class="instruction">
+                <strong>On Production site (https://istampit.io/):</strong><br>
+                <strong>1.</strong> Right-click on the hero section heading "Provable Innovation"<br>
+                <strong>2.</strong> Select "Inspect Element"<br>
+                <strong>3.</strong> In the DevTools "Elements" panel, find the <code>&lt;div class="container"&gt;</code> element (should be a parent)<br>
+                <strong>4.</strong> Click on it to select it<br>
+                <strong>5.</strong> Look at the "Styles" panel on the right<br>
+                <strong>6.</strong> Scroll through ALL the CSS rules to find anything related to <code>.container</code><br>
+                <strong>7.</strong> Take screenshots of:<br>
+                &nbsp;&nbsp;&nbsp;• The "Computed" tab showing the container's width and max-width<br>
+                &nbsp;&nbsp;&nbsp;• Any CSS rules with strikethrough (overridden rules)<br>
+                &nbsp;&nbsp;&nbsp;• The "Box Model" visualization at the top of Styles panel
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Step 5: Check for JavaScript Modifications</h2>
+            <div class="instruction">
+                In the Console, run this to check if JavaScript is modifying the container:
+            </div>
+
+            <button class="copy-btn" onclick="copyScript('jsCheckScript')">📋 Copy Script</button>
+            <div class="code-block" id="jsCheckScript">
+<pre>// Check for JavaScript modifications
+(function() {
+    const container = document.querySelector('section[aria-labelledby="hero-heading"] .container');
+
+    // Set up mutation observer to catch any style changes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                console.log('⚠️ Container style was modified by JavaScript!');
+                console.log('New style:', container.getAttribute('style'));
+            }
+        });
+    });
+
+    observer.observe(container, {
+        attributes: true,
+        attributeFilter: ['style']
+    });
+
+    console.log('👁️ Now watching for JavaScript modifications to container...');
+    console.log('Refresh the page and check if this message appears again');
+})();</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Step 6: Export CSS Rules</h2>
+            <div class="instruction">
+                Run this script to export all container-related CSS rules:
+            </div>
+
+            <button class="copy-btn" onclick="copyScript('cssExportScript')">📋 Copy Script</button>
+            <div class="code-block" id="cssExportScript">
+<pre>// Export all container CSS rules
+(function() {
+    const container = document.querySelector('section[aria-labelledby="hero-heading"] .container');
+    const allRules = [];
+
+    for (let sheet of document.styleSheets) {
+        try {
+            const sheetSource = sheet.href ? new URL(sheet.href).pathname : 'inline';
+
+            for (let rule of sheet.cssRules || []) {
+                if (rule.selectorText) {
+                    // Check if rule applies to container
+                    try {
+                        if (container.matches(rule.selectorText) ||
+                            rule.selectorText.includes('.container') ||
+                            rule.selectorText.includes('section')) {
+
+                            allRules.push({
+                                source: sheetSource,
+                                selector: rule.selectorText,
+                                cssText: rule.cssText,
+                                specificity: getSpecificity(rule.selectorText)
+                            });
+                        }
+                    } catch (e) {
+                        // Invalid selector
+                    }
+                }
+            }
+        } catch (e) {
+            console.log(`Skipped stylesheet: ${sheet.href || 'inline'} (CORS)`);
+        }
+    }
+
+    function getSpecificity(selector) {
+        const ids = (selector.match(/#/g) || []).length;
+        const classes = (selector.match(/\./g) || []).length;
+        const elements = (selector.match(/[a-z]/g) || []).length;
+        return `${ids},${classes},${elements}`;
+    }
+
+    // Sort by specificity
+    allRules.sort((a, b) => {
+        const [aId, aClass, aElem] = a.specificity.split(',').map(Number);
+        const [bId, bClass, bElem] = b.specificity.split(',').map(Number);
+
+        if (aId !== bId) return bId - aId;
+        if (aClass !== bClass) return bClass - aClass;
+        return bElem - aElem;
+    });
+
+    console.log('📋 ALL CSS RULES APPLYING TO CONTAINER:');
+    console.log('(Sorted by specificity - highest first)\n');
+
+    allRules.forEach((rule, i) => {
+        console.log(`\n${i + 1}. [Specificity: ${rule.specificity}] ${rule.selector}`);
+        console.log(`   Source: ${rule.source}`);
+        console.log(`   ${rule.cssText}`);
+    });
+
+    console.log(`\n\n📊 Total rules found: ${allRules.length}`);
+    console.log('💾 Copy this entire output');
+})();</pre>
+            </div>
+        </div>
+
+        <div class="result">
+            <h3>📤 What to Send Back</h3>
+            <p>Copy and send me the console output from:</p>
+            <ol>
+                <li><strong>Step 2</strong> - Diagnostic script from BOTH production and localhost</li>
+                <li><strong>Step 4</strong> - Screenshots from DevTools inspection</li>
+                <li><strong>Step 6</strong> - CSS rules export from production</li>
+            </ol>
+            <p>This will help identify exactly what's overriding the max-width constraint!</p>
+        </div>
+    </div>
+
+    <script>
+        function copyScript(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#059669';
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#10b981';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please select and copy manually.');
+                console.error('Copy failed:', err);
+            });
+        }
+    </script>
+</body>
+</html>

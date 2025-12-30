@@ -43,11 +43,19 @@ jobs:
           echo "API specification v1.0 $(date)" > artifacts/api-spec-$(date +%Y%m%d).md
           echo "Security audit report $(date)" > artifacts/security-audit-$(date +%Y%m%d).pdf
 
+      - name: Clean up duplicate .ots backup files
+        run: |
+          cd artifacts
+          # Remove all .ots.bak* files and other duplicates
+          find . -type f \( -name "*.ots.bak*" -o -name "*.ots.ots*" \) -delete
+          echo "Cleaned up duplicate .ots files"
+
       - name: Stamp artifacts
         run: |
           cd artifacts
           for file in *; do
-            if [[ -f "$file" && ! -f "$file.ots" ]]; then
+            # Skip if file is a timestamp receipt or if a receipt already exists
+            if [[ -f "$file" && "$file" != *.ots && ! -f "$file.ots" ]]; then
               echo "Stamping $file"
               ots stamp "$file" || echo "Failed to stamp $file"
             fi
@@ -57,12 +65,15 @@ jobs:
         if: ${{ github.event.inputs.force_upgrade == 'true' || github.event.schedule }}
         run: |
           cd artifacts
+          # Only upgrade actual .ots files, not backups
           for receipt in *.ots; do
-            if [[ -f "$receipt" ]]; then
+            if [[ -f "$receipt" && "$receipt" == *.ots && "$receipt" != *.ots.* ]]; then
               echo "Upgrading $receipt"
               ots upgrade "$receipt" || echo "Upgrade failed for $receipt (might still be pending)"
             fi
           done
+          # Clean up any new .bak files created during upgrade
+          find . -type f \( -name "*.ots.bak*" -o -name "*.ots.ots*" \) -delete
 
       - name: Update ledger
         run: |
