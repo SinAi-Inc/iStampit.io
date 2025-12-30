@@ -15,6 +15,14 @@ module.exports = {
     {
       pattern: /^space-x-(4|8)$/,
     },
+    // Max-width utilities used in HomeClient
+    {
+      pattern: /^max-w-(2xl|3xl|4xl|5xl|6xl|7xl|full)$/,
+    },
+    // Responsive max-widths
+    {
+      pattern: /^(sm|md|lg|xl|2xl):max-w-(2xl|3xl|4xl|5xl|6xl|7xl|full)$/,
+    },
   ],
   darkMode: 'class',
   corePlugins: {
