@@ -10,7 +10,7 @@ export default function HomeClient() {
       >
         <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-800 [mask-image:linear-gradient(0deg,transparent,black,transparent)]" />
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="max-w-7xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-sm font-medium">
                 🚀 Provable Innovation Platform
@@ -19,7 +19,7 @@ export default function HomeClient() {
                 Provable Innovation,{" "}
                 <span className="gradient-text">Free for Everyone</span>
               </h1>
-              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-5xl mx-auto leading-relaxed">
                 Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin Blockchain.
                 Secure your intellectual property timeline without revealing sensitive content.
               </p>
@@ -58,12 +58,12 @@ export default function HomeClient() {
   {/* Features Section (deferred) */}
   <section className="py-20 bg-white dark:bg-gray-900 cv-auto">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-full mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 Why Choose iStampit?
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto">
                 Built on proven cryptographic principles with user privacy and security as core foundations.
               </p>
             </div>
@@ -118,7 +118,7 @@ export default function HomeClient() {
   {/* How It Works Section (deferred) */}
   <section className="py-20 bg-gray-50 dark:bg-gray-800 cv-auto">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-full mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 How It Works
@@ -196,7 +196,7 @@ export default function HomeClient() {
   {/* Stats Section (deferred) */}
   <section className="py-16 bg-primary-600 dark:bg-primary-800 cv-auto">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
               <div>
                 <div className="text-3xl lg:text-4xl font-bold text-white mb-2">FREE</div>
@@ -222,12 +222,12 @@ export default function HomeClient() {
   {/* Call to Action Section (deferred) */}
   <section className="py-20 bg-white dark:bg-gray-900 cv-auto">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                 Ready to Start Timestamping?
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto">
                 Try our verification tool with a sample file, or explore our Public Ledger
                 to see how others are using provable timestamps.
               </p>
@@ -244,7 +244,7 @@ export default function HomeClient() {
             </div>
 
             {/* Help Card */}
-            <div className="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl max-w-2xl mx-auto">
+            <div className="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl max-w-4xl mx-auto">
               <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
                   <span className="text-blue-600 dark:text-blue-400">💡</span>
