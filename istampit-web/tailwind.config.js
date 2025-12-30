@@ -15,14 +15,16 @@ module.exports = {
     {
       pattern: /^space-x-(4|8)$/,
     },
-    // Max-width utilities used in HomeClient
-    {
-      pattern: /^max-w-(2xl|3xl|4xl|5xl|6xl|7xl|full)$/,
-    },
-    // Responsive max-widths
-    {
-      pattern: /^(sm|md|lg|xl|2xl):max-w-(2xl|3xl|4xl|5xl|6xl|7xl|full)$/,
-    },
+    // Max-width utilities - explicitly listed to ensure inclusion in static builds
+    'max-w-2xl',
+    'max-w-3xl',
+    'max-w-4xl',
+    'max-w-5xl',
+    'max-w-6xl',
+    'max-w-7xl',
+    'max-w-full',
+    // Margin auto for centering
+    'mx-auto',
   ],
   darkMode: 'class',
   corePlugins: {
