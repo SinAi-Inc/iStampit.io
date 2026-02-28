@@ -16,7 +16,7 @@ export const SITE_URL = resolveSiteUrl();
 
 export const SITE = {
   name: "iStampit.io",
-  title: "iStampit.io — Verifiable Proof-of-Existence (OpenTimestamps on Bitcoin)",
+  title: "iStampit.io - Verifiable Proof-of-Existence (OpenTimestamps on Bitcoin)",
   description:
     "Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin.",
   keywords: [

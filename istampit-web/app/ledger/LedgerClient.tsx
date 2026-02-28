@@ -21,7 +21,7 @@ export default function LedgerClient() {
   if (loading && !ledgerData && !error) {
     return (
       <main className="min-h-screen p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="container max-w-screen-2xl mx-auto">
           <div className="text-center animate-pulse text-gray-500">Loading Public Ledger...</div>
         </div>
       </main>
@@ -31,7 +31,7 @@ export default function LedgerClient() {
   if (error) {
     return (
       <main className="min-h-screen p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="container max-w-screen-2xl mx-auto">
           <div className="text-center text-red-600">
             Error loading ledger: {error}
           </div>
@@ -43,7 +43,7 @@ export default function LedgerClient() {
   if (!ledgerData) {
     return (
       <main className="min-h-screen p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="container max-w-screen-2xl mx-auto">
           <div className="text-center text-gray-600">
             No entries yet — be the first to stamp innovation 🚀
           </div>

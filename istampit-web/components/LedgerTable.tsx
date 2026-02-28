@@ -147,7 +147,7 @@ export default function LedgerTable({ entries }: Props) {
                     </div>
                   ) : (
                     <div className="text-xs text-gray-400 dark:text-gray-500" title="Not yet verified by users">
-                      <span className="opacity-60">—</span>
+                      <span className="opacity-60">-</span>
                     </div>
                   )}
                 </td>
@@ -208,7 +208,7 @@ export default function LedgerTable({ entries }: Props) {
       {filteredEntries.length === 0 && (
         <div className="text-center py-8 text-gray-500 text-sm">
           {entries.length === 0
-            ? 'No entries yet — be the first to stamp innovation 🚀'
+            ? 'No entries yet - be the first to stamp innovation 🚀'
             : 'No entries match the current filters.'}
         </div>
       )}

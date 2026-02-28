@@ -121,7 +121,7 @@ export default function HashUploader({ onHash, autoStamp=false, onReceipt }: Pro
       {autoStamp && stampStatus === 'pending' && <p className="text-xs text-blue-600 dark:text-blue-400">Stamping hash…</p>}
       {autoStamp && stampStatus === 'success' && lastMeta && (
         <div className="text-xs text-green-600 dark:text-green-400 space-y-1" role="status">
-          <div>✅ {message} — <button onClick={()=>{
+          <div>✅ {message} - <button onClick={()=>{
             // Re-offer open dialog
             if(lastMeta){
               // Not storing bytes; user already downloaded. Provide GET link.

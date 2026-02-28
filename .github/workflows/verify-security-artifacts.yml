@@ -44,7 +44,7 @@ jobs:
           shopt -s nullglob
           bundles=(*.bundle)
           if [ ${#bundles[@]} -eq 0 ]; then
-            echo "No bundles found (no prior release?) — skipping"
+            echo "No bundles found (no prior release?) - skipping"
             exit 0
           fi
           for b in "${bundles[@]}"; do

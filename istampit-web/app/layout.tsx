@@ -199,7 +199,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       Digital watermarking and timestamp verification platform. Secure your content with Bitcoin-anchored proof of existence.
                     </p>
                     <p className="text-gray-500 dark:text-gray-500 text-xs">
-                      Provable innovation, Free for everyone. MIT Licensed — Uses opentimestamps (LGPL)
+                      Provable innovation, Free for everyone. MIT Licensed - Uses opentimestamps (LGPL)
                     </p>
                   </div>
 

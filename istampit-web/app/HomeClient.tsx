@@ -10,7 +10,7 @@ export default function HomeClient() {
       >
         <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-800 [mask-image:linear-gradient(0deg,transparent,black,transparent)]" />
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center space-y-8">
+          <div className="max-w-screen-2xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-sm font-medium">
                 🚀 Provable Innovation Platform
