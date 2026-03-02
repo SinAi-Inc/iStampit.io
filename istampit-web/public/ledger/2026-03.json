@@ -1,0 +1,57 @@
+{
+  "entries": [
+    {
+      "id": "auto-20260301-api-spec-20260301.md",
+      "title": "Automated Artifact: api-spec-20260301.md",
+      "sha256": "d4e8f622d3d6e2cac9fdade402ffc96c1f57fa21e2f3f5d36cbe37f710bede80",
+      "receiptUrl": "/artifacts/api-spec-20260301.md.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2026-03-01T06:10:36.990134+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20260301-security-audit-20260301.pdf",
+      "title": "Automated Artifact: security-audit-20260301.pdf",
+      "sha256": "34775b5facdde7589510f5737099fb64ab3f4f41f853bc65b6df01042f101628",
+      "receiptUrl": "/artifacts/security-audit-20260301.pdf.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2026-03-01T06:10:37.764971+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    },
+    {
+      "id": "auto-20260301-research-doc-20260301.txt",
+      "title": "Automated Artifact: research-doc-20260301.txt",
+      "sha256": "730dd878e20694aa88beca3b1983c6cb5f3fc65497325b8be98ba42eec9ec5c0",
+      "receiptUrl": "/artifacts/research-doc-20260301.txt.ots",
+      "status": "pending",
+      "txid": null,
+      "blockHeight": null,
+      "blockTime": null,
+      "stampedAt": "2026-03-01T06:10:38.514791+00:00",
+      "tags": [
+        "automated",
+        "artifact"
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2026-03-02T04:55:27.231Z",
+    "totalEntries": 3,
+    "confirmedEntries": 0,
+    "pendingEntries": 3,
+    "year": 2026,
+    "month": 3
+  }
+}
