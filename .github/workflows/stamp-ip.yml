@@ -18,10 +18,10 @@ permissions:
 jobs:
   stamp-artifacts:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v5
@@ -154,17 +154,27 @@ jobs:
           print(f"Updated ledger with {len(ledger['entries'])} total entries")
           EOF
 
-      - name: Commit and push changes
+      - name: Commit and push changes (optional token)
+        env:
+          PUSH_TOKEN: ${{ secrets.STAMP_BOT_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "chore: automated stamping and ledger update $(date)"
-            git push
+            exit 0
           fi
+
+          git commit -m "chore: automated stamping and ledger update $(date)"
+
+          if [ -z "$PUSH_TOKEN" ]; then
+            echo "STAMP_BOT_TOKEN is not set; skipping push"
+            exit 0
+          fi
+
+          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
