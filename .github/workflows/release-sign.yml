@@ -21,7 +21,7 @@ jobs:
           pip install -e .
           python -m build
 
-      - uses: sigstore/cosign-installer@v3
+      - uses: sigstore/cosign-installer@f713795cb21599bc4e5c4b58cbad1da852d7eeb9 # v3
         # with:
         #   cosign-release: 'v2.5.3'
 
@@ -82,7 +82,7 @@ jobs:
 
       - name: Upload bundles and signed artifacts to release
         if: github.event_name == 'release' && github.event.action == 'published'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2
         with:
           files: |
             **/*.bundle
@@ -90,7 +90,7 @@ jobs:
             istampit-cli/dist/*.tar.gz
             **/*.ots
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: cosign-bundles
           path: "**/*.bundle"
@@ -102,7 +102,7 @@ jobs:
       actions: read
       id-token: write
       contents: write
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@f7dd8c54c2067bafc12ca7a55595d5ee9b75204a # v2.1.0
     with:
       base64-subjects: ${{ needs.sign-blobs.outputs.slsa-subjects }}
       provenance-name: "${{ github.event.repository.name }}.intoto.jsonl"

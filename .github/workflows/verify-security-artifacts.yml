@@ -30,7 +30,7 @@ jobs:
             --clobber
           ls -1 || true
 
-      - uses: sigstore/cosign-installer@v3
+      - uses: sigstore/cosign-installer@f713795cb21599bc4e5c4b58cbad1da852d7eeb9 # v3
 
       - name: Verify cosign bundles (keyless, previous release)
         env:
