@@ -35,7 +35,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - name: Install dependencies (root workspace)
-        run: npm install --no-audit --no-fund
+        run: npm ci
       - name: Initialize CodeQL
         uses: github/codeql-action/init@fdbfb4d2750291e159f0156def62b853c2798ca2 # v4
         with:

@@ -33,7 +33,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - name: Install deps (workspace)
-        run: npm install --no-audit --no-fund
+        run: npm ci
       - name: Build web (hybrid)
         run: npm --workspace istampit-web run build
 
@@ -49,7 +49,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - name: Install deps (workspace)
-        run: npm install --no-audit --no-fund
+        run: npm ci
       - name: Build web (hybrid)
         run: npm --workspace istampit-web run build
       - name: Start Next server

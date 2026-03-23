@@ -17,8 +17,7 @@ jobs:
       - name: Build CLI artifacts
         working-directory: istampit-cli
         run: |
-          pip install --upgrade pip build
-          pip install -e .
+          pip install --require-hashes -r ../.github/workflows/requirements-build.txt
           python -m build
 
       - uses: sigstore/cosign-installer@f713795cb21599bc4e5c4b58cbad1da852d7eeb9 # v3
