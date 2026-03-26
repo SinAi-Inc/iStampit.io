@@ -72,6 +72,7 @@ async function generate() {
       entries: group,
       metadata: {
         lastUpdated: nowISO,
+        exportGeneratedAt: nowISO,
         totalEntries: group.length,
         confirmedEntries: confirmed,
         pendingEntries: pending,
