@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Build (static export)
         run: npm --workspace istampit-web run build:static
       - name: Verify export output
