@@ -38,8 +38,17 @@ async function generate() {
   try { parsed = JSON.parse(raw); } catch (e) { throw new Error('Invalid ledger.json: ' + e.message); }
   const entries = Array.isArray(parsed.entries) ? parsed.entries : [];
 
-  // Write full copy (legacy path)
-  await writeJSON(resolve(ledgerOutDir, 'index.json'), parsed);
+  const nowISO = new Date().toISOString();
+
+  // Write full copy (legacy path), overriding lastUpdated so it matches the per-month files
+  const rootData = {
+    ...parsed,
+    metadata: {
+      ...parsed.metadata,
+      lastUpdated: nowISO,
+    },
+  };
+  await writeJSON(resolve(ledgerOutDir, 'index.json'), rootData);
 
   const groups = new Map();
   for (const entry of entries) {
@@ -48,8 +57,6 @@ async function generate() {
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(entry);
   }
-
-  const nowISO = new Date().toISOString();
 
   // Always create a file for the current month (even if empty)
   const currentMonth = monthKey(nowISO);
