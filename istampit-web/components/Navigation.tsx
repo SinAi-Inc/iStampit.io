@@ -6,6 +6,8 @@ interface NavigationProps {
   logo?: React.ReactNode
 }
 
+const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
+
 export default function Navigation({ logo }: NavigationProps = {}) {
 
   return (
@@ -31,22 +33,22 @@ export default function Navigation({ logo }: NavigationProps = {}) {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
-              <Link href="/" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Home
               </Link>
-              <Link href="/stamp" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/stamp" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Create Timestamp
               </Link>
-              <Link href="/verify" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/verify" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Verify
               </Link>
-              <Link href="/ledger" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/ledger" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Public Ledger
               </Link>
-              <Link href="/embed" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/embed" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Embed
               </Link>
-              <Link href="/docs" className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
+              <Link href="/docs" prefetch={!IS_PAGES_STATIC} className="nav-link focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2">
                 Documentation
               </Link>
             </div>

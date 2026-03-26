@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
+
 export default function HomeClient() {
   return (
     <main className="min-h-screen">
@@ -26,15 +28,15 @@ export default function HomeClient() {
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Link href="/stamp" className="btn-primary btn-lg">
+              <Link href="/stamp" prefetch={!IS_PAGES_STATIC} className="btn-primary btn-lg">
                 <span className="mr-2">🚀</span>
                 Create Timestamp
               </Link>
-              <Link href="/verify" className="btn-outline btn-lg">
+              <Link href="/verify" prefetch={!IS_PAGES_STATIC} className="btn-outline btn-lg">
                 <span className="mr-2">🔍</span>
                 Verify
               </Link>
-              <Link href="/ledger" className="btn-outline btn-lg">
+              <Link href="/ledger" prefetch={!IS_PAGES_STATIC} className="btn-outline btn-lg">
                 <span className="mr-2">📋</span>
                 Public Ledger
               </Link>
@@ -234,11 +236,11 @@ export default function HomeClient() {
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/verify" className="btn-primary btn-lg">
+              <Link href="/verify" prefetch={!IS_PAGES_STATIC} className="btn-primary btn-lg">
                 <span className="mr-2">🚀</span>
                 Start Verification Now
               </Link>
-              <Link href="/ledger" className="btn-ghost">
+              <Link href="/ledger" prefetch={!IS_PAGES_STATIC} className="btn-ghost">
                 View Public Ledger →
               </Link>
             </div>
@@ -254,7 +256,7 @@ export default function HomeClient() {
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
                     Check out our documentation for detailed guides, API references, and integration examples.
                   </p>
-                  <Link href="/docs" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
+                  <Link href="/docs" prefetch={!IS_PAGES_STATIC} className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
                     Read Documentation →
                   </Link>
                 </div>

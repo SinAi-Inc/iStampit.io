@@ -37,14 +37,13 @@ async function generate() {
   let parsed;
   try { parsed = JSON.parse(raw); } catch (e) { throw new Error('Invalid ledger.json: ' + e.message); }
   const entries = Array.isArray(parsed.entries) ? parsed.entries : [];
-
   const nowISO = new Date().toISOString();
 
-  // Write full copy (legacy path), overriding lastUpdated so it matches the per-month files
+  // Write full copy (legacy path)
   const rootData = {
     ...parsed,
     metadata: {
-      ...parsed.metadata,
+      ...(parsed.metadata || {}),
       lastUpdated: nowISO,
     },
   };

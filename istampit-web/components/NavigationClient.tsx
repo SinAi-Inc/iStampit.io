@@ -6,6 +6,8 @@ import ThemeToggle from './ThemeToggle';
 
 interface NavigationClientProps { logo?: React.ReactNode }
 
+const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
+
 function MobileMenu({ isOpen, onClose, logo }: { isOpen: boolean; onClose: () => void; logo?: React.ReactNode; }) {
   if (!isOpen) return null;
   // No auth flows in mobile menu.
@@ -39,6 +41,7 @@ function MobileMenu({ isOpen, onClose, logo }: { isOpen: boolean; onClose: () =>
                   <Link
                     key={href}
                     href={href}
+                    prefetch={!IS_PAGES_STATIC}
                     onClick={onClose}
                     className="block px-4 py-3.5 rounded-xl text-gray-900 dark:text-gray-50 hover:bg-primary-100 dark:hover:bg-primary-900/30 hover:text-primary-800 dark:hover:text-primary-200 transition-all duration-200 font-medium text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 border border-transparent hover:border-primary-300 dark:hover:border-primary-700 backdrop-blur-sm hover:backdrop-blur-md"
                   >
@@ -56,7 +59,6 @@ function MobileMenu({ isOpen, onClose, logo }: { isOpen: boolean; onClose: () =>
 }
 
 export default function NavigationClient({ logo }: NavigationClientProps) {
-  const PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
   const [open, setOpen] = useState(false);
   // Auth removed; placeholder state
   const status: 'disabled' = 'disabled';
@@ -72,7 +74,7 @@ export default function NavigationClient({ logo }: NavigationClientProps) {
           onClick={()=>setOpen(true)}
           className="p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
           aria-label="Open mobile menu"
-          aria-expanded={open}
+          aria-expanded={open ? 'true' : 'false'}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />

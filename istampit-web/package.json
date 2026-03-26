@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "export": "echo 'use build only; output:export handles static generation'",
-    "build:static": "npm run build && npm run export",
+    "build:static": "node scripts/build-static-export.mjs",
     "vercel-build": "next build",
     "dev": "next dev",
     "lint": "next lint",

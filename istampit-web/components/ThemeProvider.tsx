@@ -21,7 +21,7 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
+  defaultTheme = 'light',
   storageKey = 'istampit-theme'
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme)

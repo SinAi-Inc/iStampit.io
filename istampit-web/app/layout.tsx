@@ -18,11 +18,14 @@ import GoogleTag from '../components/GoogleTag';
 
 // Explicit static Pages flag for clarity & future regression safety
 const IS_PAGES_STATIC = process.env.NEXT_PUBLIC_PAGES_STATIC === '1';
+const ENABLE_GA = process.env.NODE_ENV === 'production' && !IS_PAGES_STATIC && Boolean(GA_MEASUREMENT_ID);
 
 export const metadata: Metadata = {
   ...baseMetadata,
   title: "iStampit.io - Digital Watermarking & Timestamp Verification",
   description: "Secure your digital content with advanced watermarking technology. Bitcoin-secured timestamps, privacy-first proof of existence, and instant verification for creators and innovators.",
+  applicationName: 'iStampit.io',
+  manifest: IS_PAGES_STATIC ? undefined : '/site.webmanifest',
   keywords: [
     "digital watermarking",
     "timestamp verification",
@@ -45,6 +48,8 @@ export const metadata: Metadata = {
       { url: '/icons/favicon_64.png', type: 'image/png' }
     ],
     apple: [
+      { url: '/icons/appicon_152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/icons/appicon_167.png', sizes: '167x167', type: 'image/png' },
       { url: '/icons/appicon_180.png', sizes: '180x180', type: 'image/png' }
     ]
   },
@@ -52,9 +57,6 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'default',
     title: 'iStampit.io'
-  },
-  other: {
-    'apple-touch-icon': '/icons/appicon_180.png'
   },
 };
 
@@ -75,36 +77,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
   <html lang="en" suppressHydrationWarning>
       <head>
-        {!IS_PAGES_STATIC && GA_MEASUREMENT_ID && (
-          <>
-            {/* Google tag (gtag.js) */}
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-
-                  gtag('config', '${GA_MEASUREMENT_ID}');
-                `
-              }}
-            />
-          </>
-        )}
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="iStampit.io" />
-        <meta name="application-name" content="iStampit.io" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        {/* Include manifest only on dynamic (non-GitHub Pages static) builds */}
-        {!IS_PAGES_STATIC && (
-          <link rel="manifest" href="/site.webmanifest" />
-        )}
-        <link rel="apple-touch-icon" href="/icons/appicon_180.png" />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -138,7 +117,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
     <body className="font-sans min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
   {/* Google Analytics */}
-  {GA_MEASUREMENT_ID && (
+  {ENABLE_GA && (
     <>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
@@ -156,7 +135,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   )}
   {/* Skip link for keyboard users */}
   <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded shadow z-50">Skip to content</a>
-  <ThemeProvider defaultTheme="system" storageKey="istampit-theme">
+  <ThemeProvider defaultTheme="light" storageKey="istampit-theme">
           <Suspense fallback={null}>
             <GoogleTag />
           </Suspense>
@@ -213,7 +192,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         <li>
                           <Link
                             href="/stamp"
-                            prefetch={process.env.NEXT_PUBLIC_PAGES_STATIC !== '1'}
+                            prefetch={!IS_PAGES_STATIC}
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Create Timestamp
@@ -222,6 +201,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         <li>
                           <Link
                             href="/verify"
+                            prefetch={!IS_PAGES_STATIC}
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Verify Content
@@ -230,6 +210,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         <li>
                           <Link
                             href="/ledger"
+                            prefetch={!IS_PAGES_STATIC}
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
                           >
                             Public Ledger

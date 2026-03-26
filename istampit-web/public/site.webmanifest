@@ -1,5 +1,5 @@
 {
-  "name": "iStampit.io - Verifiable Proof-of-Existence (OpenTimestamps on Bitcoin)",
+  "name": "iStampit.io",
   "short_name": "iStampit",
   "description": "Verifiable proof-of-existence for research & creative artifacts using OpenTimestamps on Bitcoin.",
   "start_url": "/",
@@ -15,6 +15,18 @@
     {
       "src": "/icons/favicon_64.png",
       "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/appicon_152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/appicon_167.png",
+      "sizes": "167x167",
       "type": "image/png",
       "purpose": "any"
     },
@@ -35,9 +47,7 @@
     {
       "src": "/social/og-banner.png",
       "sizes": "1200x630",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "iStampit.io Dashboard"
+      "type": "image/png"
     }
   ],
   "shortcuts": [

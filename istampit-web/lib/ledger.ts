@@ -27,11 +27,10 @@ export interface LedgerData {
 
 // For static public site we bundle the ledger JSON at build time. Dynamic deployments can still fetch.
 export async function fetchLedger(): Promise<LedgerData> {
-  // Strategy: prefer current month chunk (e.g. /ledger/2025-08.json) then fallback to root ledger.json
-  const now = new Date();
-  const ym = now.toISOString().slice(0,7); // YYYY-MM
-  const monthlyUrl = `/ledger/${ym}.json`;
-  const rootUrl = '/ledger.json';
+  // Strategy: prefer the generated public ledger index so the ledger page shows
+  // the full registry, then fall back to the bundled root ledger JSON.
+  const publicLedgerIndexUrl = '/ledger/index.json';
+  const legacyRootUrl = '/ledger.json';
 
   // Helper to load JSON via dynamic import (bundled) or network
   async function tryLoad(pathLike: string, publicUrl: string): Promise<LedgerData | null> {
@@ -51,13 +50,16 @@ export async function fetchLedger(): Promise<LedgerData> {
     } catch { return null; }
   }
 
-  // Try monthly first
-  const monthly = await tryLoad('', monthlyUrl);
-  if (monthly) return monthly;
+  const publicLedgerIndex = await tryLoad('', publicLedgerIndexUrl);
+  if (publicLedgerIndex) return publicLedgerIndex;
 
   // Fallback to root
-  const root = await tryLoad('../../ledger.json', rootUrl);
+  const root = await tryLoad('../../ledger.json', legacyRootUrl);
   if (root) return root;
+
+  const legacyRoot = await tryLoad('', legacyRootUrl);
+  if (legacyRoot) return legacyRoot;
+
   throw new Error('Failed to load ledger data');
 }
 

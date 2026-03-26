@@ -1,11 +1,13 @@
 /* Removed external Google Fonts imports to keep builds offline-friendly */
 
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../lib/**/*.{js,ts,jsx,tsx,mdx}";
+
 /* Import Enterprise Design System */
 @import '../styles/design-system.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Responsive Container Max-Width Fix - Applied in utilities layer for higher specificity */
 @layer utilities {
