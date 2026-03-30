@@ -28,7 +28,7 @@ jobs:
               exit 1
             fi
           '
-      - uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
         with:
           submodules: recursive
-      - uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v4
         with:
           node-version: '20'
           cache: 'npm'
