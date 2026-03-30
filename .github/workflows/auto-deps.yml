@@ -26,7 +26,7 @@ jobs:
           submodules: false
 
       - name: Setup Node
-        uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v4
         with:
           node-version: 20
 
