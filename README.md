@@ -7,11 +7,18 @@
 
 ![Project preview](https://github.com/user-attachments/assets/977c8aa8-488b-4739-a2e4-c6c3997f5adf)
 
+> [!WARNING]
+> **Retired project:** iStampit is being sunset as of May 2026. The public site now serves a goodbye page, companion packages are being marked as retired, and the remaining hosting/infrastructure surfaces are being decommissioned. See [docs/RETIREMENT.md](./docs/RETIREMENT.md).
+
+The historical usage and integration notes below are preserved for archive/reference only. Do not start new deployments or new integrations on iStampit.
+
 **Privacy-first blockchain timestamping using OpenTimestamps protocol.** Create immutable proof-of-existence for digital artifacts anchored to Bitcoin blockchain - without revealing file contents.
 
-> **Status:** Production Ready (v1.0+) | **Live:** [istampit.io](https://istampit.io) | **API:** [istampit-api.fly.dev](https://istampit-api.fly.dev)
+> **Status:** Retired / Sunset in progress | **Site:** [istampit.io](https://istampit.io) goodbye page | **API:** retired on 2026-05-14
 
 ## ✨ What is iStampit?
+
+This repository is now maintained as an archive during the retirement process.
 
 iStampit provides cryptographic proof that a digital file existed at a specific point in time:
 
@@ -32,6 +39,8 @@ iStampit provides cryptographic proof that a digital file existed at a specific 
 
 ### Web Interface
 
+Historical reference only:
+
 Visit **[istampit.io](https://istampit.io)** to:
 
 - Drag & drop files for instant timestamping
@@ -40,6 +49,8 @@ Visit **[istampit.io](https://istampit.io)** to:
 - Generate embeddable verification widgets
 
 ### API Access
+
+Historical reference only. The Fly.io API was decommissioned on 2026-05-14 and `istampit-api.fly.dev` no longer resolves:
 
 ```bash
 # Stamp a hash
@@ -61,6 +72,8 @@ See **[API_QUICK_REFERENCE.md](./docs/API_QUICK_REFERENCE.md)** for complete API
 
 ### Command Line
 
+Historical reference only while the CLI package remains archived:
+
 ```bash
 # Install CLI
 pip install istampit-cli
@@ -73,6 +86,8 @@ istampit verify document.pdf document.pdf.ots
 ```
 
 ### CI/CD Integration
+
+Historical reference only while the Action and release surfaces are sunset:
 
 ```yaml
 # GitHub Actions example

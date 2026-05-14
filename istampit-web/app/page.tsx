@@ -3,12 +3,12 @@ import { Suspense } from 'react';
 import HomeClient from './HomeClient';
 
 export const metadata: Metadata = {
-  title: 'Digital Watermarking & Timestamp Verification Platform',
-  description: 'Secure your digital content with advanced watermarking technology. Bitcoin-secured timestamps, privacy-first proof of existence, and instant verification.',
-  keywords: ['digital watermarking', 'timestamp verification', 'blockchain proof', 'bitcoin timestamps', 'content protection', 'copyright protection'],
+  title: 'iStampit Retired',
+  description: 'iStampit has been retired. The istampit.io landing page remains online as a goodbye notice during the service sunset.',
+  keywords: ['istampit retired', 'service sunset', 'project archive', 'goodbye from istampit'],
   openGraph: {
-    title: 'iStampit.io - Digital Watermarking & Timestamp Verification',
-    description: 'Secure your digital content with advanced watermarking technology. Bitcoin-secured timestamps and privacy-first proof of existence.',
+    title: 'iStampit Retired',
+    description: 'iStampit has been retired. Thank you for being part of the project.',
     images: [{ url: '/social/og-banner.png', width: 1200, height: 630, alt: 'iStampit.io Platform' }],
   },
   alternates: {

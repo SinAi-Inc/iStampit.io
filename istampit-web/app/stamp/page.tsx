@@ -1,15 +1,14 @@
 import { Metadata } from 'next';
-import { Suspense } from 'react';
-import StampClient from './StampClient';
+import RetiredFeatureNotice from '../RetiredFeatureNotice';
 
 export const metadata: Metadata = {
-  title: 'Create Blockchain Timestamp - iStampit.io',
-  description: 'Create immutable proof-of-existence timestamps for your documents using Bitcoin blockchain. Free, privacy-first, and instantly downloadable.',
-  keywords: ['create timestamp', 'blockchain proof', 'bitcoin timestamp', 'document protection', 'proof of existence', 'OpenTimestamps'],
+  title: 'iStampit Timestamping Retired',
+  description: 'The live timestamping surface has been retired as part of the iStampit shutdown. The archive and goodbye page remain available.',
+  keywords: ['istampit retired', 'timestamping retired', 'project archive', 'service sunset'],
   openGraph: {
-    title: 'Create Blockchain Timestamp - iStampit.io',
-    description: 'Create immutable proof-of-existence timestamps for your documents using Bitcoin blockchain. Free, privacy-first, and instantly downloadable.',
-    images: [{ url: '/social/og-banner.png', width: 1200, height: 630, alt: 'iStampit.io - Create Timestamp' }],
+    title: 'iStampit Timestamping Retired',
+    description: 'The live timestamping surface has been retired as part of the iStampit shutdown.',
+    images: [{ url: '/social/og-banner.png', width: 1200, height: 630, alt: 'iStampit Retired' }],
   },
   alternates: {
     canonical: '/stamp'
@@ -18,8 +17,9 @@ export const metadata: Metadata = {
 
 export default function StampPage() {
   return (
-    <Suspense fallback={<main className="min-h-screen p-8">Loading...</main>}>
-      <StampClient />
-    </Suspense>
+    <RetiredFeatureNotice
+      title="Timestamping has been retired."
+      description="The live stamping workflow at /stamp is no longer being offered. Use the main goodbye page and public ledger archive for the remaining retirement-period materials."
+    />
   );
 }

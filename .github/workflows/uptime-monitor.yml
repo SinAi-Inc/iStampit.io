@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Fetch verify page
+      - name: Fetch retirement landing page
         id: fetch
         run: |
           set -euo pipefail
-          URL="https://istampit.io/verify"
+          URL="https://istampit.io/"
           echo "Requesting $URL" >&2
           STATUS=$(curl -L -s -o /tmp/body -w '%{http_code}' "$URL")
           echo "Status: $STATUS" >&2
@@ -27,8 +27,8 @@ jobs:
             exit 1;
           fi
           head /tmp/body
-          if ! grep -iq 'verify' /tmp/body; then
-            echo "::error::Missing expected keyword in body";
+          if ! grep -Eiq 'Project retired|iStampit is signing off|goodbye notice' /tmp/body; then
+            echo "::error::Retirement landing page markers not found in body";
             exit 1;
           fi
           # Lightweight hash for provenance
@@ -36,5 +36,5 @@ jobs:
       - name: Emit summary
         run: |
           echo "### Uptime Monitor" >> $GITHUB_STEP_SUMMARY
-          echo "Verify page reachable and contains keyword." >> $GITHUB_STEP_SUMMARY
+          echo "Retirement landing page reachable and contains expected shutdown copy." >> $GITHUB_STEP_SUMMARY
           echo "Body hash: ${{ steps.fetch.outputs.body_sha256 }}" >> $GITHUB_STEP_SUMMARY

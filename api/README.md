@@ -2,6 +2,9 @@
 
 FastAPI service for OpenTimestamps hash stamping and verification.
 
+> [!WARNING]
+> Retired service: the hosted Fly.io app `istampit-api` was destroyed on 2026-05-14 as part of the iStampit shutdown. This document remains for historical and local-development reference only.
+
 ## Features
 
 - **Health check** endpoint (`/healthz`)
@@ -38,6 +41,8 @@ docker run -p 8080:8080 istampit-api
 ```
 
 ## Fly.io Deployment
+
+Historical reference only. The hosted Fly.io deployment for `istampit-api` has been retired.
 
 ```bash
 # Login and launch
