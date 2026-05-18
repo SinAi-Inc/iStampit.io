@@ -12,14 +12,14 @@
     "deps:audit-fix": "npm audit fix --workspaces || node -e \"process.exit(0)\""
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.27",
-    "eslint": "^10.1.0",
-    "eslint-config-next": "16.2.3",
-    "next": "^16.2.3",
-    "postcss": "^8.5.8",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^10.4.0",
+    "eslint-config-next": "16.2.6",
+    "next": "^16.2.6",
+    "postcss": "^8.5.14",
     "postcss-nested": "^7.0.2",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "engines": {
     "node": ">=20.19.0 <21"
@@ -27,5 +27,5 @@
   "overrides": {
     "vite": "^7.3.2"
   },
-  "packageManager": "npm@10.9.7"
+  "packageManager": "npm@10.9.8"
 }

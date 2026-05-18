@@ -20,26 +20,26 @@
   },
   "dependencies": {
     "ioredis": "^5.10.1",
-    "next": "^16.2.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "next": "^16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@playwright/test": "^1.60.0",
+    "@tailwindcss/postcss": "^4.3.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.8.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.27",
-    "eslint": "^10.1.0",
-    "eslint-config-next": "16.2.3",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^10.4.0",
+    "eslint-config-next": "16.2.6",
     "jsdom": "^28.1.0",
-    "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.2",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.3.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.6"
   },
   "overrides": {
     "esbuild": "^0.25.0",
