@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
           submodules: recursive
       - name: Use Node 20
-        uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # v4
+        uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c # v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -37,9 +37,9 @@ jobs:
       - name: Install dependencies (root workspace)
         run: npm ci
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@fdbfb4d2750291e159f0156def62b853c2798ca2 # v4
+        uses: github/codeql-action/init@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v4
         with:
           languages: ${{ matrix.language }}
           config-file: codeql-config.yml
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@fdbfb4d2750291e159f0156def62b853c2798ca2 # v4
+        uses: github/codeql-action/analyze@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v4
