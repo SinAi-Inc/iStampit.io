@@ -14,9 +14,9 @@
   "devDependencies": {
     "autoprefixer": "^10.4.27",
     "eslint": "^10.1.0",
-    "eslint-config-next": "16.2.3",
-    "next": "^16.2.3",
-    "postcss": "^8.5.8",
+    "eslint-config-next": "16.2.6",
+    "next": "^16.2.6",
+    "postcss": "^8.5.10",
     "postcss-nested": "^7.0.2",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -25,7 +25,8 @@
     "node": ">=20.19.0 <21"
   },
   "overrides": {
-    "vite": "^7.3.2"
+    "postcss": "^8.5.10",
+    "vite": "^7.3.3"
   },
   "packageManager": "npm@10.9.7"
 }

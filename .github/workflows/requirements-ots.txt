@@ -7,9 +7,9 @@ opentimestamps-client==0.7.0 \
 opentimestamps==0.4.5 \
     --hash=sha256:a4912b3bd1b612a3ef5fac925b9137889e6c5cb91cc9e76c8202a2bf8abe26b5 \
     --hash=sha256:56726ccde97fb67f336a7f237ce36808e5593c3089d68d900b1c83d0ebf9dcfa
-GitPython==3.1.47 \
-    --hash=sha256:489f590edfd6d20571b2c0e72c6a6ac6915ee8b8cd04572330e3842207a78905 \
-    --hash=sha256:dba27f922bd2b42cb54c87a8ab3cb6beb6bf07f3d564e21ac848913a05a8a3cd
+GitPython==3.1.50 \
+    --hash=sha256:d352abe2908d07355014abdd21ddf798c2a961469239afec4962e9da884858f9 \
+    --hash=sha256:80da2d12504d52e1f998772dc5baf6e553f8d2fcfe1fcc226c9d9a2ee3372dcc
 PySocks==1.7.1 \
     --hash=sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5 \
     --hash=sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0

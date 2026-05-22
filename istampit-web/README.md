@@ -1,5 +1,10 @@
 # iStampit Web (Prototype)
 
+> [!WARNING]
+> **Retired web surface:** this app now exists to serve the iStampit goodbye page while the broader service shutdown completes. Do not treat this package as an actively developed product.
+
+All implementation notes below are preserved as historical context. The only intended live outcome now is the retirement landing page.
+
 Browser-based OpenTimestamps verification demo. Authentication (Google OAuth via NextAuth) now lives exclusively in the separate `istampit-auth` service; this web app only consumes the remote session endpoint and no longer needs Google OAuth env vars.
 
 ## Dynamic vs Static Builds
